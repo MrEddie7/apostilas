@@ -1,81 +1,111 @@
 ---
 title: "Operações de Junção (Joins)"
 aula_numero: "13"
-description: "Aprenda a recuperar informações de múltiplas tabelas simultaneamente utilizando INNER, OUTER, CROSS e SELF JOIN."
+description: "Aprenda a recuperar informações de múltiplas tabelas simultaneamente utilizando INNER, OUTER, CROSS e SELF
+JOIN."
 tags:
 - aula
 - bimestre-02
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos: Operações de Junção (Joins)</h2>
-  <p>As junções são operações fundamentais para recuperar informações de várias tabelas relacionadas simultaneamente, permitindo que os dados sejam combinados conforme um relacionamento lógico estabelecido entre elas.</p>
+  <h2>Teoria & Conceitos</h2>
 
-  <h3>1. Fundamentação Teórica e Qualificadores</h3>
-  <p>Teoricamente, uma junção equivale a realizar uma Seleção (σ) sobre um Produto Cartesiano (×) das tabelas envolvidas. Para evitar ambiguidades quando colunas de tabelas diferentes possuem o mesmo nome, utilizamos qualificadores de nome (formato <code class="one-line-code">tabela.coluna</code>).</p>
+  <h3>1. Fundamentação Teórica: Da Álgebra ao SQL</h3>
+  <p>Na teoria relacional, uma junção é uma operação que combina linhas de uma tabela com as linhas correspondentes de outra, baseando-se em um relacionamento lógico (geralmente chaves primárias e estrangeiras).</p>
+  <ul>
+    <li><strong>Lógica Matemática:</strong> Teoricamente, a junção (⋈) é uma Seleção (σ) aplicada sobre o resultado de um Produto Cartesiano (×).</li>
+    <li><strong>Propriedade do Fechamento (Closure):</strong> É vital lembrar que o resultado de qualquer junção é sempre uma nova relação (tabela). Isso permite que você aninhe várias junções em uma única consulta SQL para navegar por modelos de dados complexos.</li>
+    <li><strong>Ambiguidade e Qualificadores:</strong> Como tabelas relacionadas costumam ter colunas com nomes idênticos (ex: id_cliente), utilizamos os qualificadores de nome (formato <code>tabela.coluna</code>) para indicar ao SGBD exatamente qual dado queremos.</li>
+  </ul>
+
+  <hr>
 
   <h3>2. INNER JOIN (Junção Interna)</h3>
-  <p>É a junção que retorna apenas as linhas que possuem correspondência em ambas as tabelas envolvidas, baseando-se na satisfação de uma condição de junção. Quando a comparação utiliza o operador de igualdade (=), chamamos a operação de <strong>Equijoin</strong>.</p>
+  <p>É a operação mais comum. Ela retorna apenas as linhas que possuem uma correspondência exata em ambas as tabelas, baseando-se na satisfação de uma condição de junção. Quando a comparação utiliza o operador de igualdade (=), chamamos a operação de <strong>Equijoin</strong>.</p>
 
-  <h5>Exemplo Prático (Listar pedidos por cliente):</h5>
+  <h5>Exemplo em código (MySQL & PostgreSQL):</h5>
   <div class="code-container">
-    <pre><code class="language-sql">-- Sintaxe ANSI SQL: Retorna o nome do cliente e o número do seu pedido
-SELECT Cliente.nome_cliente, Pedido.numero_pedido
-FROM cliente 
-INNER JOIN pedido ON cliente.codigo_cliente = pedido.codigo_cliente;</code></pre>
+    <pre><code class="language-sql">SELECT Vendedores.nome_vendedor, Pedido.numero_pedido
+FROM Vendedores
+INNER JOIN Pedido ON Vendedores.codigo_vendedor = Pedido.codigo_vendedor;</code></pre>
   </div>
-  <p><strong>Observação:</strong> Se um cliente não possuir pedidos associados, ele será omitido do resultado interno.</p>
+  <p><em>Se um vendedor não realizou pedidos, ele é omitido do resultado.</em></p>
 
-  <h3>3. OUTER JOINS (Junções Externas)</h3>
-  <p>As junções externas são utilizadas para identificar registros que possuem correspondência e, principalmente, aqueles que não possuem (registros "órfãos"). Elas são essenciais para verificar a integridade do banco de dados e identificar membros sem simetria.</p>
-  
+  <hr>
+
+  <h3>3. OUTER JOINs (Junções Externas)</h3>
+  <p>As junções externas são usadas quando queremos ver registros que possuem par e, principalmente, aqueles que não possuem correspondência (os registros "órfãos").</p>
+
   <h4>A. LEFT OUTER JOIN (ou LEFT JOIN)</h4>
   <p>Retorna todas as linhas da tabela à esquerda (primeiro nome) e as linhas correspondentes da tabela à direita. Para os registros da esquerda sem par na direita, o SGBD preenche as colunas da direita com valores <strong>NULL</strong>.</p>
 
-  <h5>Exemplo Prático (Encontrar artistas sem obras na coleção):</h5>
-  <div class="code-container">
-    <pre><code class="language-sql">-- Lista todos os artistas e seus quadros; artistas sem quadros aparecem com NULL no título
-SELECT artist.name, painting.title
-FROM artist 
-LEFT JOIN painting ON artist.a_id = painting.a_id;
+  <h5>Exemplo Prático (Encontrar "buracos" nos dados):</h5>
+  <p>Listar todos os artistas e seus quadros, identificando quem não tem obras na coleção ou obras sem artistas. <br>
+  <strong>Dica de Prática:</strong> Para filtrar apenas os artistas sem quadros, adicionamos <code>WHERE painting.a_id IS NULL</code>.</p>
 
--- Para filtrar apenas os artistas que NÃO possuem pinturas (mismatch):
-SELECT artist.* 
-FROM artist 
-LEFT JOIN painting ON artist.a_id = painting.a_id
-WHERE painting.a_id IS NULL;</code></pre>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Lista todos os artistas e seus quadros, incluindo artistas sem obras
+SELECT artist.name, painting.title
+FROM artist
+LEFT JOIN painting ON artist.a_id = painting.a_id;</code></pre>
   </div>
 
   <h4>B. RIGHT OUTER JOIN (ou RIGHT JOIN)</h4>
   <p>É o inverso do anterior: inclui todas as linhas da tabela à direita, mesmo as que não possuem correspondência na tabela da esquerda.</p>
 
-  <h4>C. FULL OUTER JOIN</h4>
-  <p>Inclui todas as linhas de ambas as tabelas que não satisfazem a expressão de junção, unindo os resultados do Left e do Right Join.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Lista todos os artistas e seus quadros, incluindo obras sem artistas
+SELECT artist.name, painting.title
+FROM artist
+RIGHT JOIN painting ON artist.a_id = painting.a_id;</code></pre>
+  </div>
+
+  <h4>C. FULL OUTER JOIN (A Diferença entre Bancos)</h4>
+  <p>Esta operação retorna todos os registros de ambos os lados, independentemente de haver correspondência.</p>
+  <ul>
+    <li><strong>No PostgreSQL (Nativo):</strong> Suporta a sintaxe padrão ANSI de forma direta.</li>
+    <li><strong>No MySQL (Simulação):</strong> O MySQL não possui o comando FULL OUTER JOIN nativo. Para obter o mesmo resultado, realizamos um <code>UNION</code> (que remove duplicatas) entre um <code>LEFT JOIN</code> e um <code>RIGHT JOIN</code>.</li>
+  </ul>
+
+  <div class="code-container">
+    <pre><code class="language-sql">-- PostgreSQL (Nativo)
+SELECT A.nome, B.pedido_id
+FROM TabelaA AS A
+FULL OUTER JOIN TabelaB AS B ON A.id = B.id;
+
+-- MySQL (Workaround via UNION)
+SELECT A.nome, B.pedido_id FROM TabelaA A LEFT JOIN TabelaB B ON A.id = B.id
+UNION
+SELECT A.nome, B.pedido_id FROM TabelaA A RIGHT JOIN TabelaB B ON A.id = B.id;</code></pre>
+  </div>
+
+  <hr>
 
   <h3>4. CROSS JOIN (Produto Cartesiano)</h3>
-  <p>Produz todas as combinações possíveis entre as linhas das tabelas. Se a Tabela A tem 100 linhas e a Tabela B tem 200, o resultado terá 20.000 linhas (100×200).</p>
+  <p>Produz todas as combinações possíveis entre as linhas das duas tabelas. Se a Tabela A tem 10 linhas e a B tem 20, o resultado terá 200 registros.</p>
+  <p><strong>Aplicação Real:</strong> Útil para gerar matrizes de referência cruzada ou combinações de testes.</p>
 
-  <h5>Exemplo Prático (Referência cruzada total):</h5>
   <div class="code-container">
-    <pre><code class="language-sql">SELECT nome_cliente, numero_pedido 
-FROM cliente 
-CROSS JOIN pedido;</code></pre>
+    <pre><code class="language-sql">SELECT nome_cliente, numero_pedido FROM cliente CROSS JOIN pedido;</code></pre>
   </div>
 
-  <h3>5. Tópicos Avançados</h3>
-  
-  <h4>Self-Join (Junção de uma Tabela com Ela Mesma)</h4>
+  <hr>
+
+  <h3>5. Self-Join (Junção de uma Tabela com Ela Mesma)</h3>
   <p>Ocorre quando uma tabela possui uma chave estrangeira que aponta para sua própria chave primária, como em hierarquias de supervisão. Para executá-lo, é obrigatório o uso de <strong>Aliases (Apelidos)</strong> para diferenciar as instâncias lógicas da tabela.</p>
 
-  <h5>Exemplo Prático (Hierarquia de Chefia):</h5>
+  <h5>Exemplo Prático (MySQL & PostgreSQL):</h5>
   <div class="code-container">
-    <pre><code class="language-sql">-- Lista o nome do vendedor e o nome do seu respectivo chefe
-SELECT A.Nome_Vendedor AS Chefe, B.Nome_Vendedor AS Funcionario
-FROM Funcionario A, Funcionario B 
-WHERE A.Codigo_vendedor = B.Chefe;</code></pre>
+    <pre><code class="language-sql">-- A tabela 'A' age como Chefe e 'B' como Funcionário
+SELECT A.nome_vendedor AS Chefe, B.nome_vendedor AS Subordinado
+FROM Vendedores AS A
+INNER JOIN Vendedores AS B ON A.codigo_vendedor = B.chefe_id;</code></pre>
   </div>
 
-  <h4>Junções de Múltiplas Tabelas</h4>
+  <hr>
+
+  <h3>6. Junções de Múltiplas Tabelas</h3>
   <p>É possível aninhar junções para recuperar dados de três ou mais tabelas simultaneamente.</p>
 
   <h5>Exemplo Prático (Consulta complexa entre Cliente, Pedido e Produto):</h5>
@@ -88,8 +118,14 @@ INNER JOIN produto ON item_de_pedido.codigo_produto = produto.codigo_produto
 WHERE cliente.UF = 'RJ';</code></pre>
   </div>
 
-  <h4>Otimização e Performance</h4>
-  <p>A Álgebra Relacional ensina que a <strong>Seleção Precoce</strong> é vital: aplicar filtros (WHERE) o quanto antes reduz a massa de dados processada pela junção. Além disso, o uso do INNER JOIN é geralmente mais eficiente que o CROSS JOIN seguido de filtros, pois o SGBD utiliza algoritmos específicos para encontrar interseções rapidamente.</p>
+  <hr>
+
+  <h3>7. Considerações de Performance e Boas Práticas</h3>
+  <ul>
+    <li><strong>Seleção Precoce (Push-down):</strong> Aplique filtros (WHERE) o quanto antes. Filtrar os dados antes da junção reduz a massa de processamento e economiza memória.</li>
+    <li><strong>Indexação:</strong> Para que os Joins sejam rápidos em tabelas grandes, é vital criar índices nas chaves estrangeiras. O sistema utiliza esses índices para localizar os pares correspondentes de forma quase instantânea.</li>
+    <li><strong>Aliases para Legibilidade:</strong> Utilize apelidos curtos para tabelas em consultas complexas envolvendo três ou mais junções.</li>
+  </ul>
 
   <h3>Resumo de Operadores</h3>
   <table>
@@ -128,57 +164,69 @@ WHERE cliente.UF = 'RJ';</code></pre>
       </tr>
     </tbody>
   </table>
+
+  <h3>Resumo de Compatibilidade</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Recurso</th>
+        <th>MySQL</th>
+        <th>PostgreSQL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>INNER JOIN</td>
+        <td>Sim (ANSI)</td>
+        <td>Sim (ANSI)</td>
+      </tr>
+      <tr>
+        <td>LEFT / RIGHT JOIN</td>
+        <td>Sim (ANSI)</td>
+        <td>Sim (ANSI)</td>
+      </tr>
+      <tr>
+        <td>FULL OUTER JOIN</td>
+        <td>Não (Simular com UNION)</td>
+        <td>Sim (Nativo)</td>
+      </tr>
+      <tr>
+        <td>CROSS JOIN</td>
+        <td>Sim</td>
+        <td>Sim</td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="section-box">
   <h2>Representação Gráfica</h2>
   <h3>Visualização dos tipos de Join</h3>
-  <div class="mermaid">
-    graph LR
-    subgraph "INNER JOIN"
-    A1((Tabela A)) --- I1(Interseção)
-    B1((Tabela B)) --- I1
-    end
-
-    subgraph "LEFT JOIN"
-    A2((Tabela A)) --- L2(Tudo de A)
-    B2((Tabela B)) --- L2
-    end
-
-    subgraph "RIGHT JOIN"
-    A3((Tabela A)) --- R3(Tudo de B)
-    B3((Tabela B)) --- R3
-    end
-  </div>
-
-  <h3>Processamento de Junção Múltipla</h3>
-  <div class="mermaid">
-    graph TD
-    C[Cliente] --> J1{Join 1}
-    P[Pedido] --> J1
-    J1 --> J2{Join 2}
-    I[Item Pedido] --> J2
-    J2 --> J3{Join 3}
-    PR[Produto] --> J3
-    J3 --> Res[Resultado Final]
-  </div>
+  <img src="{{ '/imagens/prints/sql-joins.png' | url }}" alt="Representação dos tipos de Join">
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li><strong>Qualificadores:</strong> Sempre use <code class="one-line-code">tabela.coluna</code> ou aliases para evitar o erro "ambiguous column name" quando as tabelas possuem nomes de colunas idênticos.</li>
-    <li><strong>Performance:</strong> O <code class="one-line-code">INNER JOIN</code> é geralmente mais rápido que subconsultas para recuperar dados relacionados.</li>
-    <li><strong>NULLs no LEFT JOIN:</strong> Lembre-se que se não houver correspondência, o lado direito virá como NULL. Use isso a seu favor para encontrar registros "faltantes".</li>
+    <li><strong>Qualificadores:</strong> Sempre use <code class="one-line-code">tabela.coluna</code> ou aliases para
+      evitar o erro "ambiguous column name" quando as tabelas possuem nomes de colunas idênticos.</li>
+    <li><strong>Performance:</strong> O <code class="one-line-code">INNER JOIN</code> é geralmente mais rápido que
+      subconsultas para recuperar dados relacionados.</li>
+    <li><strong>NULLs no LEFT JOIN:</strong> Lembre-se que se não houver correspondência, o lado direito virá como NULL.
+      Use isso a seu favor para encontrar registros "faltantes".</li>
   </ul>
 </div>
 
 <section class="section-box">
   <h2>Como aplicar na Prática</h2>
   <ul>
-    <li><strong>Relatórios de Auditoria:</strong> Use <code class="one-line-code">LEFT JOIN</code> com <code class="one-line-code">WHERE ... IS NULL</code> para encontrar clientes que nunca compraram ou alunos que não se matricularam em disciplinas.</li>
-    <li><strong>Navegação em Hierarquias:</strong> Utilize <code class="one-line-code">SELF-JOIN</code> para montar árvores genealógicas, organogramas de empresas ou categorias de produtos pai/filho.</li>
-    <li><strong>Dashboards Consolidados:</strong> Combine múltiplas tabelas para mostrar, em uma única visão, o nome do cliente, os produtos que ele comprou e a data da entrega.</li>
+    <li><strong>Relatórios de Auditoria:</strong> Use <code class="one-line-code">LEFT JOIN</code> com <code
+        class="one-line-code">WHERE ... IS NULL</code> para encontrar clientes que nunca compraram ou alunos que não se
+      matricularam em disciplinas.</li>
+    <li><strong>Navegação em Hierarquias:</strong> Utilize <code class="one-line-code">SELF-JOIN</code> para montar
+      árvores genealógicas, organogramas de empresas ou categorias de produtos pai/filho.</li>
+    <li><strong>Dashboards Consolidados:</strong> Combine múltiplas tabelas para mostrar, em uma única visão, o nome do
+      cliente, os produtos que ele comprou e a data da entrega.</li>
   </ul>
 </section>
 
@@ -197,4 +245,3 @@ WHERE cliente.UF = 'RJ';</code></pre>
     <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
   </ul>
 </section>
-
