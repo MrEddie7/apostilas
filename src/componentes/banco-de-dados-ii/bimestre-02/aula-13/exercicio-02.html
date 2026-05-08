@@ -1,18 +1,307 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Operações de Junção (Joins)"
+layout: questionario
+title: "Operações de Junção (Joins)"
 exercicio_numero: "02"
 aula_numero: "13"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 13."
+description: "Questionário para consolidar os conceitos de junções internas, externas, cruzadas e auto-junções."
+perguntas:
+  - texto: "Conceitualmente, na álgebra relacional, uma junção (⋈) é composta por quais operações?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Uma Seleção (σ) aplicada sobre um Produto Cartesiano (×)."
+      - letra: "b"
+        texto: "Uma Projeção (π) aplicada sobre uma União (∪)."
+      - letra: "c"
+        texto: "Uma Diferença (−) entre duas Seleções (σ)."
+      - letra: "d"
+        texto: "Um Produto Cartesiano (×) aplicado sobre uma Projeção (π)."
+
+  - texto: "O que define a Propriedade do Fechamento (Closure) no contexto de Joins?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Uma consulta deve sempre ser encerrada com um ponto e vírgula."
+      - letra: "b"
+        texto: "O banco de dados fecha a conexão após a junção de duas tabelas."
+      - letra: "c"
+        texto: "O resultado de qualquer junção é sempre uma nova relação (tabela)."
+      - letra: "d"
+        texto: "Apenas chaves primárias podem ser utilizadas em operações de junção."
+
+  - texto: "Para que servem os qualificadores de nome (tabela.coluna) em uma consulta com Joins?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Para acelerar a velocidade de processamento do processador."
+      - letra: "b"
+        texto: "Para evitar ambiguidades quando tabelas diferentes possuem colunas com nomes idênticos."
+      - letra: "c"
+        texto: "Para indicar que a coluna é uma chave primária obrigatória."
+      - letra: "d"
+        texto: "Para renomear permanentemente a coluna no banco de dados."
+
+  - texto: "Qual a principal característica do INNER JOIN?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Retornar todos os registros da tabela à esquerda, mesmo sem par."
+      - letra: "b"
+        texto: "Combinar todas as linhas de forma universal sem critério lógico."
+      - letra: "c"
+        texto: "Retornar apenas os registros que não possuem correspondência."
+      - letra: "d"
+        texto: "Retornar apenas as linhas que possuem uma correspondência exata em ambas as tabelas."
+
+  - texto: "Como é chamada a operação de junção que utiliza especificamente o operador de igualdade (=) na condição?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Equijoin."
+      - letra: "b"
+        texto: "Self-Join."
+      - letra: "c"
+        texto: "Cross Join."
+      - letra: "d"
+        texto: "Outer Join."
+
+  - texto: "O que acontece com um registro da tabela 'A' em um INNER JOIN se ele não possuir um par na tabela 'B'?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Ele aparece no resultado com as colunas de 'B' preenchidas com zeros."
+      - letra: "b"
+        texto: "Ele é omitido (descartado) do resultado final da consulta."
+      - letra: "c"
+        texto: "Ele aparece no resultado com a mensagem 'No Match'."
+      - letra: "d"
+        texto: "O SGBD gera um erro de execução e interrompe a consulta."
+
+  - texto: "Qual a função principal das Junções Externas (Outer Joins)?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Aumentar a segurança dos dados contra acessos externos."
+      - letra: "b"
+        texto: "Remover registros duplicados de tabelas relacionadas."
+      - letra: "c"
+        texto: "Visualizar registros que possuem par e também aqueles que não possuem correspondência (órfãos)."
+      - letra: "d"
+        texto: "Unir tabelas de bancos de dados localizados em servidores diferentes."
+
+  - texto: "No LEFT JOIN, o que acontece com os registros da tabela à esquerda que não possuem par na tabela à direita?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Eles são incluídos no resultado e as colunas da direita são preenchidas com NULL."
+      - letra: "b"
+        texto: "Eles são excluídos para manter a integridade referencial."
+      - letra: "c"
+        texto: "Eles são movidos para uma tabela temporária de erros."
+      - letra: "d"
+        texto: "Eles forçam a tabela à direita a criar um registro genérico."
+
+  - texto: "Qual a utilidade prática de usar LEFT JOIN com a condição 'WHERE tabela_B.coluna IS NULL'?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Encontrar registros duplicados em ambas as tabelas."
+      - letra: "b"
+        texto: "Somar os valores nulos de um relatório financeiro."
+      - letra: "c"
+        texto: "Ordenar o resultado de forma decrescente."
+      - letra: "d"
+        texto: "Identificar registros da tabela à esquerda que NÃO possuem correspondência na direita (buracos nos dados)."
+
+  - texto: "O RIGHT JOIN pode ser considerado o inverso de qual operação?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "INNER JOIN."
+      - letra: "b"
+        texto: "LEFT JOIN."
+      - letra: "c"
+        texto: "CROSS JOIN."
+      - letra: "d"
+        texto: "SELF-JOIN."
+
+  - texto: "Qual tipo de junção retorna todos os registros de ambos os lados, independentemente de haver correspondência?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "INNER JOIN."
+      - letra: "b"
+        texto: "CROSS JOIN."
+      - letra: "c"
+        texto: "FULL OUTER JOIN."
+      - letra: "d"
+        texto: "NATURAL JOIN."
+
+  - texto: "Como o MySQL lida com a falta do comando FULL OUTER JOIN nativo?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Realizando um UNION entre um LEFT JOIN e um RIGHT JOIN."
+      - letra: "b"
+        texto: "Utilizando o comando CROSS JOIN com filtro WHERE."
+      - letra: "c"
+        texto: "O MySQL não permite realizar esse tipo de operação de forma alguma."
+      - letra: "d"
+        texto: "Através de um parâmetro especial no arquivo de configuração do servidor."
+
+  - texto: "O que caracteriza um CROSS JOIN?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Ele cruza apenas as chaves primárias das tabelas."
+      - letra: "b"
+        texto: "Ele produz todas as combinações possíveis entre as linhas das duas tabelas (Produto Cartesiano)."
+      - letra: "c"
+        texto: "Ele é usado para comparar uma tabela com ela mesma."
+      - letra: "d"
+        texto: "Ele ignora linhas que tenham valores nulos em qualquer coluna."
+
+  - texto: "Se a Tabela A tem 5 linhas e a Tabela B tem 10 linhas, quantas linhas terá o resultado de um CROSS JOIN?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "15 linhas."
+      - letra: "b"
+        texto: "10 linhas."
+      - letra: "c"
+        texto: "50 linhas."
+      - letra: "d"
+        texto: "5 linhas."
+
+  - texto: "O que é um Self-Join?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Uma junção automática feita pelo SGBD sem intervenção do usuário."
+      - letra: "b"
+        texto: "Uma junção entre uma tabela e sua chave estrangeira em outra tabela."
+      - letra: "c"
+        texto: "Uma operação que bloqueia a tabela para outros usuários."
+      - letra: "d"
+        texto: "A junção de uma tabela com ela mesma."
+
+  - texto: "Qual recurso é obrigatório para realizar um Self-Join?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O uso de Aliases (Apelidos) para diferenciar as instâncias da tabela."
+      - letra: "b"
+        texto: "A existência de pelo menos duas chaves primárias na tabela."
+      - letra: "c"
+        texto: "O uso do comando UNION ALL."
+      - letra: "d"
+        texto: "Que a tabela tenha exatamente o dobro de colunas necessárias."
+
+  - texto: "Em quais situações o Self-Join é comumente aplicado?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Para somar valores de duas colunas diferentes na mesma linha."
+      - letra: "b"
+        texto: "Para navegar em hierarquias, como organogramas (Chefe/Funcionário) ou categorias pai/filho."
+      - letra: "c"
+        texto: "Para transferir dados de uma tabela para um backup."
+      - letra: "d"
+        texto: "Para deletar registros duplicados baseados no ID."
+
+  - texto: "É possível aninhar junções para recuperar dados de três ou mais tabelas?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Sim, através de múltiplos comandos JOIN em uma única consulta SQL."
+      - letra: "b"
+        texto: "Não, o padrão SQL limita a junção a no máximo duas tabelas por query."
+      - letra: "c"
+        texto: "Sim, mas apenas se todas forem do tipo CROSS JOIN."
+      - letra: "d"
+        texto: "Sim, mas somente no PostgreSQL; o MySQL não suporta."
+
+  - texto: "O que diz a boa prática de 'Seleção Precoce' (Push-down)?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Selecionar todas as colunas (SELECT *) para garantir que nada falte."
+      - letra: "b"
+        texto: "Realizar os Joins antes de criar as tabelas."
+      - letra: "c"
+        texto: "Aplicar filtros (WHERE) o quanto antes para reduzir a massa de processamento nas junções."
+      - letra: "d"
+        texto: "Sempre usar o LEFT JOIN antes do INNER JOIN."
+
+  - texto: "Qual a importância da indexação nas Chaves Estrangeiras para os Joins?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Garantir que os nomes das colunas fiquem em ordem alfabética."
+      - letra: "b"
+        texto: "Permitir que o sistema localize os pares correspondentes de forma quase instantânea, melhorando a performance."
+      - letra: "c"
+        texto: "Impedir a inserção de valores NULL na tabela da direita."
+      - letra: "d"
+        texto: "Reduzir o espaço físico ocupado pelo banco de dados no disco."
+
+  - texto: "O erro 'ambiguous column name' ocorre geralmente quando:"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "O tipo de dado de uma coluna é incompatível com o Join."
+      - letra: "b"
+        texto: "A tabela não possui uma chave primária definida."
+      - letra: "c"
+        texto: "O usuário não tem permissão para acessar a coluna."
+      - letra: "d"
+        texto: "Duas tabelas na junção possuem colunas com o mesmo nome e o qualificador não foi usado."
+
+  - texto: "Na comparação entre bancos de dados, qual deles suporta o FULL OUTER JOIN de forma nativa?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "PostgreSQL."
+      - letra: "b"
+        texto: "MySQL."
+      - letra: "c"
+        texto: "SQLite."
+      - letra: "d"
+        texto: "Nenhum SGBD suporta de forma nativa; todos exigem UNION."
+
+  - texto: "Qual a função principal do qualificador 'tabela.coluna' ou aliases em consultas complexas?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Aumentar o número de caracteres da query para fins de documentação."
+      - letra: "b"
+        texto: "Melhorar a legibilidade e evitar erros de ambiguidade."
+      - letra: "c"
+        texto: "Indicar ao banco que a tabela deve ser lida apenas uma vez."
+      - letra: "d"
+        texto: "Substituir a necessidade de usar a cláusula ON."
+
+  - texto: "Em relação à performance, o INNER JOIN é geralmente comparado a qual outro recurso?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Comandos de exclusão (DELETE)."
+      - letra: "b"
+        texto: "Criação de Views."
+      - letra: "c"
+        texto: "Subconsultas (subqueries), sendo o Join geralmente mais rápido."
+      - letra: "d"
+        texto: "Exportação de dados para CSV."
+
+  - texto: "O que o SGBD faz ao encontrar um registro sem correspondência no lado direito de um LEFT JOIN?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Preenche as colunas da tabela à direita com valores NULL."
+      - letra: "b"
+        texto: "Descarta a linha inteira do resultado final."
+      - letra: "c"
+        texto: "Duplica a linha da esquerda para compensar a falta."
+      - letra: "d"
+        texto: "Interrompe a consulta com um aviso de erro referencial."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
