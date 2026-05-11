@@ -16,7 +16,7 @@ tags:
   <ul>
     <li><strong>Lógica Matemática:</strong> Teoricamente, a junção (⋈) é uma Seleção (σ) aplicada sobre o resultado de um Produto Cartesiano (×).</li>
     <li><strong>Propriedade do Fechamento (Closure):</strong> É vital lembrar que o resultado de qualquer junção é sempre uma nova relação (tabela). Isso permite que você aninhe várias junções em uma única consulta SQL para navegar por modelos de dados complexos.</li>
-    <li><strong>Ambiguidade e Qualificadores:</strong> Como tabelas relacionadas costumam ter colunas com nomes idênticos (ex: id_cliente), utilizamos os qualificadores de nome (formato <code>tabela.coluna</code>) para indicar ao SGBD exatamente qual dado queremos.</li>
+    <li><strong>Ambiguidade e Qualificadores:</strong> Como tabelas relacionadas costumam ter colunas com nomes idênticos (ex: id_cliente), utilizamos os qualificadores de nome (formato <code class="one-line-code">tabela.coluna</code>) para indicar ao SGBD exatamente qual dado queremos.</li>
   </ul>
 
   <hr>
@@ -42,7 +42,7 @@ INNER JOIN Pedido ON Vendedores.codigo_vendedor = Pedido.codigo_vendedor;</code>
 
   <h5>Exemplo Prático (Encontrar "buracos" nos dados):</h5>
   <p>Listar todos os artistas e seus quadros, identificando quem não tem obras na coleção ou obras sem artistas. <br>
-  <strong>Dica de Prática:</strong> Para filtrar apenas os artistas sem quadros, adicionamos <code>WHERE painting.a_id IS NULL</code>.</p>
+  <strong>Dica de Prática:</strong> Para filtrar apenas os artistas sem quadros, adicionamos <code class="one-line-code">WHERE painting.a_id IS NULL</code>.</p>
 
   <div class="code-container">
     <pre><code class="language-sql">-- Lista todos os artistas e seus quadros, incluindo artistas sem obras
@@ -65,7 +65,7 @@ RIGHT JOIN painting ON artist.a_id = painting.a_id;</code></pre>
   <p>Esta operação retorna todos os registros de ambos os lados, independentemente de haver correspondência.</p>
   <ul>
     <li><strong>No PostgreSQL (Nativo):</strong> Suporta a sintaxe padrão ANSI de forma direta.</li>
-    <li><strong>No MySQL (Simulação):</strong> O MySQL não possui o comando FULL OUTER JOIN nativo. Para obter o mesmo resultado, realizamos um <code>UNION</code> (que remove duplicatas) entre um <code>LEFT JOIN</code> e um <code>RIGHT JOIN</code>.</li>
+    <li><strong>No MySQL (Simulação):</strong> O MySQL não possui o comando FULL OUTER JOIN nativo. Para obter o mesmo resultado, realizamos um <code class="one-line-code">UNION</code> (que remove duplicatas) entre um <code class="one-line-code">LEFT JOIN</code> e um <code class="one-line-code">RIGHT JOIN</code>.</li>
   </ul>
 
   <div class="code-container">

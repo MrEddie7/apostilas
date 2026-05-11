@@ -118,8 +118,8 @@ INSERT INTO itens_pedidos (id_pedido, id_produto, quantidade) VALUES
   <h4>Orientações Finais</h4>
   <ul>
     <li><strong>Ambiguidade:</strong> Sempre que selecionar o id de uma tabela que é chave estrangeira em outra, use o prefixo (ex: Vendedor.id_vendedor) para o banco não se confundir.</li>
-    <li><strong>Distinct:</strong> Se um vendedor aparecer várias vezes em uma lista onde você quer apenas nomes únicos, use <code>SELECT DISTINCT</code>.</li>
-    <li><strong>Tratamento de Nulos:</strong> Em relatórios de BI, campos NULL em Outer Joins podem ser tratados com funções como <code>IFNULL</code> (MySQL) ou <code>COALESCE</code> para exibir "0" ou "Sem Vendas".</li>
-    <li><strong>Cláusula USING:</strong> Se as colunas de ligação tiverem o mesmo nome em ambas as tabelas (como id_pedido), você pode simplificar o join usando <code>JOIN ... USING (id_pedido)</code>.</li>
+    <li><strong>Distinct:</strong> Se um vendedor aparecer várias vezes em uma lista onde você quer apenas nomes únicos, use <code class="one-line-code">SELECT DISTINCT</code>.</li>
+    <li><strong>Tratamento de Nulos:</strong> Em relatórios de BI, campos NULL em Outer Joins podem ser tratados com funções como <code class="one-line-code">IFNULL</code> (MySQL) ou <code class="one-line-code">COALESCE</code> para exibir "0" ou "Sem Vendas".</li>
+    <li><strong>Cláusula USING:</strong> Se as colunas de ligação tiverem o mesmo nome em ambas as tabelas (como id_pedido), você pode simplificar o join usando <code class="one-line-code">JOIN ... USING (id_pedido)</code>.</li>
   </ul>
 </div>
