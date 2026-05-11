@@ -1,56 +1,280 @@
 ---
 title: "Membros da Classe: Atributos, Métodos e o uso da pseudo-variável $this"
 aula_numero: "12"
-description: "Membros da Classe: Atributos, Métodos e o uso da pseudo-variável $this."
+description: "Aprenda a anatomia de uma classe em PHP, explorando atributos, métodos, visibilidade e a importância do $this."
 tags:
   - aula
   - bimestre-02
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 12 em desenvolvimento...</p>
+  <h2>Teoria & Conceitos: Anatomia de uma Classe</h2>
+  <p>Uma classe em PHP é composta por dois tipos principais de membros: <strong>Atributos</strong> (que armazenam dados) e <strong>Métodos</strong> (que definem o comportamento). Juntos, eles permitem que o software seja modelado em torno de entidades do mundo real, como usuários, produtos ou contas bancárias.</p>
+
+  <h3>1. Atributos (Propriedades)</h3>
+  <p>Os atributos representam o <strong>estado</strong> de um objeto. Eles funcionam como variáveis internas que guardam as características de cada instância.</p>
+  <ul>
+    <li><strong>Definição:</strong> Declarados dentro da classe com visibilidade (public, private ou protected).</li>
+    <li><strong>Tipagem (PHP 8+):</strong> Recomenda-se definir o tipo (string, int, float) para garantir integridade.</li>
+    <li><strong>Valores Padrão:</strong> Podem ter valores iniciais constantes.</li>
+  </ul>
+
+  <div class="code-container">
+    <pre><code class="language-php">class Carro {
+    public string $marca;
+    public string $modelo;
+    public int $ano = 2024; // Valor padrão
+}
+
+$meuCarro = new Carro();
+$meuCarro->marca = "Toyota";</code></pre>
+  </div>
+
+  <h3>2. Métodos (Operações)</h3>
+  <p>Os métodos são funções dentro de uma classe que descrevem as <strong>ações</strong> que o objeto pode realizar ou como ele manipula seus dados.</p>
+  
+  <div class="code-container">
+    <pre><code class="language-php">class Calculadora {
+    public function somar(float $a, float $b): float {
+        return $a + $b;
+    }
+}
+
+$calc = new Calculadora();
+echo $calc->somar(10, 5); // Saída: 15</code></pre>
+  </div>
+
+  <h3>3. A Pseudo-variável $this</h3>
+  <p>A pseudo-variável <code class="one-line-code">$this</code> é uma autorreferência, permitindo que um método acesse os atributos e outros métodos da <strong>instância atual</strong> do objeto.</p>
+  
+  <div class="code-container">
+    <pre><code class="language-php">class Produto {
+    public string $nome;
+    public float $preco;
+
+    public function aplicarDesconto(float $porcentagem): void {
+        // $this acessa o preço DESTA instância
+        $valorDesconto = $this->preco * ($porcentagem / 100);
+        $this->preco -= $valorDesconto; 
+    }
+}</code></pre>
+  </div>
+
+  <h3>4. Visibilidade e Encapsulamento</h3>
+  <ul>
+    <li><strong>public:</strong> Acesso de qualquer lugar.</li>
+    <li><strong>private:</strong> Acesso apenas por métodos da própria classe (Base do Encapsulamento).</li>
+    <li><strong>protected:</strong> Acesso pela própria classe e herdeiros.</li>
+  </ul>
+
+  <hr>
+
+  <h3>5. Observação: Visibilidade de Classes vs. Membros</h3>
+  <p>Diferente do que ocorre com os atributos e métodos, não é possível atribuir modificadores de visibilidade (como public, private ou protected) diretamente à declaração de uma classe no PHP. O funcionamento segue estas regras:</p>
+  <ul>
+    <li><strong>Visibilidade de Membros:</strong> Os modificadores são projetados para membros (propriedades, métodos e constantes) para controlar o acesso externo aos dados internos.</li>
+    <li><strong>Declaração de Classe:</strong> Uma classe é declarada simplesmente com <code class="one-line-code">class NomeDaClasse</code>. Uma vez carregada, ela fica disponível no escopo em que foi criada ou dentro de seu Namespace.</li>
+    <li><strong>Uso de Namespaces:</strong> O PHP utiliza Namespaces para organizar e restringir logicamente grupos de classes, evitando colisões de nomes, mas não impedem tecnicamente a instanciação se o caminho completo for referenciado.</li>
+    <li><strong>Encapsulamento:</strong> O conceito de "esconder" a implementação é aplicado nos membros. Embora o "molde" (classe) seja visível, o acesso ao estado interno é protegido.</li>
+  </ul>
+  <p>Para criar uma estrutura que não possa ser herdada, o PHP oferece a palavra-chave <code class="one-line-code">final</code>, que impede que a classe seja estendida por subclasses, embora ela continue disponível para instanciação.</p>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
+  <h2>Exemplos de Código</h2>
+
+  <h3>1. Declaração e Acesso Direto</h3>
+  <p>Estrutura simples com atributos públicos e uso básico do <code class="one-line-code">$this</code>.</p>
   <div class="code-container">
-    <pre><code class="language-php">// Em breve...</code></pre>
+    <pre><code class="language-php">class Pessoa {
+    public string $name = "";
+
+    public function setName($newName) {
+        // $this refere-se à instância atual do objeto
+        $this->name = $newName; 
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+}
+
+$ed = new Pessoa();
+$ed->setName("Edison");
+echo "Olá, " . $ed->getName(); // Saída: Olá, Edison</code></pre>
+  </div>
+
+  <h3>2. Visibilidade e Encapsulamento</h3>
+  <p>Uso de atributos privados e métodos para manipular o estado do objeto com segurança.</p>
+  <div class="code-container">
+    <pre><code class="language-php">class ItemEstoque {
+    private string $produto;
+    private int $quantidade = 0;
+
+    public function __construct(string $nome) {
+        $this->produto = $nome; // Inicialização via construtor
+    }
+
+    public function repor(int $unidades): void {
+        $this->quantidade += $unidades; 
+    }
+
+    public function exibirStatus(): void {
+        echo "Produto: {$this->produto} | Estoque: {$this->quantidade}";
+    }
+}
+
+$teclado = new ItemEstoque("Teclado");
+$teclado->repor(50);
+$teclado->exibirStatus();</code></pre>
+  </div>
+
+  <h3>3. Promoção de Propriedade no Construtor</h3>
+  <p>Recurso moderno que reduz código repetitivo declarando atributos diretamente no construtor.</p>
+  <div class="code-container">
+    <pre><code class="language-php">class Usuario {
+    // PHP 8: Atributos declarados e atribuídos automaticamente
+    public function __construct(
+        private string $nome,
+        private string $email
+    ) {
+        echo "Usuário {$this->nome} criado com sucesso!";
+    }
+
+    public function getEmail(): string {
+        return $this->email;
+    }
+}
+
+$user = new Usuario("Ana", "ana@email.com");</code></pre>
+  </div>
+
+  <h3>4. Interface Fluente (Method Chaining)</h3>
+  <p>Métodos que retornam <code class="one-line-code">$this</code>, permitindo o encadeamento de chamadas.</p>
+  <div class="code-container">
+    <pre><code class="language-php">class Pedido {
+    private float $total = 0.0;
+    private array $itens = [];
+
+    public function adicionarItem(string $nome, float $preco): self {
+        $this->itens[] = $nome;
+        $this->total += $preco;
+        return $this; // Retorna a instância atual
+    }
+
+    public function aplicarDesconto(float $valor): self {
+        $this->total -= $valor;
+        return $this;
+    }
+
+    public function finalizar(): void {
+        echo "Total do pedido: R$ " . number_format($this->total, 2);
+    }
+}
+
+// Uso da Interface Fluente
+$meuPedido = (new Pedido())
+          ->adicionarItem("Monitor", 800.00)
+          ->adicionarItem("Mouse", 50.00)
+          ->aplicarDesconto(30.00)
+          ->finalizar();</code></pre>
   </div>
 </section>
 
 <section class="section-box">
   <h2>Representação Gráfica</h2>
+
+  <h3>1. Representação Estrutural (Diagrama de Classe)</h3>
+  <p>Esta é a visão "estática". Ela mostra onde ficam os Atributos (dados) e os Métodos (comportamentos), além de indicar a visibilidade.</p>
+  <div class="mermaid">
+    classDiagram
+    class ContaBancaria {
+        +string titular
+        -float saldo
+        +depositar(valor)
+        +getSaldo()
+    }
+  </div>
+  <ul>
+    <li><strong>Atributos:</strong> Representam o estado (o que a classe sabe).</li>
+    <li><strong>Métodos:</strong> Representam o comportamento (o que a classe faz).</li>
+    <li><strong>Sinais (+ / -):</strong> Indicam a visibilidade (Público ou Privado).</li>
+  </ul>
+
+  <h3>2. O Conceito de Molde vs. Objeto</h3>
+  <p>A classe é o projeto (molde) e o objeto é a instância real na memória.</p>
   <div class="mermaid">
     graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
+    Classe["<b>Classe: Livro</b><br/>Atributos: titulo, autor"] -- Instanciação --> Obj1("<b>Objeto A</b><br/>titulo: '1984'<br/>autor: 'Orwell'")
+    Classe -- Instanciação --> Obj2("<b>Objeto B</b><br/>titulo: 'O Hobbit'<br/>autor: 'Tolkien'")
+    
+    style Classe fill:#f9f,stroke:#333,stroke-width:2px
+  </div>
+
+  <h3>3. Explicando a pseudo-variável $this</h3>
+  <p>O <code>$this</code> serve para o objeto "olhar para si mesmo" como um ponteiro interno para sua própria memória.</p>
+  <div class="mermaid">
+    sequenceDiagram
+    participant App as Script Externo
+    participant Obj as Objeto (Instância)
+    
+    App->>Obj: chamar depositar(100)
+    Note over Obj: Internamente o PHP usa:<br/>$this->saldo += 100
+    Obj-->>Obj: $this aponta para a própria memória
+    Obj-->>App: Confirmação
+  </div>
+
+  <h3>4. Fluxo de Execução com $this</h3>
+  <p>Como um método público utiliza o <code>$this</code> para acessar atributos privados protegidos.</p>
+  <div class="mermaid">
+    flowchart LR
+    A[Chamada Externa] --> B{Método Público}
+    B --> C[Uso do <b>$this</b>]
+    C --> D[(Atributo Privado)]
+    D --> E[Retorno do Dado]
+    
+    subgraph Memória do Objeto
+    B
+    C
+    D
+    end
   </div>
 </section>
+
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
+    <li><strong>Sintaxe do $this:</strong> Ao acessar um atributo via <code class="one-line-code">$this</code>, não utilize o cifrão no nome do atributo. Use <code class="one-line-code">$this->nome</code> e nunca <code class="one-line-code">$this->$nome</code>.</li>
+    <li><strong>Encapsulamento:</strong> Mantenha atributos como <code class="one-line-code">private</code> ou <code class="one-line-code">protected</code> para proteger os dados, usando métodos públicos como interface.</li>
+    <li><strong>Identidade:</strong> Mesmo que dois objetos venham da mesma classe, cada um tem seus próprios valores na memória, diferenciados pelo <code class="one-line-code">$this</code>.</li>
+    <li><strong>Responsabilidade:</strong> Um método deve ter uma responsabilidade clara (ex: validar, calcular ou formatar).</li>
   </ul>
 </div>
 
+
 <section class="section-box">
   <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
+  <p>Utilize membros da classe para organizar sistemas complexos:</p>
+  <ul>
+    <li><strong>Sistemas de Login:</strong> Atributos para <code class="one-line-code">$email</code> e <code class="one-line-code">$senha</code>, e métodos para <code class="one-line-code">autenticar()</code>.</li>
+    <li><strong>E-commerce:</strong> Atributos de <code class="one-line-code">$estoque</code> protegidos, permitindo alteração apenas via métodos que validam a disponibilidade.</li>
+  </ul>
 </section>
 
 <section class="section-box">
   <h2>Referências</h2>
   <ul>
-    <li>Material de apoio em breve.</li>
+    <li><a href="https://www.php.net/manual/pt_BR/language.oop5.php" target="_blank">PHP Manual: Classes e Objetos</a></li>
+    <li><a href="https://www.php.net/manual/pt_BR/language.oop5.visibility.php" target="_blank">PHP Manual: Visibilidade</a></li>
   </ul>
 </section>
 
 <section class="section-box">
   <h2>Para Praticar</h2>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
+    <li><a href="./exercicio-01/">Exercício 01: Criando Atributos e Métodos</a></li>
+    <li><a href="./exercicio-02/">Exercício 02: O Desafio do $this</a></li>
   </ul>
 </section>
+
