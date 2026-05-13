@@ -3,16 +3,205 @@ layout: exercicio
 title: "Exercício 01 - Membros da Classe: Atributos, Métodos e o uso da pseudo-variável $this"
 exercicio_numero: "01"
 aula_numero: "12"
-description: "Primeira atividade prática para consolidar os conhecimentos da aula 12."
+description: "Nesta atividade, você irá se familiarizar com os conceitos fundamentais da Programação Orientada a Objetos (POO) em PHP. O foco será na criação de classes, na definição de seus membros (atributos e métodos) e no entendimento prático do uso da pseudo-variável $this."
 ---
 
-<p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+<section class="section-box">
+  <h2>Enunciado</h2>
+  <p>Nesta atividade, você desenvolverá o motor de um player de música utilizando Programação Orientada a Objetos. O sistema deve permitir a criação de músicas individuais e a organização delas em uma playlist. O grande desafio é garantir que cada música mantenha sua própria identidade (título, artista, álbum e arquivo) e que a playlist consiga gerenciar essa coleção de objetos para que o player funcione no navegador.</p>
+</section>
+
+<section class="section-box">
+  <h2>Preparação</h2>
+  <ol>
+    <li>Crie uma pasta para o projeto chamada <code>player_poo</code>.</li>
+    <li>Dentro dela, crie uma subpasta chamada <code>musicas</code> e coloque nela 2 ou 3 arquivos <code>.mp3</code>.
+      <ul>
+        <li><strong>Dica:</strong> Renomeie os arquivos para um padrão simples, ex: <code>linkinpark-numb.mp3</code>.</li>
+      </ul>
+    </li>
+    <li>Crie os arquivos <code>Musica.php</code>, <code>Playlist.php</code> e <code>index.php</code> na raiz da pasta do projeto.</li>
+  </ol>
+</section>
+
+<section class="section-box">
+  <h2>Código Base</h2>
+  <p>Os arquivos abaixo são o ponto de partida. Você deve completar as classes seguindo as instruções nos comentários.</p>
+
+  <h3>1. Arquivo Musica.php</h3>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+class Musica {
+    // TODO: Criar atributos privados, definir construtor e Getters utilizados no index.php
+}</code></pre>
+  </div>
+
+  <h3>2. Arquivo Playlist.php</h3>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+class Playlist {
+    // TODO: Criar atributos privados, definir construtor, métodos e Getters utilizados no index.php
+}
+</code></pre>
+  </div>
+
+  <h3>3. Arquivo index.php</h3>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+require_once 'Musica.php';
+require_once 'Playlist.php';
+
+// 1. Instanciar a Playlist passando o nome e a subpasta de músicas
+$minhaPlaylist = new Playlist("Nome da Playlist", "nome-da-pasta-com-as-musicas");
+
+/**
+ * PASSO 1: Instanciar objetos Musica manualmente
+ * Importante: O nome do ficheiro deve existir na pasta /nome-da-pasta-com-as-musicas
+ */
+$musica1 = new Musica("Nome da Música", "Artista", "Disco", "nome-da-musica.mp3");
+
+/**
+ * PASSO 2: Adicionar as instâncias à Playlist através do método adicionar()
+ */
+$minhaPlaylist->adicionar($musica1);
+
+// PASSO 3: Recuperar a lista para exibição
+$musicasParaExibir = $minhaPlaylist->getMusicas();
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-pt"&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Player POO - Atividade Prática&lt;/title&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"&gt;
+  &lt;style&gt;
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: sans-serif;
+    }
+
+    .card {
+      background: #181818;
+      border: 1px solid #282828;
+    }
+
+    .list-group-item {
+      background: #181818;
+      color: #eee;
+      border-color: #282828;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .list-group-item:hover {
+      background: #282828;
+    }
+
+    .playing {
+      background-color: #1DB954 !important;
+      color: white !important;
+    }
+
+    audio {
+      filter: invert(100%) hue-rotate(80deg) brightness(1.5);
+      width: 100%;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;div class="container py-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+      &lt;div class="col-md-6"&gt;
+
+        &lt;div class="card shadow-lg"&gt;
+          &lt;div class="card-body text-center py-4"&gt;
+            &lt;h2 class="h5 text-uppercase tracking-wider opacity-75 text-light"&gt;&lt;?= $minhaPlaylist-&gt;getNome() ?&gt;&lt;/h2&gt;
+
+            &lt;div class="my-4"&gt;
+              &lt;i class="bi bi-disc-fill display-1 text-success"&gt;&lt;/i&gt;
+            &lt;/div&gt;
+
+            &lt;audio id="audioPlayer" controls&gt;
+              &lt;source id="srcPlayer" src="" type="audio/mpeg"&gt;
+            &lt;/audio&gt;
+          &lt;/div&gt;
+
+          &lt;div class="list-group list-group-flush"&gt;
+            &lt;?php if (empty($musicasParaExibir)): ?&gt;
+            &lt;div class="p-4 text-center text-muted"&gt;Nenhuma música adicionada à playlist.&lt;/div&gt;
+            &lt;?php endif; ?&gt;
+
+            &lt;?php foreach ($musicasParaExibir as $musica): ?&gt;
+            &lt;button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              onclick="tocar('&lt;?= $minhaPlaylist-&gt;getCaminhoPasta() . '/' . $musica-&gt;getArquivo() ?&gt;', this)"&gt;
+              &lt;div&gt;
+                &lt;i class="bi bi-play-fill me-2"&gt;&lt;/i&gt;
+                &lt;strong&gt;&lt;?= $musica-&gt;getTitulo() ?&gt;&lt;/strong&gt;&lt;br&gt;
+                &lt;small class="opacity-50"&gt;&lt;?= $musica-&gt;getArtista() ?&gt; • &lt;?= $musica-&gt;getAlbum() ?&gt;&lt;/small&gt;
+              &lt;/div&gt;
+            &lt;/button&gt;
+            &lt;?php endforeach; ?&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="mt-3 text-center small text-muted"&gt;
+          &lt;p&gt;Aula 12: Membros da Classe e uso do &lt;code&gt;$this&lt;/code&gt;&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    function tocar(caminhoCompleto, botao) {
+      const player = document.getElementById('audioPlayer');
+      const source = document.getElementById('srcPlayer');
+
+      // Atualiza a fonte e carrega
+      source.src = caminhoCompleto;
+
+      // Estilo visual
+      document.querySelectorAll('.list-group-item').forEach(el => el.classList.remove('playing'));
+      botao.classList.add('playing');
+
+      player.load();
+      player.play();
+    }
+  &lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+  </div>
+</section>
+
+<section class="section-box">
+  <h2>O Desafio (A Atividade)</h2>
+  <p>Com as classes estruturadas, você deve configurar o arquivo <code>index.php</code> para realizar a montagem manual do sistema:</p>
+  <ol>
+    <li><strong>Instanciação da Playlist:</strong> No topo do <code>index.php</code>, crie um objeto da classe <code>Playlist</code> passando o nome e o nome da pasta onde estão os arquivos (ex: "musicas").</li>
+    <li><strong>Instanciação das Músicas:</strong> Crie pelo menos duas instâncias da classe <code>Musica</code>. No parâmetro do arquivo, digite exatamente o nome do arquivo que está na pasta (ex: "linkinpark-numb.mp3").</li>
+    <li><strong>Associação:</strong> Utilize o método <code>adicionar()</code> da sua playlist para inserir os objetos de música criados.</li>
+    <li><strong>Exibição:</strong> Use o código HTML/PHP para o <code>index.php</code> em Código Base no seu <code>index.php</code> para renderizar o player.</li>
+  </ol>
+</section>
 
 <div class="tip-box">
-  <h4>Orientações</h4>
+  <h4>Orientações Finais</h4>
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li><strong>O Papel do $this:</strong> Observe que, ao clicar no botão, o PHP usa <code>$m->getArquivo()</code>. Dentro da classe, o <code>$this</code> garante que o arquivo retornado seja exatamente o daquela música específica clicada, e não de outra.</li>
+    <li><strong>Encapsulamento:</strong> Verifique se você consegue acessar <code>$m->titulo</code> diretamente no <code>index.php</code>. Se o PHP der erro, parabéns! Seu encapsulamento está funcionando e o dado está protegido, acessível apenas via método.</li>
+    <li><strong>Teste Real:</strong> Abra o terminal na pasta do projeto e execute <code>php -S localhost:8000</code>. Se ao clicar na música o som começar a tocar, sua arquitetura de objetos foi implementada com sucesso.</li>
   </ul>
 </div>
