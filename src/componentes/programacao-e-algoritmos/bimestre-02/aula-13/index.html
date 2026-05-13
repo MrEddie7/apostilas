@@ -3,47 +3,312 @@ title: "Decisões Complexas e Seleção Múltipla"
 aula_numero: "13"
 description: "Ninhos de SE e a estrutura switch-case em Java."
 tags:
-  - aula
-  - "bimestre-02"
+- aula
+- "bimestre-02"
 ---
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 13 em desenvolvimento...</p>
+  <p>
+    As estruturas de controle são os mecanismos que permitem ao computador tomar
+    decisões e repetir tarefas, fugindo da execução linear linha a linha. Nesta aula, avançamos para o estudo de
+    decisões que não são apenas binárias
+    (verdadeiro ou falso), mas que envolvem múltiplos caminhos e refinamentos
+    lógicos através do aninhamento de condições e da estrutura de seleção
+    múltipla (<code class="one-line-code">switch-case</code>).
+  </p>
+
+  <h3>1. Ninhos de SE (Decisões Aninhadas)</h3>
+  <p>
+    O aninhamento ocorre quando uma estrutura <code class="one-line-code">if</code> ou <code
+      class="one-line-code">if-else</code> é colocada
+    dentro do bloco de comandos de outra estrutura condicional. Essa técnica é
+    utilizada quando o caminho para a tomada de uma decisão forma uma árvore com
+    diversas ramificações, onde uma condição interna só é avaliada se a condição
+    externa for satisfeita.
+  </p>
+
+  <p><strong>Cenário 1: Classificação de Triângulos</strong></p>
+  <p>
+    Para determinar o tipo de um triângulo, primeiro precisamos verificar se ele
+    existe. Só então aninhamos as decisões para saber se ele é equilátero,
+    isósceles ou escaleno.
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-java">// Exemplo de ninhos de SE para classificação de triângulos
+if (a < b + c && b < a + c && c < a + b) { // Condição externa (existência)
+    if (a == b && a == c) { // Primeiro nível de aninhamento
+        System.out.println("Equilátero!");
+    } else {
+        if (a == b || a == c || b == c) { // Segundo nível de aninhamento
+            System.out.println("Isósceles!");
+        } else {
+            System.out.println("Escaleno!");
+        }
+    }
+} else {
+    System.out.println("O triângulo não existe!");
+}</code></pre>
+  </div>
+
+  <p><strong>O Problema do "Dangling else"</strong></p>
+  <p>
+    Um erro comum em ninhos de SE sem o uso de chaves <code class="one-line-code">{ }</code> é a ambiguidade do
+    <code class="one-line-code">else</code>. Em Java, o compilador sempre associa o <code
+      class="one-line-code">else</code> ao
+    <code class="one-line-code">if</code> mais próximo. Para evitar comportamentos inesperados, a boa prática
+    exige o uso de chaves para delimitar claramente os blocos.
+  </p>
+
+  <hr />
+
+  <h3>2. Estrutura Encadeada (if-else if)</h3>
+  <p>
+    Embora tecnicamente seja uma forma de aninhamento, o encadeamento
+    <code class="one-line-code">if-else if-else</code> é uma maneira mais elegante de lidar com intervalos de
+    valores ou situações onde apenas um entre vários blocos deve ser executado.
+  </p>
+
+  <p><strong>Cenário 2: Cálculo de IMC (Índice de Massa Corpórea)</strong></p>
+  <p>
+    Diferente do <code class="one-line-code">switch-case</code> (que veremos abaixo), o aninhamento com
+    <code class="one-line-code">if</code> permite trabalhar com faixas numéricas e valores do tipo
+    <code class="one-line-code">double</code>.
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-java">// Estrutura encadeada para intervalos de valores
+double imc = peso / (altura * altura);
+
+if (imc < 20) {
+    System.out.println("Você está magro!");
+} else if (imc <= 25) { // IMC entre 20 e 25
+    System.out.println("Você está num bom peso!");
+} else { // IMC maior que 25
+    System.out.println("Você está gordo!");
+}</code></pre>
+  </div>
+
+  <hr />
+
+  <h3>3. Seleção Múltipla (switch-case)</h3>
+  <p>
+    A estrutura <code class="one-line-code">switch</code> permite testar o valor de uma única expressão contra
+    diversos valores constantes. Ela é mais simples e legível que múltiplos
+    <code class="one-line-code">if</code>s aninhados quando se trata de escolhas pontuais e discretas.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Tipos permitidos em Java:</strong> <code class="one-line-code">int</code>, <code
+        class="one-line-code">short</code>,
+      <code class="one-line-code">byte</code>, <code class="one-line-code">char</code> e tipos enumerados (<code
+        class="one-line-code">enums</code>).
+    </li>
+    <li>
+      <strong>Restrições:</strong> Não aceita valores reais (<code class="one-line-code">double</code>/<code
+        class="one-line-code">float</code>)
+      ou expressões de comparação (como <code class="one-line-code">> 10</code>) nos rótulos <code
+        class="one-line-code">case</code>.
+    </li>
+  </ul>
+
+  <p><strong>Componentes do Switch:</strong></p>
+  <ul>
+    <li>
+      <strong>case:</strong> Marca o ponto onde a execução deve "pular" se o
+      valor coincidir com a expressão.
+    </li>
+    <li>
+      <strong>break:</strong> Interrompe a execução e sai do bloco
+      <code class="one-line-code">switch</code>. Se omitido, o código continuará executando os casos
+      seguintes ("fall-through"), o que raramente é desejado.
+    </li>
+    <li>
+      <strong>default:</strong> Bloco opcional executado caso nenhuma das opções
+      anteriores seja verdadeira. Funciona como uma mensagem de erro ou opção
+      padrão.
+    </li>
+  </ul>
+
+  <p><strong>Cenário 3: Menu de Conversão de Unidades</strong></p>
+  <div class="code-container">
+    <pre><code class="language-java">// Exemplo de switch-case para processamento de menus
+System.out.println("1. polegadas | 2. pés | 3. jardas | 4. milhas");
+int opcao = leitor.nextInt();
+
+switch (opcao) {
+    case 1:
+        System.out.println("Conversão para polegadas selecionada.");
+        break;
+    case 2:
+        System.out.println("Conversão para pés selecionada.");
+        break;
+    case 3:
+    case 4: // Casos agrupados: mesma ação para jardas ou milhas
+        System.out.println("Conversão para unidades longas selecionada.");
+        break;
+    default:
+        System.out.println("Opção inválida!!"); 
+}</code></pre>
+  </div>
+
+  <hr />
+
+  <h3>4. Definite Assignment (Atribuição Definitiva)</h3>
+  <p>
+    Ao usar <code class="one-line-code">switch</code> ou <code class="one-line-code">if</code> aninhados para atribuir
+    valor a uma
+    variável, o Java exige que você garanta que ela receba um valor em todos os
+    caminhos possíveis. Se houver uma falha lógica onde a variável possa ficar
+    sem valor, o compilador gerará um erro.
+  </p>
+  <p>
+    <strong>Dica Prática:</strong> Sempre que possível, utilize o
+    <code class="one-line-code">default</code> no <code class="one-line-code">switch</code> para garantir que a lógica
+    seja
+    concluída com sucesso mesmo diante de entradas inesperadas.
+  </p>
 </section>
 
 <section class="section-box">
   <h2>Exemplo de Código</h2>
+
+  <h3>Exemplo 1: Classificação de Triângulos (Ninhos de SE)</h3>
+  <p>Utilizando a lógica de existência e classificação posterior.</p>
   <div class="code-container">
-    <pre><code class="language-java">// Em breve...</code></pre>
+    <pre><code class="language-java">public class ClassificaTriangulo {
+    public static void main(String[] args) {
+        double a = 5, b = 5, c = 5;
+
+        if (a < b + c && b < a + c && c < a + b) {
+            if (a == b && a == c) {
+                System.out.println("Equilátero");
+            } else {
+                if (a == b || a == c || b == c) {
+                    System.out.println("Isósceles");
+                } else {
+                    System.out.println("Escaleno");
+                }
+            }
+        } else {
+            System.out.println("Não é um triângulo.");
+        }
+    }
+}</code></pre>
+  </div>
+
+  <h3>Exemplo 2: Menu com Switch-Case</h3>
+  <p>Implementação de um menu interativo simples.</p>
+  <div class="code-container">
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class MenuConversao {
+    public static void main(String[] args) {
+        Scanner leitor = new Scanner(System.in);
+        
+        System.out.println("Escolha uma opção:");
+        System.out.println("1. Metros para Centímetros");
+        System.out.println("2. Metros para Quilômetros");
+        System.out.println("0. Sair");
+        
+        int opcao = leitor.nextInt();
+        
+        switch (opcao) {
+            case 1:
+                System.out.println("Convertendo para centímetros...");
+                break;
+            case 2:
+                System.out.println("Convertendo para quilômetros...");
+                break;
+            case 0:
+                System.out.println("Saindo do sistema.");
+                break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+        leitor.close();
+    }
+}</code></pre>
   </div>
 </section>
 
 <section class="section-box">
   <h2>Representação Gráfica</h2>
+
+  <h3>1. Fluxo de Decisão: Switch-Case</h3>
+  <p>O diagrama abaixo ilustra como o switch "salta" diretamente para o caso correspondente.</p>
   <div class="mermaid">
-    graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
+    flowchart TD
+    Start([Início]) --> Expr[Expressão / Variável]
+    Expr --> Case1{Valor == 1?}
+    Expr --> Case2{Valor == 2?}
+    Expr --> CaseDefault{Nenhum?}
+
+    Case1 -- Sim --> Act1[Executa Bloco 1] --> Break1[break]
+    Case2 -- Sim --> Act2[Executa Bloco 2] --> Break2[break]
+    CaseDefault -- Sim --> ActDef[Executa Default]
+
+    Break1 --> End([Fim])
+    Break2 --> End
+    ActDef --> End
+  </div>
+
+  <h3>2. Ninhos de SE: Árvore de Decisão</h3>
+  <div class="mermaid">
+    flowchart TD
+    C1{Condição Externa} -- Falsa --> E1[Else Externo]
+    C1 -- Verdadeira --> C2{Condição Interna}
+    C2 -- Verdadeira --> A1[Ação Interna 1]
+    C2 -- Falsa --> A2[Ação Interna 2]
   </div>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
+    <li>
+      <strong>Uso do Break:</strong> No <code class="one-line-code">switch</code>, o <code
+        class="one-line-code">break</code> é
+      fundamental. Sem ele, o Java executa todos os casos abaixo do que foi
+      selecionado (efeito fall-through).
+    </li>
+    <li>
+      <strong>Clareza:</strong> Se você tem mais de 3 níveis de aninhamento de
+      <code class="one-line-code">if</code>s, considere refatorar seu código ou usar
+      <code class="one-line-code">switch-case</code> para melhorar a legibilidade.
+    </li>
+    <li>
+      <strong>Default:</strong> Sempre inclua uma cláusula <code class="one-line-code">default</code> no
+      <code class="one-line-code">switch</code> para tratar valores inesperados e garantir a
+      atribuição definitiva.
+    </li>
+    <li>
+      <strong>Tipos de Dados:</strong> Lembre-se que o <code class="one-line-code">switch</code> não aceita
+      números decimais (<code class="one-line-code">float/double</code>) nem intervalos (ex: <code
+        class="one-line-code">case x > 10</code>).
+    </li>
   </ul>
 </div>
 
 <section class="section-box">
   <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
+  <ul>
+    <li><strong>Menus de Usuário:</strong> Criação de menus textuais onde o usuário escolhe opções numeradas.</li>
+    <li><strong>Classificações Complexas:</strong> Situações onde uma regra de negócio depende de várias outras
+      pré-condições (como o exemplo do triângulo).</li>
+    <li><strong>Máquinas de Estado:</strong> Controle do estado de um jogo ou aplicação (ex: Menu -> Jogando -> Pausado
+      -> Game Over).</li>
+  </ul>
 </section>
 
 <section class="section-box">
   <h2>Referências</h2>
   <ul>
-    <li>Material de apoio em breve.</li>
+    <li><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html">The switch Statement (Oracle
+        Docs)</a></li>
+    <li><a href="https://www.w3schools.com/java/java_switch.asp">Java Switch - W3Schools</a></li>
   </ul>
 </section>
 
@@ -54,4 +319,3 @@ tags:
     <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
   </ul>
 </section>
-
