@@ -1,18 +1,308 @@
 ---
-layout: exercicio
-title: "Exercício 02 - DQL Avançada - Predicados IN, LIKE e BETWEEN"
+layout: questionario
+title: "Exercício 02 - DQL Avançada: Predicados IN, LIKE e BETWEEN"
 exercicio_numero: "02"
 aula_numero: "11"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 11."
+description: "Questionário sobre filtros lógicos avançados, busca de padrões, faixas de valores e pertencimento a conjuntos."
+perguntas:
+  - texto: "De acordo com o material, qual é a função dos predicados na cláusula WHERE?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Eles servem apenas para ordenar os dados de forma crescente."
+      - letra: "b"
+        texto: "Eles funcionam como a camada de inteligência que determina a 'sobrevivência' de um registro no resultado."
+      - letra: "c"
+        texto: "Eles são responsáveis por criar as chaves primárias das tabelas."
+      - letra: "d"
+        texto: "Eles permitem alterar os tipos de dados das colunas permanentemente."
+
+  - texto: "A qual operador da Álgebra Relacional os predicados SQL correspondem na implementação prática?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Projeção (π)."
+      - letra: "b"
+        texto: "Produto Cartesiano (×)."
+      - letra: "c"
+        texto: "Seleção (σ)."
+      - letra: "d"
+        texto: "União (∪)."
+
+  - texto: "O predicado LIKE é fundamental para quais tipos de buscas no banco de dados?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Buscas por aproximação e padrões de texto específicos."
+      - letra: "b"
+        texto: "Buscas que exigem apenas igualdade matemática exata."
+      - letra: "c"
+        texto: "Buscas focadas exclusivamente em valores nulos (NULL)."
+      - letra: "d"
+        texto: "Buscas que realizam cálculos de média e soma de valores."
+
+  - texto: "No uso do predicado LIKE, o que o caractere curinga '%' representa?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "A obrigatoriedade de um único caractere em uma posição fixa."
+      - letra: "b"
+        texto: "O encerramento imediato da consulta SQL."
+      - letra: "c"
+        texto: "Uma operação de multiplicação entre duas colunas."
+      - letra: "d"
+        texto: "Qualquer sequência de zero ou mais caracteres."
+
+  - texto: "Qual curinga do LIKE deve ser usado quando se deseja representar exatamente um único caractere?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "O sinal de porcentagem (%)."
+      - letra: "b"
+        texto: "O caractere underline (_)."
+      - letra: "c"
+        texto: "O asterisco (*)."
+      - letra: "d"
+        texto: "O sinal de arroba (@)."
+
+  - texto: "Por padrão, como o PostgreSQL trata o predicado LIKE em relação à sensibilidade de caixa?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Ele é sempre insensível (ignora maiúsculas)."
+      - letra: "b"
+        texto: "Ele converte todos os dados para maiúsculas antes da busca."
+      - letra: "c"
+        texto: "Ele é Case-Sensitive (diferencia maiúsculas de minúsculas)."
+      - letra: "d"
+        texto: "Ele só permite a busca se o texto estiver em minúsculas."
+
+  - texto: "Qual alternativa apresenta a função do operador ILIKE no PostgreSQL?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Realizar buscas apenas em campos numéricos."
+      - letra: "b"
+        texto: "Ignorar registros que contenham caracteres especiais."
+      - letra: "c"
+        texto: "Aumentar a velocidade da consulta em tabelas pequenas."
+      - letra: "d"
+        texto: "Realizar buscas de padrão de forma insensível a maiúsculas/minúsculas."
+
+  - texto: "Conceitualmente, por que buscas com 'Prefixo%' tendem a ser mais performáticas que '%Sufixo'?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Porque o banco de dados não consegue processar sufixos."
+      - letra: "b"
+        texto: "Porque o motor do banco pode utilizar índices B-tree para localizar o início da string."
+      - letra: "c"
+        texto: "Porque prefixos ocupam menos memória RAM durante a filtragem."
+      - letra: "d"
+        texto: "Porque o SQL lê as tabelas sempre da direita para a esquerda."
+
+  - texto: "O que define o predicado BETWEEN em uma consulta SQL?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Ele filtra uma faixa de valores de forma inclusiva (incluindo os limites)."
+      - letra: "b"
+        texto: "Ele filtra apenas valores que são exatamente iguais aos limites informados."
+      - letra: "c"
+        texto: "Ele serve para unir duas tabelas sem usar Joins."
+      - letra: "d"
+        texto: "Ele exclui os valores limites da busca de forma obrigatória."
+
+  - texto: "A expressão 'valor BETWEEN 10 AND 20' é logicamente idêntica a qual conjunto de operadores?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "valor > 10 AND valor < 20."
+      - letra: "b"
+        texto: "valor IN (10, 20)."
+      - letra: "c"
+        texto: "valor >= 10 AND valor <= 20."
+      - letra: "d"
+        texto: "valor = 10 OR valor = 20."
+
+  - texto: "Qual é o principal risco ao utilizar BETWEEN em campos do tipo DATETIME sem especificar o horário?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "O banco de dados converter todas as datas para o ano zero."
+      - letra: "b"
+        texto: "O limite superior ser lido como 00:00:00, excluindo registros que ocorreram ao longo do último dia."
+      - letra: "c"
+        texto: "A consulta falhar por erro de sintaxe obrigatória."
+      - letra: "d"
+        texto: "O sistema ignorar os dias que caem em finais de semana."
+
+  - texto: "Qual a finalidade teórica do predicado IN?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Calcular o pertencimento de uma linha a uma nova tabela física."
+      - letra: "b"
+        texto: "Remover registros que possuem chaves estrangeiras duplicadas."
+      - letra: "c"
+        texto: "Ordenar os resultados de forma aleatória."
+      - letra: "d"
+        texto: "Verificar se um valor pertence a uma lista ou conjunto específico de membros."
+
+  - texto: "Em qual cenário o predicado IN é tecnicamente superior ao uso de múltiplos operadores OR?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Na melhoria da legibilidade do código e na facilitação de manutenção."
+      - letra: "b"
+        texto: "Apenas quando a lista contém mais de um milhão de itens."
+      - letra: "c"
+        texto: "Quando se deseja buscar por padrões parciais de texto."
+      - letra: "d"
+        texto: "O predicado IN não possui vantagens sobre o operador OR."
+
+  - texto: "Como o predicado IN permite a interação entre tabelas diferentes?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Através da criação automática de chaves estrangeiras temporárias."
+      - letra: "b"
+        texto: "Realizando um backup dos dados antes da filtragem."
+      - letra: "c"
+        texto: "Atuando como uma ponte através do uso de subconsultas (subqueries)."
+      - letra: "d"
+        texto: "Renomeando as colunas de ambas as tabelas para nomes genéricos."
+
+  - texto: "O que ocorre quando um predicado (como LIKE ou IN) encontra um valor NULL na coluna filtrada?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "O registro é incluído no resultado como uma exceção."
+      - letra: "b"
+        texto: "O registro é descartado, pois NULL representa um estado desconhecido e não atende aos predicados comuns."
+      - letra: "c"
+        texto: "O SGBD interrompe a consulta com um erro crítico."
+      - letra: "d"
+        texto: "O valor NULL é tratado como uma string vazia ('')."
+
+  - texto: "Para buscar um padrão onde o texto deve ter exatamente 3 caracteres desconhecidos seguidos por '-2024', qual o padrão correto?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "'%-2024'."
+      - letra: "b"
+        texto: "'*-2024'."
+      - letra: "c"
+        texto: "'...-2024'."
+      - letra: "d"
+        texto: "'___-2024'."
+
+  - texto: "Qual predicado é o mais indicado para criar uma lista de exclusão (blacklist) de IDs?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "NOT IN (lista)."
+      - letra: "b"
+        texto: "BETWEEN ID1 AND ID10."
+      - letra: "c"
+        texto: "LIKE '%ID%'."
+      - letra: "d"
+        texto: "IS NULL."
+
+  - texto: "Em um cenário de busca em sites de busca (e-commerce), qual predicado permite encontrar termos parciais?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "BETWEEN."
+      - letra: "b"
+        texto: "IN."
+      - letra: "c"
+        texto: "LIKE."
+      - letra: "d"
+        texto: "ORDER BY."
+
+  - texto: "No MySQL, o comportamento do LIKE (sensível ou não à caixa) depende de qual fator?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Do tamanho do disco rígido do servidor."
+      - letra: "b"
+        texto: "Do Collation (agrupamento) definido na coluna ou tabela."
+      - letra: "c"
+        texto: "Da linguagem de programação utilizada no front-end."
+      - letra: "d"
+        texto: "Do número de usuários conectados simultaneamente."
+
+  - texto: "Qual é a vantagem estética e funcional de usar BETWEEN para intervalos de datas?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Ele permite buscar datas que ainda não aconteceram."
+      - letra: "b"
+        texto: "Ele garante que as datas fiquem em negrito no relatório."
+      - letra: "c"
+        texto: "Ele exclui automaticamente os feriados nacionais."
+      - letra: "d"
+        texto: "Ele oferece um código mais limpo e legível do que múltiplos operadores lógicos."
+
+  - texto: "Quando um registro não atende ao critério lógico de um predicado, o que o motor do SGBD faz?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Ele descarta a linha do conjunto de resultados final."
+      - letra: "b"
+        texto: "Ele apaga o registro da tabela original."
+      - letra: "c"
+        texto: "Ele envia uma notificação de erro para o desenvolvedor."
+      - letra: "d"
+        texto: "Ele move o registro para uma tabela de log de erros."
+
+  - texto: "O padrão 'LIKE AB%5' buscará quais valores?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Apenas o valor 'AB5'."
+      - letra: "b"
+        texto: "Qualquer valor que contenha o número 5."
+      - letra: "c"
+        texto: "Valores que começam com 'AB' e terminam com '5', com qualquer conteúdo no meio."
+      - letra: "d"
+        texto: "Valores que tenham exatamente 5 caracteres começando com 'AB'."
+
+  - texto: "Como o uso do IN beneficia sistemas que utilizam filtros baseados em Checkboxes?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Ele impede que o usuário selecione mais de uma opção."
+      - letra: "b"
+        texto: "Ele permite passar todos os IDs selecionados de uma vez na query."
+      - letra: "c"
+        texto: "Ele deleta as categorias que não foram selecionadas."
+      - letra: "d"
+        texto: "Ele transforma os checkboxes em botões de rádio."
+
+  - texto: "Qual a relação entre predicados e a teoria da Álgebra Relacional?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Eles são a implementação prática do operador de Seleção."
+      - letra: "b"
+        texto: "Eles substituem a necessidade de Álgebra Relacional."
+      - letra: "c"
+        texto: "Eles são usados apenas para Projeção de colunas."
+      - letra: "d"
+        texto: "Eles servem apenas para o Produto Cartesiano."
+
+  - texto: "O uso de NOT BETWEEN é útil para qual finalidade?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Encontrar valores dentro de uma faixa específica."
+      - letra: "b"
+        texto: "Buscar apenas valores que são nulos."
+      - letra: "c"
+        texto: "Identificar valores que estão fora de um intervalo determinado."
+      - letra: "d"
+        texto: "Ordenar a lista do menor para o maior."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
+  
