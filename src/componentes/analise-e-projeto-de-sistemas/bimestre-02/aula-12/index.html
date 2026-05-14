@@ -1,7 +1,7 @@
-﻿---
-title: "Diagrama de Casos de Uso - Elementos"
+---
+title: "Diagrama de Casos de Uso - Representação Gráfica"
 aula_numero: "12"
-description: "Conteúdo da aula 12 : Diagrama de Casos de Uso - Elementos"
+description: "Diagrama de Casos de Uso - O mais utilizado"
 tags:
   - aula
   - bimestre-02
@@ -9,23 +9,110 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo teórico da aula 12 em desenvolvimento...</p>
-</section>
+  
+  <h3>1. Visão Geral e Propósito</h3>
+  <p>O Diagrama de Caso de Uso é um diagrama comportamental da UML que captura os requisitos funcionais de um sistema sob uma perspectiva externa e independente de implementação. Ele não descreve mecanismos internos ("como"), mas sim o que o sistema deve fazer do ponto de vista de seus usuários externos.</p>
+  <ul>
+    <li><strong>Objetivo:</strong> Delimitar o escopo (fronteiras) do sistema e identificar as interações fundamentais entre ele e seu ambiente.</li>
+    <li><strong>Foco no Usuário:</strong> Cada caso de uso representa um objetivo do usuário (ou meta) que agrega valor ao negócio.</li>
+  </ul>
 
-<section class="section-box">
-  <h2>Exemplo Prático</h2>
-  <p>Exemplos e demonstrações da aula 12 em desenvolvimento...</p>
-</section>
+  <hr>
 
-<section class="section-box">
-  <h2>Representação Gráfica</h2>
-  <p>Diagramas e esquemas visuais em construção...</p>
+  <h3>2. Elementos Gráficos Fundamentais</h3>
+  <p>O diagrama utiliza uma notação simples para facilitar a comunicação entre técnicos e clientes.</p>
+  
+  <h4>A. Atores (Actors)</h4>
+  <p>Representam os papéis desempenhados por pessoas, outros sistemas de software ou dispositivos de hardware que interagem com o sistema.</p>
+  <img src="{{ '/imagens/prints/ator-caso-de-uso.png' | url }}" alt="Ator de um Diagrama de Caso de Uso" width="100">
+  <ul>
+    <li><strong>Notação:</strong> Geralmente representados por um "boneco palito" (stick figure) com o nome do papel abaixo. Alternativamente, podem ser exibidos como retângulos com o estereótipo «actor».</li>
+    <li><strong>Conceito Chave:</strong> Um ator é uma idealização de um papel, não uma pessoa específica; um indivíduo real pode atuar como vários atores em momentos distintos.</li>
+    <li><strong>Exemplo Prático:</strong> Em um sistema acadêmico, o "Aluno" e o "Professor" são atores; um sistema de cobrança legado também pode ser um ator se receber dados do novo sistema.</li>
+  </ul>
+
+  <h4>B. Casos de Uso (Use Cases)</h4>
+  <p>Representam uma unidade coerente de funcionalidade que o sistema executa.</p>
+  <img src="{{ '/imagens/prints/caso-de-uso.png' | url }}" alt="Caso de Uso de um Diagrama de Caso de Uso" width="200">
+  <ul>
+    <li><strong>Notação:</strong> Uma elipse contendo um nome descritivo, preferencialmente um verbo de ação (Ex: "Fazer Pedido", "Sacar Dinheiro").</li>
+    <li><strong>Escopo:</strong> Um caso de uso é considerado completo quando o objetivo do usuário é atingido ou um erro ocorre.</li>
+  </ul>
+
+  <h4>C. Limite do Sistema (Subject/System Boundary) (5)</h4>
+  <p>Um retângulo que envolve os casos de uso, deixando os atores do lado de fora.</p>
+  <ul>
+    <li><strong>Propósito:</strong> Define claramente o que está dentro da responsabilidade do software que será desenvolvido e o que é externo a ele.</li>
+    <li><strong>Exemplo Prático:</strong> Ao modelar um Caixa Eletrônico (ATM), as funções como "Sacar Dinheiro" estão dentro do limite, enquanto o "Cliente" e o "Sistema Bancário Central" estão fora.</li>
+  </ul>
+
+  <hr>
+
+  <h3>3. Relacionamentos no Diagrama</h3>
+  <p>Os elementos são conectados para mostrar como a funcionalidade é organizada.</p>
+  <img src="{{ '/imagens/prints/diagrama-caso-de-uso.png' | url }}" alt="Relacionamentos de um Diagrama de Caso de Uso" width="250">
+  <ul>
+    <li><strong>Associação (1):</strong> Uma linha sólida entre um ator e um caso de uso indicando que eles se comunicam. Pode conter setas direcionais para mostrar quem inicia a comunicação.</li>
+    <li><strong>Inclusão («include») (2):</strong> Uma seta tracejada do caso de uso base para o incluído. Indica que o comportamento do segundo é obrigatório para o primeiro.
+      <ul>
+        <li><em>Exemplo:</em> O caso de uso "Realizar Pedido" sempre inclui "Validar Cliente".</li>
+      </ul>
+    </li>
+    <li><strong>Extensão («extend») (3):</strong> Uma seta tracejada do caso de uso que estende para o caso de uso base. Indica um comportamento opcional ou excepcional que ocorre sob condições específicas em "pontos de extensão".
+      <ul>
+        <li><em>Exemplo:</em> "Emitir Recibo" pode estender "Fazer Compra" apenas se o cliente solicitar.</li>
+      </ul>
+    </li>
+    <li><strong>Generalização (4):</strong> Representada por uma linha com um triângulo vazio apontando para o elemento mais geral.
+      <ul>
+        <li><strong>Entre Atores:</strong> "Novo Cliente" pode ser uma especialização de "Cliente".</li>
+        <li><strong>Entre Casos de Uso:</strong> "Pagar com Cartão" e "Pagar com Boleto" podem ser especializações de "Realizar Pagamento".</li>
+      </ul>
+    </li>
+  </ul>
+
+  <hr>
+
+  <h3>4. Exemplos Práticos de Modelagem Gráfica</h3>
+  
+  <h4>Exemplo 1: Sistema de Bilheteria de Teatro</h4>
+  <p>Neste cenário, o Assunto (Subject) é o "Box Office".</p>
+  <ul>
+    <li><strong>Atores:</strong> "Clerk" (atendente), "Kiosk" (autoatendimento) e "Supervisor".</li>
+    <li><strong>Casos de Uso Principais:</strong> "Buy Tickets" e "Survey Sales".</li>
+    <li><strong>Relacionamentos:</strong> Ambos "Clerk" e "Kiosk" iniciam "Buy Tickets". O caso de uso "Buy Tickets" possui um relacionamento de «include» com "Make Charges" (sistema de cartão), pois o pagamento é essencial para a compra.</li>
+  </ul>
+
+  <h4>Exemplo 2: Sistema de Controle Acadêmico (UAB)</h4>
+  <p>Este exemplo foca nas permissões e funcionalidades macro.</p>
+  <ul>
+    <li><strong>Atores:</strong> "Aluno", "Professor", "Coordenador" e sistemas legados como "Sistema de RH".</li>
+    <li><strong>Casos de Uso:</strong>
+      <ul>
+        <li>O Aluno interage com "Realizar Inscrição" e "Visualizar Notas".</li>
+        <li>O Professor interage com "Lançar Avaliações".</li>
+        <li>O Sistema de Faturamento (Ator Sistema) recebe informações de "Realizar Inscrição" via uma associação.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <hr>
+
+  <h3>5. Processo de Construção do Diagrama Gráfico</h3>
+  <p>Para garantir a completude do diagrama, o analista deve seguir estes passos:</p>
+  <ol>
+    <li><strong>Definir a Fronteira:</strong> Desenhar o retângulo do sistema e nomeá-lo.</li>
+    <li><strong>Identificar os Atores:</strong> Listar todos os usuários e sistemas externos que precisam de algo do sistema.</li>
+    <li><strong>Identificar os Casos de Uso:</strong> Identificar os grandes objetivos que cada ator deseja alcançar (evitar excesso de detalhes, mantendo entre 6 a 8 casos de uso por diagrama).</li>
+    <li><strong>Adicionar Associações:</strong> Ligar os atores às suas funcionalidades.</li>
+    <li><strong>Refinar com Inclusões e Extensões:</strong> Procurar comportamentos comuns (reuso) ou opcionais para organizar o diagrama.</li>
+  </ol>
 </section>
 
 <div class="tip-box">
-  <h4>Dicas & Lembretes</h4>
+  <h4>Dica Lembrete</h4>
   <ul>
-    <li>Conteúdo em breve.</li>
+    <li>O diagrama de caso de uso não deve tentar mostrar a ordem cronológica das tarefas; para isso, utilizam-se diagramas de interação como o de Sequência.</li>
   </ul>
 </div>
 
