@@ -1,7 +1,7 @@
 ---
-title: "Funções de Agregação"
+title: "Funções de Agregação e Agrupamento"
 aula_numero: "14"
-description: "SUM, AVG, COUNT, HAVING."
+description: "SUM, AVG, COUNT, MAX, MIN, GROUP BY e HAVING."
 tags:
 - aula
 - bimestre-02
@@ -9,55 +9,320 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo em desenvolvimento...</p>
+  <p>Esta aula aborda as Funções de Agregação, ferramentas essenciais para transformar grandes volumes de dados em informações gerenciais e estatísticas. Ao contrário das operações que atuam linha a linha, as funções de agregação operam sobre conjuntos de valores (tuplas) para retornar um único valor resultante.</p>
+
+  <hr>
+
+  <h3>1. Fundamentos e a Álgebra Relacional</h3>
+  <p>Na teoria relacional, as funções de agregação não faziam parte do modelo original, sendo introduzidas posteriormente através do operador <strong>ℑ (Gótico I)</strong>.</p>
+  <ul>
+    <li><strong>Lógica:</strong> O operador recebe atributos de agrupamento e uma lista de funções aplicadas a colunas específicas.</li>
+    <li><strong>Fechamento:</strong> O resultado de uma agregação é sempre uma nova relação (tabela), mesmo que contenha apenas uma linha e uma coluna.</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. As Funções Fundamentais</h3>
+  
+  <h4>A. COUNT (Contagem)</h4>
+  <p>Existem duas formas cruciais de utilizar o COUNT, e a diferença entre elas é um dos pontos onde mais ocorrem erros:</p>
+  <ul>
+    <li><strong>COUNT(*):</strong> Conta todas as linhas do conjunto resultante, incluindo linhas com valores nulos ou duplicados.</li>
+    <li><strong>COUNT(coluna):</strong> Conta apenas as linhas onde a coluna especificada não é nula.</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Exemplo: Quantos vendedores ganham acima de 2.500?
+SELECT COUNT(*) AS total_vendedores 
+FROM vendedores 
+WHERE salario_fixo > 2500;</code></pre>
+  </div>
+
+  <h4>B. SUM (Soma) e AVG (Média)</h4>
+  <p>Ambas operam exclusivamente sobre valores numéricos. Elas ignoram valores nulos no cálculo.</p>
+  <p><strong>Dica Avançada:</strong> Se você precisar somar tempos (tipo TIME), deve convertê-los para segundos (TIME_TO_SEC), somar e converter de volta (SEC_TO_TIME).</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Exemplo: Média salarial e total da folha de pagamento
+SELECT AVG(salario_fixo) AS media_salarial, SUM(salario_fixo) AS total_folha
+FROM vendedores;</code></pre>
+  </div>
+
+  <h4>C. MAX (Máximo) e MIN (Mínimo)</h4>
+  <p>Identificam os valores extremos em um conjunto. Podem ser aplicadas a números, datas e até strings (seguindo a ordem alfabética/colação).</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Exemplo: Menor e maior salário da tabela
+SELECT MIN(salario_fixo) AS menor_salario, MAX(salario_fixo) AS maior_salario 
+FROM vendedores;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Agrupamento: O Poder do GROUP BY</h3>
+  <p>O GROUP BY organiza o resumo dos dados em grupos lógicos baseados em um ou mais atributos.</p>
+  <p><strong>A "Armadilha" do Agrupamento:</strong> Ao usar GROUP BY, você só pode selecionar as colunas que estão presentes na cláusula GROUP BY ou colunas dentro de funções de agregação. Tentar selecionar uma coluna "solta" (como a data de uma venda máxima) retornará valores indeterminados ou erro, dependendo do SGBD.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Exemplo: Total de produtos vendidos por pedido
+SELECT numero_pedido, COUNT(*) AS total_itens
+FROM item_de_pedido 
+GROUP BY numero_pedido;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>4. Filtrando Agregados: A Cláusula HAVING</h3>
+  <p>Muitos alunos confundem WHERE com HAVING. A regra é simples:</p>
+  <ul>
+    <li><strong>WHERE:</strong> Filtra as linhas antes da agregação ser processada.</li>
+    <li><strong>HAVING:</strong> Filtra os grupos após a agregação ter sido calculada.</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Exemplo: Listar apenas pedidos que possuem mais de 3 produtos
+SELECT numero_pedido, COUNT(*) AS total_produtos
+FROM item_de_pedido
+GROUP BY numero_pedido
+HAVING COUNT(*) > 3;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>5. Tópicos Avançados</h3>
+  
+  <h4>A. Tratamento de Nulos com Agregações</h4>
+  <p>Como a maioria das funções ignora nulos, o resultado de um SUM ou AVG sobre uma coluna que só contém nulos será NULL (e não zero). Para relatórios limpos, use funções de tratamento:</p>
+  <ul>
+    <li><strong>MySQL:</strong> <code class="one-line-code">IFNULL(SUM(coluna), 0)</code></li>
+    <li><strong>PostgreSQL/Universal:</strong> <code class="one-line-code">COALESCE(SUM(coluna), 0)</code></li>
+  </ul>
+
+  <h4>B. Identificação de Duplicatas</h4>
+  <p>As funções de agregação são a forma mais eficiente de encontrar dados duplicados em uma tabela.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Identificar nomes de clientes repetidos
+SELECT nome_cliente, COUNT(*) 
+FROM cliente
+GROUP BY nome_cliente
+HAVING COUNT(*) > 1;</code></pre>
+  </div>
+
+  <h4>C. Totais e Subtotais (ROLLUP)</h4>
+  <p>No MySQL, você pode gerar totais gerais e subtotais automaticamente adicionando WITH ROLLUP ao final do agrupamento.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Mostra contagem por usuário e um total geral no final (como uma linha com NULL)
+SELECT srcuser, COUNT(*) 
+FROM mail 
+GROUP BY srcuser WITH ROLLUP;</code></pre>
+  </div>
+
+  <h4>D. Funções de Janela (Window Functions - PostgreSQL)</h4>
+  <p>O PostgreSQL permite realizar agregações sem "colapsar" as linhas em grupos, usando a cláusula OVER(). Isso permite comparar uma linha individual com a média do grupo na mesma linha.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Exemplo PostgreSQL: Salário individual vs Média do departamento
+SELECT nome, salario, AVG(salario) OVER(PARTITION BY depto_id) as media_depto
+FROM empregados;</code></pre>
+  </div>
+
+  <h4>E. Ratio de Repetição</h4>
+  <p>Um conceito avançado para analistas é o cálculo da repetitividade dos dados: <code class="one-line-code">COUNT(DISTINCT coluna) / COUNT(coluna)</code>.</p>
+  <ul>
+    <li>Um valor próximo de 1 indica que quase todos os dados são únicos.</li>
+    <li>Um valor próximo de 0 indica alta repetição, o que significa que o GROUP BY será muito eficiente para categorizar esses dados.</li>
+  </ul>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
-  <p>Abaixo, apresentamos exemplos práticos comparando as sintaxes entre os dois ambientes.</p>
-  <div class="code-container">
-    <pre><code class="language-sql">-- [ MySQL ]
--- Código em desenvolvimento...
+  <h2>Exemplos de Código</h2>
 
--- [ PostgreSQL ]
--- Código em desenvolvimento...</code></pre>
+  <h3>1. Nível Básico: Resumos Globais</h3>
+  <p>Neste nível, o banco olha para a tabela inteira como um único grupo.</p>
+  <ul>
+    <li><strong>COUNT:</strong> "Quantos produtos cadastrados nós temos?"</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT COUNT(*) AS total_produtos FROM produtos;</code></pre>
+  </div>
+
+  <ul>
+    <li><strong>MAX e MIN:</strong> "Qual o preço do produto mais caro e do mais barato?"</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT MAX(valor_unitario), MIN(valor_unitario) FROM produtos;</code></pre>
+  </div>
+
+  <ul>
+    <li><strong>SUM:</strong> "Qual o valor total de todos os salários fixos dos vendedores?"</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT SUM(salario_fixo) FROM vendedores;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>2. Nível Intermediário: Agrupamento Simples (GROUP BY)</h3>
+  <p>Aqui começamos a separar os dados em "baldes" antes de calcular.</p>
+  <ul>
+    <li><strong>COUNT com GROUP BY:</strong> "Quantos clientes temos em cada estado (UF)?"</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT uf, COUNT(id) 
+FROM clientes 
+GROUP BY uf;</code></pre>
+  </div>
+
+  <ul>
+    <li><strong>AVG com GROUP BY:</strong> "Qual a média de quantidade de itens por pedido?"</li>
+  </ul>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT id_pedido, AVG(quantidade) 
+FROM itens_pedidos 
+GROUP BY id_pedido;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Nível Avançado: Joins + Agregação + HAVING</h3>
+  <p>Este é o cenário real de um Tech Lead: cruzar tabelas e filtrar os resultados após o cálculo.</p>
+  <p><strong>Desafio:</strong> "Liste os vendedores que faturaram mais de R$ 500,00 no total."</p>
+  <p><em>Nota: Não podemos usar WHERE para o total, pois o total só existe após o agrupamento. Usamos o HAVING.</em></p>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT 
+    v.nome_vendedor, 
+    SUM(i.quantidade * pr.valor_unitario) AS faturamento_total
+FROM vendedores v
+INNER JOIN pedidos p ON v.id = p.id_vendedor
+INNER JOIN itens_pedidos i ON p.id = i.id_pedido
+INNER JOIN produtos pr ON i.id_produto = pr.id
+GROUP BY v.id
+HAVING faturamento_total > 500.00;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>4. Nível Expert: Relatórios Complexos</h3>
+  <p>Combinando tudo para encontrar padrões específicos.</p>
+  <p><strong>Produtos mais vendidos em SP:</strong></p>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT 
+    pr.descricao, 
+    SUM(i.quantidade) AS total_unidades
+FROM produtos pr
+INNER JOIN itens_pedidos i ON pr.id = i.id_produto
+INNER JOIN pedidos p ON i.id_pedido = p.id
+INNER JOIN clientes c ON p.id_cliente = c.id
+WHERE c.uf = 'SP'
+GROUP BY pr.id
+ORDER BY total_unidades DESC;</code></pre>
   </div>
 </section>
 
 <section class="section-box">
-  <h2>Diagramação</h2>
-  <p>Representação visual dos conceitos abordados:</p>
+  <h2>Representação Gráfica</h2>
+
+  <h3>1. Fluxo de Agregação Global (SUM, AVG, COUNT, MAX, MIN)</h3>
+  <p>Este diagrama explica como o SQL "achata" uma tabela inteira para gerar um único resultado.</p>
   <div class="mermaid">
     graph TD
-    A[Início] --> B{Processo}
-    B --> C[Fim]
+    subgraph Tabela_Original
+        R1[Linha 1: R$ 10]
+        R2[Linha 2: R$ 20]
+        R3[Linha 3: R$ 30]
+        R4[Linha 4: NULL]
+    end
+
+    R1 & R2 & R3 & R4 --> Op{Função Agregadora}
+    Op -->|SUM| Res1[Total: 60]
+    Op -->|AVG| Res2[Média: 20]
+    Op -->|COUNT| Res3[Contagem: 3]
+    
+    style Res1 fill:#f9f,stroke:#333
+    style Res2 fill:#bbf,stroke:#333
+    style Res3 fill:#bfb,stroke:#333
+  </div>
+
+  <hr>
+
+  <h3>2. A Lógica do GROUP BY (Divisão em "Baldes")</h3>
+  <p>Este é o conceito que os alunos costumam ter mais dificuldade. O diagrama mostra que o GROUP BY separa os dados antes do cálculo.</p>
+  <div class="mermaid">
+    graph LR
+    subgraph Dados_Brutos
+        A1[Cliente: SP - R$ 50]
+        A2[Cliente: RJ - R$ 30]
+        A3[Cliente: SP - R$ 20]
+        A4[Cliente: RJ - R$ 10]
+    end
+
+    A1 & A3 --> SP_Bucket((Balde SP))
+    A2 & A4 --> RJ_Bucket((Balde RJ))
+
+    SP_Bucket --> Final_SP[SP: Total R$ 70]
+    RJ_Bucket --> Final_RJ[RJ: Total R$ 40]
+
+    style SP_Bucket fill:#ff9,stroke:#333
+    style RJ_Bucket fill:#9f9,stroke:#333
+  </div>
+
+  <hr>
+
+  <h3>3. Ordem de Execução: WHERE vs HAVING</h3>
+  <p>Este diagrama é vital para explicar por que não podemos usar SUM() no WHERE. Ele mostra a "esteira de produção" do SQL.</p>
+  <div class="mermaid">
+    graph TD
+    In[1. Tabela Bruta] --> Filter[2. WHERE: Filtra linhas individuais]
+    Filter --> Group[3. GROUP BY: Agrupa os sobreviventes]
+    Group --> Calc[4. Agregação: SUM, AVG, COUNT...]
+    Calc --> H_Filter[5. HAVING: Filtra o resultado do cálculo]
+    H_Filter --> Out[6. Resultado Final]
+
+    style Filter fill:#ffcccb
+    style H_Filter fill:#d1ffd1
+  </div>
+
+  <hr>
+
+  <h3>4. Relacionamento 1:N com Agregação (Joins)</h3>
+  <p>Para o exemplo de Vendedores e Pedidos, este diagrama mostra como o Join "estica" os dados antes de serem "encolhidos" pela agregação.</p>
+  <div class="mermaid">
+    erDiagram
+    Vendedores ||--o{ Pedidos : realiza
+    Pedidos ||--o{ Itens_Pedidos : contem
+    Produtos ||--o{ Itens_Pedidos : "está em"
+
+    Vendedores {
+        int id PK
+        string nome
+    }
+    Pedidos {
+        int id PK
+        int id_vendedor FK
+    }
+    Itens_Pedidos {
+        int id_pedido FK
+        int id_produto FK
+        int quantidade
+    }
   </div>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Dica importante sobre Funções de Agregação aparecerá aqui.</li>
-    <li>Sempre verifique a sintaxe específica do seu SGBD.</li>
+    <li><strong>A Regra do "Esmagamento":</strong> Pense nas funções agregadoras como uma prensa hidráulica. Elas pegam 100 linhas e as esmagam em uma única linha de resultado.</li>
+    <li><strong>O Porteiro (WHERE) vs. O Fiscal (HAVING):</strong>
+      <ul>
+        <li>O <strong>WHERE</strong> é o porteiro: ele decide quem entra na festa (antes da soma).</li>
+        <li>O <strong>HAVING</strong> é o fiscal: ele só olha para os grupos que já estão prontos e decide quem fica.</li>
+      </ul>
+    </li>
+    <li><strong>Identidade Visual:</strong> Se você deu um SELECT no <code class="one-line-code">nome_vendedor</code>, você precisa dar um GROUP BY no <code class="one-line-code">nome_vendedor</code>. Se esquecer, o SQL vai te dar um erro ou um resultado "mentiroso".</li>
+    <li><strong>O Fantasma do NULL:</strong> Lembre-se que SUM e AVG são "alérgicos" ao NULL. Eles simplesmente pulam as linhas vazias como se elas não existissem.</li>
+    <li><strong>Performance do COUNT:</strong> Se você só quer saber o total de linhas, use <code class="one-line-code">COUNT(*)</code>. O banco de dados é treinado para contar asteriscos muito mais rápido do que olhar coluna por coluna.</li>
   </ul>
 </div>
 
 <section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <ul>
-    <li>Passo 1: Analise os requisitos.</li>
-    <li>Passo 2: Desenvolva o script SQL.</li>
-    <li>Passo 3: Valide os resultados.</li>
-  </ul>
-</section>
-
-<section class="section-box">
   <h2>Referências</h2>
   <ul>
-    <li>MACHADO, Felipe Nery Rodrigues. Projeto e implementação de banco de dados. 3. ed. São Paulo: Érica, 2014.
-    </li>
-    <li>TAKAI, Osvaldo Kotaro; ITALIANO, Isabel Cristina; FERREIRA, João Eduardo. Introdução a Banco de Dados. São
-      Paulo: DCC-IME-USP, 2005.</li>
+    <li>MACHADO, Felipe Nery Rodrigues. Projeto e implementação de banco de dados. 3. ed. São Paulo: Érica, 2014.</li>
+    <li>TAKAI, Osvaldo Kotaro; ITALIANO, Isabel Cristina; FERREIRA, João Eduardo. Introdução a Banco de Dados. São Paulo: DCC-IME-USP, 2005.</li>
   </ul>
 </section>
 

@@ -1,18 +1,308 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Funções de Agregação"
+layout: questionario
+title: "Exercício 02 - Funções de Agregação e Agrupamento"
 exercicio_numero: "02"
 aula_numero: "14"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 14."
+description: "Questionário sobre SUM, AVG, COUNT, MAX, MIN, GROUP BY e HAVING conforme os conceitos da Aula 14."
+perguntas:
+  - texto: "Qual é a principal função das ferramentas de agregação no SQL?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Deletar grandes volumes de dados de forma automática."
+      - letra: "b"
+        texto: "Alterar o tipo de dado de uma coluna linha a linha."
+      - letra: "c"
+        texto: "Transformar grandes volumes de dados em informações gerenciais e estatísticas."
+      - letra: "d"
+        texto: "Criar chaves primárias em tabelas que não as possuem."
+
+  - texto: "Na teoria relacional, qual operador representa as funções de agregação?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "σ (Sigma)."
+      - letra: "b"
+        texto: "ℑ (Gótico I)."
+      - letra: "c"
+        texto: "π (Pi)."
+      - letra: "d"
+        texto: "ρ (Rô)."
+
+  - texto: "O que define a propriedade de 'Fechamento' em uma operação de agregação?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O resultado é sempre uma nova relação (tabela)."
+      - letra: "b"
+        texto: "A conexão com o banco de dados é fechada após o cálculo."
+      - letra: "c"
+        texto: "A tabela original é bloqueada para edições durante o SUM."
+      - letra: "d"
+        texto: "O resultado final é sempre um número inteiro."
+
+  - texto: "Qual a diferença fundamental entre COUNT(*) e COUNT(coluna)?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "O COUNT(*) é mais lento que o COUNT(coluna)."
+      - letra: "b"
+        texto: "O COUNT(coluna) conta linhas nulas e o COUNT(*) não."
+      - letra: "c"
+        texto: "Não há diferença, ambos retornam sempre o mesmo valor."
+      - letra: "d"
+        texto: "O COUNT(*) conta todas as linhas, enquanto o COUNT(coluna) ignora valores nulos na coluna especificada."
+
+  - texto: "Como as funções SUM e AVG tratam valores nulos em seus cálculos?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Elas interrompem a execução e retornam erro."
+      - letra: "b"
+        texto: "Elas ignoram os valores nulos no processamento."
+      - letra: "c"
+        texto: "elas tratam valores nulos como se fossem o número zero."
+      - letra: "d"
+        texto: "Elas multiplicam o resultado final por zero se houver nulos."
+
+  - texto: "Segundo o material, qual o procedimento correto para somar campos do tipo TIME no SQL?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Usar o SUM diretamente sobre a coluna TIME."
+      - letra: "b"
+        texto: "Converter para texto e depois usar o MAX."
+      - letra: "c"
+        texto: "Converter para segundos (TIME_TO_SEC), somar e converter de volta."
+      - letra: "d"
+        texto: "O SQL não permite realizar somas de tempo."
+
+  - texto: "Sobre as funções MAX e MIN, é correto afirmar que:"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Podem ser aplicadas a números, datas e strings."
+      - letra: "b"
+        texto: "Funcionam exclusivamente com valores do tipo DECIMAL."
+      - letra: "c"
+        texto: "Ignoram a ordem alfabética ao tratar strings."
+      - letra: "d"
+        texto: "Sempre retornam zero se a tabela tiver valores negativos."
+
+  - texto: "Qual é o objetivo principal da cláusula GROUP BY?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Ordenar o resultado final da consulta."
+      - letra: "b"
+        texto: "Organizar o resumo dos dados em grupos lógicos baseados em atributos."
+      - letra: "c"
+        texto: "Filtrar linhas individuais antes de qualquer cálculo."
+      - letra: "d"
+        texto: "Unir duas tabelas que não possuem relação."
+
+  - texto: "Qual a principal 'armadilha' ao utilizar o GROUP BY?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Usar muitos grupos torna a tabela ilegível."
+      - letra: "b"
+        texto: "O banco de dados apaga as linhas que não foram agrupadas."
+      - letra: "c"
+        texto: "Tentar selecionar colunas que não estão no GROUP BY ou em funções de agregação."
+      - letra: "d"
+        texto: "O GROUP BY só funciona se a tabela tiver mais de 100 linhas."
+
+  - texto: "Qual a diferença entre a filtragem com WHERE e a filtragem com HAVING?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "WHERE filtra antes da agregação; HAVING filtra após a agregação."
+      - letra: "b"
+        texto: "WHERE filtra grupos; HAVING filtra linhas individuais."
+      - letra: "c"
+        texto: "Não existe diferença técnica, apenas sintática."
+      - letra: "d"
+        texto: "O HAVING só pode ser usado com a função COUNT."
+
+  - texto: "Se um SUM for aplicado a uma coluna que contém apenas valores nulos, qual será o resultado?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "0"
+      - letra: "b"
+        texto: "Erro de execução."
+      - letra: "c"
+        texto: "1"
+      - letra: "d"
+        texto: "NULL"
+
+  - texto: "Qual função universal é recomendada para tratar resultados nulos em relatórios, substituindo-os por zero?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "IFNULL (apenas no PostgreSQL)."
+      - letra: "b"
+        texto: "COALESCE."
+      - letra: "c"
+        texto: "NULL_TO_ZERO."
+      - letra: "d"
+        texto: "REPLACE_NULL."
+
+  - texto: "Como as funções de agregação podem auxiliar na limpeza de dados?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Elas removem espaços em branco de strings automaticamente."
+      - letra: "b"
+        texto: "elas formatam datas para o padrão brasileiro."
+      - letra: "c"
+        texto: "elas são a forma mais eficiente de identificar dados duplicados."
+      - letra: "d"
+        texto: "Elas criptografam senhas de usuários."
+
+  - texto: "No MySQL, qual comando adicionado ao GROUP BY gera totais e subtotais automaticamente?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "WITH ROLLUP."
+      - letra: "b"
+        texto: "ADD TOTALS."
+      - letra: "c"
+        texto: "GENERATE SUBtotal."
+      - letra: "d"
+        texto: "SHOW ALL."
+
+  - texto: "O que permite a cláusula OVER() nas Funções de Janela do PostgreSQL?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Fechar a janela de execução da query após 10 segundos."
+      - letra: "b"
+        texto: "Ignorar a cláusula WHERE em toda a consulta."
+      - letra: "c"
+        texto: "Deletar linhas que estão fora da média."
+      - letra: "d"
+        texto: "Realizar agregações sem 'colapsar' as linhas em grupos únicos."
+
+  - texto: "O que indica um 'Ratio de Repetição' com valor próximo de 1?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Que todos os dados são idênticos."
+      - letra: "b"
+        texto: "Que quase todos os dados daquela coluna são únicos."
+      - letra: "c"
+        texto: "Que a tabela está corrompida."
+      - letra: "d"
+        texto: "Que o GROUP BY será extremamente eficiente."
+
+  - texto: "Qual a analogia utilizada no material para explicar as funções agregadoras?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Uma peneira que separa dados grandes de pequenos."
+      - letra: "b"
+        texto: "Uma lupa que amplia detalhes de cada linha."
+      - letra: "c"
+        texto: "Uma prensa hidráulica que 'esmaga' linhas em um único resultado."
+      - letra: "d"
+        texto: "Um espelho que reflete o conteúdo da tabela original."
+
+  - texto: "Por que o COUNT(*) é considerado mais performático que o COUNT(coluna) para contagens gerais?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O SGBD é otimizado para contar asteriscos sem verificar o conteúdo das colunas."
+      - letra: "b"
+        texto: "O COUNT(*) ignora a chave primária."
+      - letra: "c"
+        texto: "O asterisco ocupa menos espaço na memória RAM."
+      - letra: "d"
+        texto: "O COUNT(coluna) exige que o banco de dados some valores."
+
+  - texto: "O que acontece se você omitir o GROUP BY ao usar uma função agregadora junto com uma coluna comum?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "O banco de dados cria um grupo para cada linha automaticamente."
+      - letra: "b"
+        texto: "O SGBD retornará valores indeterminados ou um erro de sintaxe."
+      - letra: "c"
+        texto: "A consulta ignora a função agregadora."
+      - letra: "d"
+        texto: "O resultado será exibido em ordem alfabética."
+
+  - texto: "Qual é o papel do 'Porteiro' na analogia entre WHERE e HAVING?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "O Porteiro é o HAVING, que olha os grupos prontos."
+      - letra: "b"
+        texto: "O Porteiro é a função MAX, que seleciona o maior."
+      - letra: "c"
+        texto: "O Porteiro é o SELECT, que decide o que mostrar."
+      - letra: "d"
+        texto: "O Porteiro é o WHERE, que decide quem entra na festa antes da soma."
+
+  - texto: "Em qual ordem lógica de execução o GROUP BY se situa?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Antes do FROM."
+      - letra: "b"
+        texto: "Após o ORDER BY."
+      - letra: "c"
+        texto: "Após o WHERE e antes do HAVING."
+      - letra: "d"
+        texto: "Antes do WHERE."
+
+  - texto: "A expressão 'Ratio de Repetição' é calculada como:"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "COUNT(DISTINCT coluna) / COUNT(coluna)."
+      - letra: "b"
+        texto: "SUM(coluna) / AVG(coluna)."
+      - letra: "c"
+        texto: "MAX(coluna) - MIN(coluna)."
+      - letra: "d"
+        texto: "COUNT(*) * 100."
+
+  - texto: "Ao agrupar dados de 'clientes' por 'uf', o que o diagrama de 'Baldes' representa?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A exclusão de clientes que não moram em capitais."
+      - letra: "b"
+        texto: "A separação dos dados em categorias antes de realizar o cálculo final."
+      - letra: "c"
+        texto: "A ordenação dos clientes por nome dentro de cada estado."
+      - letra: "d"
+        texto: "A junção da tabela de clientes com a tabela de estados."
+
+  - texto: "Por que as funções SUM e AVG são consideradas 'alérgicas' ao NULL?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Porque elas param de funcionar se encontrarem um NULL."
+      - letra: "b"
+        texto: "Porque elas transformam o NULL em erro de sistema."
+      - letra: "c"
+        texto: "Porque elas exigem que todos os campos sejam preenchidos."
+      - letra: "d"
+        texto: "Porque elas simplesmente pulam as linhas vazias como se não existissem."
+
+  - texto: "Qual a importância de usar Aliases (AS) em resultados de agregação?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Para deixar os títulos das colunas nos relatórios legíveis e profissionais."
+      - letra: "b"
+        texto: "Para mudar o nome da coluna permanentemente no banco de dados."
+      - letra: "c"
+        texto: "Para permitir que o COUNT aceite valores nulos."
+      - letra: "d"
+        texto: "Para acelerar a execução da consulta em 50%."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
+    
