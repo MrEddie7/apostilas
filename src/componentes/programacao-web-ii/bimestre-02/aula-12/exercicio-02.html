@@ -1,18 +1,307 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Membros da Classe: Atributos, Métodos e o uso da pseudo-variável $this"
+layout: questionario
+title: "Membros da Classe: Atributos, Métodos e o uso da pseudo-variável $this"
 exercicio_numero: "02"
 aula_numero: "12"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 12."
+description: "Questionário para consolidar os conhecimentos sobre a anatomia de uma classe, modificadores de visibilidade e autorreferência em PHP."
+perguntas:
+  - texto: "Quais são os dois tipos principais de membros que compõem uma classe em PHP?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Atributos e Métodos."
+      - letra: "b"
+        texto: "Funções e Variáveis Globais."
+      - letra: "c"
+        texto: "Superglobais e Construtores."
+      - letra: "d"
+        texto: "Namespaces e Interfaces."
+
+  - texto: "O que os atributos (propriedades) representam em um objeto?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "As ações que o objeto pode realizar no sistema."
+      - letra: "b"
+        texto: "A conexão direta com a base de dados."
+      - letra: "c"
+        texto: "O estado do objeto, funcionando como variáveis internas."
+      - letra: "d"
+        texto: "Os arquivos físicos carregados na memória do servidor."
+
+  - texto: "A partir de qual versão do PHP recomenda-se fortemente definir o tipo (como string, int, float) na declaração dos atributos?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "PHP 5.6"
+      - letra: "b"
+        texto: "PHP 8+"
+      - letra: "c"
+        texto: "PHP 7.0"
+      - letra: "d"
+        texto: "PHP 4.3"
+
+  - texto: "O que são métodos no contexto do Paradigma Orientado a Objetos?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Constantes de sistema que não podem ser alteradas."
+      - letra: "b"
+        texto: "Tags HTML incorporadas dentro do código procedural."
+      - letra: "c"
+        texto: "Variáveis que guardam as características estáticas da instância."
+      - letra: "d"
+        texto: "Funções dentro de uma classe que definem as ações ou manipulação de dados do objeto."
+
+  - texto: "Para que serve a pseudo-variável $this em PHP?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Fazer uma autorreferência, permitindo acessar membros da instância atual do objeto."
+      - letra: "b"
+        texto: "Instanciar uma classe pai dentro do método herdado."
+      - letra: "c"
+        texto: "Destruir a instância atual do objeto para liberar memória."
+      - letra: "d"
+        texto: "Criar uma variável global acessível fora de qualquer classe."
+
+  - texto: "Qual é a sintaxe correta para acessar um atributo chamado 'preco' de dentro da própria classe usando o $this?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "$this->$preco"
+      - letra: "b"
+        texto: "$this->preco"
+      - letra: "c"
+        texto: "this.preco"
+      - letra: "d"
+        texto: "$this::preco"
+
+  - texto: "Qual modificador de visibilidade permite que um membro seja acessado de qualquer lugar do código, dentro ou fora da classe?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "private"
+      - letra: "b"
+        texto: "protected"
+      - letra: "c"
+        texto: "public"
+      - letra: "d"
+        texto: "final"
+
+  - texto: "Qual modificador de visibilidade restringe o acesso aos membros apenas para métodos da própria classe em que foram declarados?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "private"
+      - letra: "b"
+        texto: "protected"
+      - letra: "c"
+        texto: "public"
+      - letra: "d"
+        texto: "global"
+
+  - texto: "A visibilidade 'protected' garante acesso a um membro por quais estruturas?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Apenas por scripts externos e funções procedurais."
+      - letra: "b"
+        texto: "Por qualquer classe localizada no mesmo servidor."
+      - letra: "c"
+        texto: "Apenas por métodos da própria classe, sem permitir herança."
+      - texto: "Pela própria classe em que foi declarado e por suas subclasses (herdeiros)."
+        letra: "d"
+
+  - texto: "É possível aplicar modificadores de visibilidade (public, private ou protected) diretamente na declaração de uma classe (ex: public class Cliente) no PHP?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Sim, é obrigatório para definir o escopo de uso da classe."
+      - letra: "b"
+        texto: "Não, não é possível atribuir esses modificadores diretamente à declaração de uma classe."
+      - letra: "c"
+        texto: "Sim, mas apenas se a classe estiver dentro de um Namespace privado."
+      - letra: "d"
+        texto: "Apenas o modificador protected é aceito na declaração de classes."
+
+  - texto: "Qual recurso do PHP é utilizado para organizar e restringir logicamente grupos de classes, evitando colisões de nomes?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Interfaces Fluentes"
+      - letra: "b"
+        texto: "Method Chaining"
+      - letra: "c"
+        texto: "Namespaces"
+      - letra: "d"
+        texto: "Atributos Públicos"
+
+  - texto: "Qual palavra-chave do PHP deve ser utilizada na declaração de uma classe para impedir que ela seja estendida por subclasses?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "final"
+      - letra: "b"
+        texto: "static"
+      - letra: "c"
+        texto: "abstract"
+      - letra: "d"
+        texto: "private"
+
+  - texto: "O que caracteriza o conceito de Encapsulamento?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Tornar todos os métodos e atributos públicos para livre manipulação."
+      - letra: "b"
+        texto: "Compilar arquivos PHP em pacotes binários fechados."
+      - letra: "c"
+        texto: "Impedir a instanciação de uma classe no script principal."
+      - letra: "d"
+        texto: "Proteger o estado interno de um objeto, ocultando sua implementação e permitindo acesso apenas via interface pública."
+
+  - texto: "Qual é a vantagem do recurso moderno 'Promoção de Propriedade no Construtor' inserido no PHP 8?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Permite criar classes sem nenhum método de comportamento."
+      - letra: "b"
+        texto: "Reduz código repetitivo ao declarar e atribuir atributos diretamente nos parâmetros do construtor."
+      - letra: "c"
+        texto: "Torna todos os atributos automaticamente públicos e globais."
+      - letra: "d"
+        texto: "Permite alterar o tipo de um atributo dinamicamente em tempo de execução."
+
+  - texto: "O que é uma 'Interface Fluente' (Method Chaining) em PHP?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Um mecanismo que traduz o código PHP para JavaScript nativo."
+      - letra: "b"
+        texto: "Um tipo de herança múltipla baseada em arquivos de configuração."
+      - letra: "c"
+        texto: "Uma técnica onde métodos retornam a instância atual ($this), permitindo encadear várias chamadas seguidas."
+      - letra: "d"
+        texto: "Uma classe abstrata que aceita apenas parâmetros do tipo float."
+
+  - texto: "Ao usar a Interface Fluente, qual é o retorno esperado no final de cada método encadeável para permitir a próxima chamada?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "return $this;"
+      - letra: "b"
+        texto: "return self;"
+      - letra: "c"
+        texto: "return void;"
+      - letra: "d"
+        texto: "return true;"
+
+  - texto: "Se uma classe possui um atributo privado e você precisa ler ou modificar seu valor fora da classe, qual é a boa prática recomendada?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Mudar a classe inteira para um escopo global usando superglobais."
+      - letra: "b"
+        texto: "Criar métodos públicos específicos de acesso, conhecidos popularmente como Getters e Setters."
+      - letra: "c"
+        texto: "Remover a palavra-chave private e deixar o atributo sem modificador."
+      - letra: "d"
+        texto: "Acessar o atributo utilizando o operador de resolução de escopo (::)."
+
+  - texto: "Considere a relação entre Classe e Objeto. Qual das alternativas define corretamente essa relação?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Objeto é o projeto estrutural e Classe é a variável armazenada."
+      - letra: "b"
+        texto: "Não há diferença técnica, ambos são sinônimos no PHP."
+      - letra: "c"
+        texto: "Classe é uma função temporária e Objeto é o banco de dados permanente."
+      - letra: "d"
+        texto: "A classe funciona como um molde ou projeto, e o objeto é uma instância viva e real gerada na memória a partir desse molde."
+
+  - texto: "Se criarmos duas instâncias diferentes (Objeto A e Objeto B) a partir da mesma classe, o que acontece com os valores dos seus atributos na memória?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Cada objeto possui seus próprios valores independentes na memória, gerenciados pelas suas respectivas instâncias."
+      - letra: "b"
+        texto: "O Objeto B sobrescreve permanentemente todos os valores do Objeto A."
+      - letra: "c"
+        texto: "Ambos compartilham obrigatoriamente o mesmo espaço de memória e os mesmos valores de atributos."
+      - letra: "d"
+        texto: "O PHP gera um erro de compilação, pois não é permitido instanciar a mesma classe duas vezes no mesmo script."
+
+  - texto: "No padrão de Diagrama de Classes, o que significam respectivamente os sinais de mais (+) e menos (-) antes do nome de um membro?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Inclusão de código e Exclusão de código."
+      - letra: "b"
+        texto: "Método Construtor e Método Destrutor."
+      - letra: "c"
+        texto: "Membro Público (public) e Membro Privado (private)."
+      - letra: "d"
+        texto: "Atributo Inteiro Positivo e Atributo Inteiro Negativo."
+
+  - texto: "Ao declarar um método em uma classe sem especificar explicitamente sua visibilidade (ex: function processar()), qual será a visibilidade padrão assumida pelo PHP?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "private"
+      - letra: "b"
+        texto: "public"
+      - letra: "c"
+        texto: "protected"
+      - letra: "d"
+        texto: "A execução é interrompida por erro de sintaxe."
+
+  - texto: "Qual é a utilidade prática de definir um valor padrão em um atributo diretamente na sua declaração (ex: public int $ano = 2024;)?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Garantir que toda nova instância da classe comece com esse valor predefinido caso nenhum outro seja atribuído."
+      - letra: "b"
+        texto: "Impedir que esse valor seja alterado posteriormente por qualquer método."
+      - letra: "c"
+        texto: "Tornar o atributo imutável e transformá-lo automaticamente em uma constante global."
+      - letra: "d"
+        texto: "Obrigá-lo a ser do tipo estático (static)."
+
+  - texto: "A proteção baseada no encapsulamento visa evitar qual tipo de comportamento inadequado no desenvolvimento de software?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "A compilação de arquivos em servidores que não possuem o Apache instalado."
+      - letra: "b"
+        texto: "A criação de loops infinitos com a estrutura foreach."
+      - letra: "c"
+        texto: "A alteração indevida ou corrupção do estado interno de um objeto por agentes externos à classe."
+      - letra: "d"
+        texto: "O uso excessivo de memória ao instanciar classes abstratas."
+
+  - texto: "Em boas práticas de arquitetura OO, o que significa dizer que um método deve ter uma responsabilidade clara?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Que ele deve conter códigos HTML, CSS e SQL misturados no mesmo bloco."
+      - letra: "b"
+        texto: "Que o método deve ser capaz de gerenciar todas as operações de todas as classes do sistema."
+      - letra: "c"
+        texto: "Que ele só pode aceitar parâmetros do tipo string."
+      - letra: "d"
+        texto: "Que o método deve realizar uma tarefa coesa e bem definida (ex: apenas calcular, apenas validar ou apenas formatar), evitando misturar lógicas distintas."
+
+  - texto: "No PHP, quando uma classe é declarada, qual é o escopo de sua disponibilidade para instanciação?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Ela fica restrita apenas ao método construtor interno."
+      - letra: "b"
+        texto: "Fica disponível em todo o escopo em que o arquivo foi carregado ou de acordo com a estrutura de seu Namespace."
+      - letra: "c"
+        texto: "Ela expira automaticamente após a primeira chamada de método de um objeto."
+      - letra: "d"
+        texto: "Fica disponível estritamente para funções procedurais declaradas antes dela."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
