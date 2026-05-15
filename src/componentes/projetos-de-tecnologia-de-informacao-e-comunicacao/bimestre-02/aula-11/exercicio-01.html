@@ -1,21 +1,84 @@
 ---
 layout: exercicio
-title: "Exercício 01 - Introdução a Planilhas Eletrônicas"
+title: "Exercício 01 - Primeiros Passos no Excel: Estruturação de Dados Semanais"
 exercicio_numero: "01"
 aula_numero: "11"
-description: "Primeira atividade prática para consolidar os conhecimentos da aula 11."
+description: "Atividade prática para familiarização com a interface do Excel, inserção de dados, uso da alça de preenchimento e gerenciamento de planilhas."
 ---
 
 <section class="section-box">
   <h2>Enunciado</h2>
-  <p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+  <p>Nesta atividade, você aplicará os conceitos fundamentais do Microsoft Excel para criar e organizar uma planilha de controle de vendas de uma pequena loja. O objetivo é se familiarizar com a interface do software, compreender a diferença entre a inserção de textos e números, utilizar a ferramenta Alça de Preenchimento para automatizar sequências e aprender a gerenciar múltiplas planilhas dentro de um mesmo arquivo (Pasta de Trabalho).</p>
 </section>
 
-<div class="tip-box">
-  <h4>Orientações</h4>
+<section class="section-box">
+  <h2>Preparação</h2>
+  <ol>
+    <li>Abra o <strong>Microsoft Excel</strong> em seu computador.</li>
+    <li>Note que um novo arquivo foi criado com o nome padrão de "Pasta 1". Esse arquivo é a sua <strong>Pasta de Trabalho</strong>.</li>
+    <li>Na parte inferior da tela, localize a guia da planilha atual (provavelmente chamada "Plan1" ou "Sheet1"). Dê um duplo clique nela e mude o nome para <strong>"Semana 1"</strong>.</li>
+  </ol>
+</section>
+
+<section class="section-box">
+  <h2>Base: Estrutura Inicial</h2>
+  <p>Para iniciar a atividade, monte a estrutura inicial da tabela inserindo os títulos das colunas e o primeiro registro. Posicione-se nas células indicadas e digite os conteúdos abaixo:</p>
+  
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li>Na célula <strong>A1</strong>, digite o título principal: <code class="one-line-code">Controle de Vendas Semanais</code></li>
+    <li>Na <strong>linha 3</strong>, vamos estruturar os cabeçalhos das colunas:
+      <ul>
+        <li><strong>A3:</strong> Dia da Semana</li>
+        <li><strong>B3:</strong> Quantidade de Vendas</li>
+        <li><strong>C3:</strong> Valor do Produto (R$)</li>
+        <li><strong>D3:</strong> Status do Estoque</li>
+      </ul>
+    </li>
+    <li>Na célula <strong>A4</strong>, digite o primeiro dia: <code class="one-line-code">Segunda-feira</code></li>
+    <li>Na célula <strong>B4</strong>, digite a quantidade: <code class="one-line-code">15</code></li>
+    <li>Na célula <strong>C4</strong>, digite o valor: <code class="one-line-code">50</code></li>
+    <li>Na célula <strong>D4</strong>, digite: <code class="one-line-code">Abastecido</code></li>
   </ul>
-</div>
+
+  <div class="tip-box">
+    <h4>Dica de Observação</h4>
+    <p>Note que, por padrão, o Excel alinha os <strong>textos</strong> (Segunda-feira e Abastecido) à <strong>esquerda</strong> da célula, e os <strong>números</strong> (15 e 50) à <strong>direita</strong>. Isso ajuda a identificar visualmente a natureza de cada dado!</p>
+  </div>
+</section>
+
+<section class="section-box">
+  <h2>O Desafio</h2>
+  <p>Agora que a base foi estabelecida, utilize as ferramentas de eficiência e os conceitos de organização de abas para completar o desafio.</p>
+
+  <h3>Passo 1: Automatizar os Dias da Semana (Alça de Preenchimento)</h3>
+  <ol>
+    <li>Clique na célula <strong>A4</strong> (Segunda-feira).</li>
+    <li>Posicione o ponteiro do mouse no canto inferior direito da célula, exatamente em cima do pequeno quadrado chamado <strong>Alça de Preenchimento</strong>.</li>
+    <li>Clique, segure e arraste para baixo até a célula <strong>A8</strong>.</li>
+    <li><strong>Resultado esperado:</strong> O Excel completará automaticamente os dias da semana até Sexta-feira.</li>
+  </ol>
+
+  <h3>Passo 2: Entrada e Preenchimento de Dados</h3>
+  <p>Insira os seguintes dados correspondentes aos outros dias da semana nas linhas abaixo:</p>
+  <ul>
+    <li><strong>Terça-feira (Linha 5):</strong> Quantidade = 20 | Valor = 50 | Status = Abastecido</li>
+    <li><strong>Quarta-feira (Linha 6):</strong> Quantidade = 12 | Valor = 50 | Status = Atenção</li>
+    <li><strong>Quinta-feira (Linha 7):</strong> Quantidade = 22 | Valor = 50 | Status = Abastecido</li>
+    <li><strong>Sexta-feira (Linha 8):</strong> Quantidade = 30 | Valor = 50 | Status = Crítico</li>
+  </ul>
+
+  <h3>Passo 3: Criação de Nova Planilha no Mesmo Arquivo</h3>
+  <ol>
+    <li>Na barra inferior (ao lado da aba "Semana 1"), clique no botão de <strong>"+" (Nova Planilha)</strong>.</li>
+    <li>Uma nova folha em branco será criada (ex: "Plan2").</li>
+    <li>Dê um duplo clique sobre ela e renomeie-a para <strong>"Semana 2"</strong>.</li>
+  </ol>
+</section>
+
+<section class="section-box">
+  <h2>Orientações Finais</h2>
+  <ul>
+    <li><strong>Correção e Limpeza:</strong> Caso queira apagar o conteúdo de alguma célula para testar, lembre-se: a tecla <strong>DELETE</strong> apaga apenas os dados digitados, mantendo qualquer configuração da célula intacta.</li>
+    <li><strong>Segurança do Progresso:</strong> Utilize o atalho <strong>CTRL + S</strong> (ou CTRL + B) para salvar o arquivo com o nome <code class="one-line-code">Meu_Primeiro_Controle_Excel.xlsx</code>.</li>
+  </ul>
+</section>

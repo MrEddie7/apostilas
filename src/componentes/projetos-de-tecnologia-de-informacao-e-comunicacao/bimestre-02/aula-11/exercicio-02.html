@@ -1,21 +1,307 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Introdução a Planilhas Eletrônicas"
+layout: questionario
+title: "Introdução a Planilhas Eletrônicas: Interface, Células e Dados"
 exercicio_numero: "02"
 aula_numero: "11"
-description: "Desafio extra para aprofundamento da aula 11."
+description: "Questionário para consolidar os conhecimentos sobre a interface do Excel, conceitos de células, intervalos, tipos de dados e navegação básica."
+perguntas:
+  - texto: "O que é uma Pasta de Trabalho no Microsoft Excel?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Uma pasta do Windows onde guardamos os arquivos do Office."
+      - letra: "b"
+        texto: "Uma única folha de cálculo cheia de linhas e colunas."
+      - letra: "c"
+        texto: "O arquivo propriamente dito do Excel, que pode conter várias planilhas (abas)."
+      - letra: "d"
+        texto: "A barra de ferramentas localizada no topo da tela."
+
+  - texto: "Qual é o nome padrão dado a um novo arquivo criado no Excel?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Pasta 1"
+      - letra: "b"
+        texto: "Planilha 1"
+      - letra: "c"
+        texto: "Documento 1"
+      - letra: "d"
+        texto: "Sem título 1"
+
+  - texto: "Como são identificadas as planilhas individuais (folhas de trabalho) dentro de uma Pasta de Trabalho?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Por números no topo de cada coluna."
+      - letra: "b"
+        texto: "Por guias ou marcadores na parte inferior da tela."
+      - letra: "c"
+        texto: "Através de janelas flutuantes separadas."
+      - letra: "d"
+        texto: "Por letras na lateral esquerda da tela."
+
+  - texto: "Qual é a capacidade máxima de linhas que uma planilha do Excel possui?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "65.536 linhas."
+      - letra: "b"
+        texto: "100.000 linhas."
+      - letra: "c"
+        texto: "16.384 linhas."
+      - letra: "d"
+        texto: "1.048.576 linhas."
+
+  - texto: "Quantas colunas existem, no máximo, em uma única planilha do Excel?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "1.048.576 colunas."
+      - letra: "b"
+        texto: "16.384 colunas."
+      - letra: "c"
+        texto: "256 colunas."
+      - letra: "d"
+        texto: "5.000 colunas."
+
+  - texto: "O que caracteriza uma célula na estrutura de uma planilha?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O cruzamento entre uma coluna (letra) e uma linha (número)."
+      - letra: "b"
+        texto: "O conjunto de todas as linhas de uma aba."
+      - letra: "c"
+        texto: "A barra superior onde digitamos os textos longos."
+      - letra: "d"
+        texto: "O botão utilizado para salvar o arquivo de forma rápida."
+
+  - texto: "Se uma célula está localizada na coluna C e na linha 4, qual é o seu endereço de referência?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "4C"
+      - letra: "b"
+        texto: "C-4"
+      - letra: "c"
+        texto: "C4"
+      - letra: "d"
+        texto: "C:4"
+
+  - texto: "O que é uma 'célula ativa' no Excel?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Uma célula que possui uma fórmula piscando na tela."
+      - letra: "b"
+        texto: "A célula que está selecionada no momento, pronta para receber dados."
+      - letra: "c"
+        texto: "A primeira célula de toda a planilha (A1)."
+      - letra: "d"
+        texto: "Uma célula que não pode ser editada pelo usuário."
+
+  - texto: "Como a célula ativa é identificada visualmente na tela?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Por um contorno mais grosso (retângulo de seleção)."
+      - letra: "b"
+        texto: "Ela fica piscando na cor vermelha."
+      - letra: "c"
+        texto: "Ela se expande e ocupa toda a tela do computador."
+      - letra: "d"
+        texto: "O texto dentro dela fica automaticamente em itálico."
+
+  - texto: "Qual elemento da interface exibe o conteúdo real da célula selecionada e permite sua edição detalhada?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Barra de Status."
+      - letra: "b"
+        texto: "Painel de Controle."
+      - letra: "c"
+        texto: "Guia de Abas."
+      - letra: "d"
+        texto: "Barra de Fórmulas."
+
+  - texto: "O que é um intervalo ou faixa de células?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "O tempo que o Excel leva para calcular uma planilha."
+      - letra: "b"
+        texto: "A distância em centímetros entre uma coluna e outra."
+      - letra: "c"
+        texto: "Um conjunto de duas ou mais células selecionadas simultaneamente."
+      - letra: "d"
+        texto: "O espaço em branco que fica nas margens da impressão."
+
+  - texto: "Qual símbolo é utilizado na notação do Excel para indicar um intervalo contínuo (ex: de A1 até A10)?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Dois pontos (:)"
+      - letra: "b"
+        texto: "Ponto e vírgula (;)"
+      - letra: "c"
+        texto: "Hífen (-)"
+      - letra: "d"
+        texto: "Barra (/)"
+
+  - texto: "O que indica a notação 'A1:B5' no Excel?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Apenas a célula A1 e a célula B5."
+      - letra: "b"
+        texto: "Todas as células compreendidas entre a coluna A e B, da linha 1 até a linha 5."
+      - letra: "c"
+        texto: "Uma divisão do valor de A1 pelo valor de B5."
+      - letra: "d"
+        texto: "A criação de duas novas planilhas chamadas A1 e B5."
+
+  - texto: "Para realizar uma seleção fracionada (selecionar células em locais diferentes ao mesmo tempo), qual tecla deve ser mantida pressionada?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "SHIFT"
+      - letra: "b"
+        texto: "ALT"
+      - letra: "c"
+        texto: "TAB"
+      - letra: "d"
+        texto: "CTRL"
+
+  - texto: "Por padrão, como o Excel alinha dados do tipo TEXTO dentro de uma célula?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Alinhado à esquerda."
+      - letra: "b"
+        texto: "Alinhado à direita."
+      - letra: "c"
+        texto: "Centralizado."
+      - letra: "d"
+        texto: "Justificado."
+
+  - texto: "Por padrão, como o Excel alinha dados do tipo NUMÉRICO dentro de uma célula?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Alinhado à esquerda."
+      - letra: "b"
+        texto: "Alinhado à direita."
+      - letra: "c"
+        texto: "Centralizado."
+      - letra: "d"
+        texto: "Justificado."
+
+  - texto: "Qual é a utilidade prática do alinhamento automático padrão (texto à esquerda e número à direita)?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Deixar a planilha esteticamente colorida."
+      - letra: "b"
+        texto: "Obrigar o usuário a usar o mouse para corrigir o alinhamento."
+      - letra: "c"
+        texto: "Ajudar a identificar visualmente se um número foi digitado incorretamente como texto."
+      - letra: "d"
+        texto: "Economizar espaço de armazenamento no disco rígido."
+
+  - texto: "O que é a 'Alça de Preenchimento' no Excel?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Um menu para escolher o tipo de fonte do texto."
+      - letra: "b"
+        texto: "O pequeno quadrado no canto inferior direito da célula ativa para replicar dados ou sequências."
+      - letra: "c"
+        texto: "O botão que usamos para imprimir o documento."
+      - letra: "d"
+        texto: "A ferramenta que remove linhas duplicadas da tabela."
+
+  - texto: "Se você digitar 'Segunda-feira' em uma célula e arrastar a alça de preenchimento para baixo, o que acontecerá?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O Excel completará a sequência lógica dos dias da semana (Terça-feira, Quarta-feira...)."
+      - letra: "b"
+        texto: "O Excel copiará a palavra 'Segunda-feira' em todas as células de forma idêntica."
+      - letra: "c"
+        texto: "A célula ficará em branco."
+      - letra: "d"
+        texto: "O Excel exibirá uma mensagem de erro de digitação."
+
+  - texto: "Durante a digitação em uma célula, qual tecla confirma a entrada e move a seleção para a célula imediatamente ABAIXO?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "TAB"
+      - letra: "b"
+        texto: "ESC"
+      - letra: "c"
+        texto: "ENTER"
+      - letra: "d"
+        texto: "SHIFT"
+
+  - texto: "Qual tecla confirma a entrada de dados e move a seleção para a célula imediatamente à DIREITA?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "TAB"
+      - letra: "b"
+        texto: "ENTER"
+      - letra: "c"
+        texto: "BACKSPACE"
+      - letra: "d"
+        texto: "F5"
+
+  - texto: "Qual atalho de teclado abre a caixa de diálogo 'Ir Para', permitindo digitar um endereço exato (ex: Z100) para navegar instantaneamente até ele?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "F2"
+      - letra: "b"
+        texto: "CTRL + Z"
+      - letra: "c"
+        texto: "ALT + TAB"
+      - letra: "d"
+        texto: "F5"
+
+  - texto: "Se você deseja entrar no modo de edição diretamente no final do texto de uma célula sem apagar o que já está escrito, qual tecla deve pressionar?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "DELETE"
+      - letra: "b"
+        texto: "F2"
+      - letra: "c"
+        texto: "ESC"
+      - letra: "d"
+        texto: "F4"
+
+  - texto: "Qual é a diferença entre as teclas DELETE e BACKSPACE ao limpar uma célula ativa?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O DELETE apaga o conteúdo mantendo a formatação; o BACKSPACE apaga o caractere à esquerda e limpa a célula."
+      - letra: "b"
+        texto: "O DELETE apaga a planilha inteira; o BACKSPACE apaga apenas uma linha."
+      - letra: "c"
+        texto: "Ambas fazem exatamente a mesma coisa sem nenhuma diferença prática."
+      - letra: "d"
+        texto: "O DELETE fecha o Excel; o BACKSPACE salva o arquivo."
+
+  - texto: "Se você cometer um erro durante a digitação de um dado DENTRO de uma célula e quiser cancelar a ação antes de confirmá-la, qual tecla deve pressionar?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "ENTER"
+      - letra: "b"
+        texto: "DELETE"
+      - letra: "c"
+        texto: "ESC"
+      - letra: "d"
+        texto: "CTRL + S"
 ---
-
-<section class="section-box">
-  <h2>Enunciado</h2>
-  <p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-</section>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
-  </ul>
-</div>

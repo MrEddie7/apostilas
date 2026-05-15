@@ -1,56 +1,115 @@
 ---
 title: "Introdução a Planilhas Eletrônicas"
 aula_numero: "11"
-description: "Conceitos de células, intervalos e inserção de dados estruturados."
+description: "Aprenda os fundamentos das planilhas eletrônicas, estrutura da interface, conceitos de células, intervalos e inserção de dados estruturados no Excel."
 tags:
   - aula
   - bimestre-02
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 11 em desenvolvimento...</p>
-</section>
+  <h2>Teoria & Conceitos: Introdução a Planilhas Eletrônicas</h2>
 
-<section class="section-box">
-  <h2>Exemplo de Código</h2>
-  <div class="code-container">
-    <pre><code class="language-plaintext">// Em breve...</code></pre>
-  </div>
-</section>
+  <h3>1. O que é uma Planilha Eletrônica?</h3>
+  <p>O <strong>Microsoft Excel</strong> é a plataforma líder mundial para a criação de planilhas eletrônicas. Ele funciona como uma ferramenta de manipulação de informações que permite ao usuário realizar cálculos matemáticos complexos, pesquisas e organização de grandes volumes de dados de forma intuitiva.</p>
+  <p>Suas principais aplicações profissionais incluem o controle de despesas, matemática financeira e a criação de gráficos para suporte à tomada de decisão.</p>
 
-<section class="section-box">
-  <h2>Representação Gráfica</h2>
-  <div class="mermaid">
-    graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
-  </div>
-</section>
-
-<div class="tip-box">
-  <h4>Dicas & Lembretes</h4>
+  <h3>2. A Estrutura da Interface: Pastas e Folhas</h3>
+  <p>Diferente de um editor de texto, o Excel utiliza uma hierarquia organizacional específica:</p>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
+    <li><strong>Pasta de Trabalho (Workbook):</strong> É o arquivo propriamente dito. Cada novo arquivo é criado com o nome padrão de "Pasta 1".</li>
+    <li><strong>Planilhas (Worksheets):</strong> Uma pasta pode conter diversas folhas de trabalho, identificadas por guias (marcadores) na parte inferior da tela. Isso permite, por exemplo, que um contador organize os gastos de doze meses em uma única pasta, utilizando uma guia para cada mês.</li>
+    <li><strong>Dimensões:</strong> Cada planilha possui um espaço de trabalho vasto, composto por <strong>1.048.576 linhas</strong> e <strong>16.384 colunas</strong>.</li>
   </ul>
-</div>
+
+  <h3>3. O Conceito de Célula</h3>
+  <p>A célula é a unidade fundamental de uma planilha, caracterizando-se como o cruzamento entre uma coluna (letra) e uma linha (número).</p>
+  <ul>
+    <li><strong>Endereço ou Referência:</strong> Cada célula possui uma identidade única baseada em sua posição. Por exemplo, a célula na coluna C e linha 4 é identificada como <strong>C4</strong>.</li>
+    <li><strong>Célula Ativa:</strong> Para inserir dados, a célula deve ser selecionada, tornando-se a "célula ativa". Ela é visualmente identificada por um contorno mais grosso (retângulo de seleção).</li>
+    <li><strong>Barra de Fórmulas:</strong> Localizada no topo da área de trabalho, exibe o conteúdo real da célula selecionada e permite sua edição detalhada.</li>
+  </ul>
+
+  <h3>4. Intervalos e Faixas de Células</h3>
+  <p>Um intervalo (ou faixa) é um conjunto de duas ou mais células selecionadas simultaneamente para receberem um comando ou formatação de uma só vez.</p>
+  <ul>
+    <li><strong>Notação:</strong> Um intervalo é representado pela referência da célula inicial e da célula final, separadas pelo símbolo de dois pontos (:). Exemplo: <strong>A1:A10</strong> indica todas as células da coluna A entre a linha 1 e a linha 10.</li>
+    <li><strong>Seleção:</strong> Pode ser contínua (clicando e arrastando o mouse ou usando SHIFT + setas) ou fracionada (mantendo a tecla CTRL pressionada para selecionar células em locais diferentes).</li>
+  </ul>
+   <h3>5. Inserção de Dados Estruturados</h3>
+  <p>O Excel classifica automaticamente a natureza do dado digitado com base no primeiro caractere inserido. As categorias principais são:</p>
+  <ul>
+    <li><strong>Texto (ou Títulos):</strong> Qualquer combinação de letras, números e símbolos que não seja identificada como outra categoria. Por padrão, textos são alinhados à <strong>esquerda</strong> da célula.</li>
+    <li><strong>Números:</strong> Dados compostos por algarismos (0 a 9). São automaticamente alinhados à <strong>direita</strong> para facilitar a leitura. Podem ser formatados com símbolos de moeda ($), porcentagem (%) ou separadores.</li>
+    <li><strong>Fórmulas:</strong> São instruções para cálculos que devem começar obrigatoriamente com o sinal de <strong>igual (=)</strong>. Elas permitem relacionar o conteúdo de várias células para obter resultados automáticos (ex: =A1+A2).</li>
+    <li><strong>Datas e Horas:</strong> Internamente, o Excel trata datas e horas como números, o que possibilita realizar operações como subtrair duas datas para descobrir o número de dias entre elas.</li>
+  </ul>
+
+  <h3>6. Ferramentas de Eficiência na Entrada de Dados</h3>
+  <ul>
+    <li><strong>Auto Preenchimento:</strong> Através da alça de preenchimento (pequeno quadrado no canto inferior direito da célula ativa), o Excel consegue replicar conteúdos ou completar sequências lógicas automáticas (dias da semana, meses, etc.).</li>
+    <li><strong>Navegação Rápida:</strong> O uso da tecla <strong>ENTER</strong> confirma a entrada e move para a célula de baixo; a tecla <strong>TAB</strong> move a seleção para a célula à direita.</li>
+    <li><strong>AutoSoma:</strong> Ferramenta que identifica automaticamente um intervalo de números vizinhos e insere uma função de soma, agilizando cálculos contábeis.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>Exemplos Práticos</h2>
+  <h3>Exemplo Básico</h3>
+  <img src="{{ '/imagens/prints/tela-excel.png' | url }}" alt="Exemplo de planilha">
+  <h3>Exemplo de Planilha com Fórmulas e Gráfico</h3>
+  <img src="{{ '/imagens/prints/tela-excel2.png' | url }}" alt="Exemplo de planilha">
+</section>
+
+<section class="tip-box">
+  <h4>Dicas & Lembretes</h4>
+  <h5>Dicas de Navegação e Seleção</h5>
+  <ul>
+    <li><strong>Movimentação Ágil:</strong> Use a tecla <strong>TAB</strong> para mover a seleção para a célula à direita e a tecla <strong>ENTER</strong> para mover para a célula abaixo.</li>
+    <li><strong>Ir para Endereço Específico:</strong> Pressione <strong>F5</strong> para abrir a caixa de diálogo "Ir Para" e digite a referência exata da célula (ex: Z100) para chegar lá instantaneamente.</li>
+    <li><strong>Seleção de Intervalos:</strong> Para selecionar um conjunto contínuo, clique e arraste o mouse ou use <strong>SHIFT + setas</strong>. Para selecionar células em locais diferentes (seleção fracionada), mantenha a tecla <strong>CTRL</strong> pressionada enquanto clica.</li>
+    <li><strong>Seleção Total:</strong> Use <strong>CTRL + T</strong> para selecionar a tabela atual ou a planilha inteira caso não haja uma tabela definida.</li>
+  </ul>
+
+  <h5>Lembretes de Entrada e Edição de Dados</h5>
+  <ul>
+    <li><strong>Alinhamento Automático:</strong> O Excel alinha textos à esquerda e números à direita por padrão; isso ajuda a identificar se um número foi digitado incorretamente como texto.</li>
+    <li><strong>Edição de Célula:</strong> Para alterar o conteúdo de uma célula sem apagar tudo, pressione <strong>F2</strong> para entrar no modo de edição diretamente no final do texto.</li>
+    <li><strong>Limpeza vs. Exclusão:</strong> A tecla <strong>DELETE</strong> apaga apenas o conteúdo (dados e fórmulas) da célula, mantendo a formatação. Já a tecla <strong>BACKSPACE</strong> apaga o caractere à esquerda e limpa a célula ativa.</li>
+    <li><strong>Cancelar Ação:</strong> Se cometer um erro durante a digitação dentro de uma célula, pressione <strong>ESC</strong> para cancelar as alterações e retornar ao conteúdo original.</li>
+  </ul>
+
+  <h5>Dicas de Produtividade e Automação</h5>
+  <ul>
+    <li><strong>O Segredo da Alça de Preenchimento:</strong> O pequeno quadrado no canto inferior direito da célula ativa permite replicar fórmulas ou criar sequências lógicas (como dias da semana ou meses) ao ser arrastado.</li>
+    <li><strong>Uso de Fórmulas:</strong> Toda instrução de cálculo deve começar obrigatoriamente com o sinal de igual (<strong>=</strong>).</li>
+    <li><strong>Fixação de Células ($):</strong> Ao copiar fórmulas, use a tecla <strong>F4</strong> para inserir o símbolo de cifrão ($) e travar uma referência de célula (ex: $A$1), impedindo que ela mude durante o arraste.</li>
+    <li><strong>AutoSoma:</strong> Utilize o botão de <strong>AutoSoma</strong> na barra de ferramentas para que o Excel identifique e some automaticamente o intervalo de números vizinhos mais provável.</li>
+  </ul>
+
+  <h5>Gestão e Segurança da Planilha</h5>
+  <ul>
+    <li><strong>Salvamento Constante:</strong> Salve seu progresso periodicamente usando <strong>CTRL + S</strong> (ou CTRL + B em versões mais antigas) para evitar a perda de dados.</li>
+    <li><strong>Organização em Abas:</strong> Utilize o conceito de Pasta de Trabalho para categorizar informações em diferentes planilhas (folhas) dentro de um único arquivo, renomeando as guias inferiores.</li>
+    <li><strong>Nomenclatura de Tabelas:</strong> É altamente recomendado nomear suas tabelas; isso facilita a criação de fórmulas complexas e a organização dos dados.</li>
+    <li><strong>Congelamento de Painéis:</strong> Em planilhas grandes, use o recurso de <strong>Congelar Painéis</strong> na guia Exibição para manter os títulos das colunas sempre visíveis enquanto você rola a tela.</li>
+  </ul>
+</section>
 
 <section class="section-box">
   <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
-</section>
-
-<section class="section-box">
-  <h2>Referências</h2>
+  <p>A estruturação correta dos dados no Excel é o primeiro passo para a automação de processos em diversos setores:</p>
   <ul>
-    <li>Material de apoio em breve.</li>
+    <li><strong>Contabilidade:</strong> Registro diário de entradas e saídas em planilhas mensais integradas.</li>
+    <li><strong>Gestão de Estoque:</strong> Uso de intervalos nomeados para controlar a entrada e saída de mercadorias.</li>
+    <li><strong>Recursos Humanos:</strong> Organização de cronogramas e cálculos de horas trabalhadas usando o formato de data/hora.</li>
   </ul>
 </section>
 
 <section class="section-box">
   <h2>Para Praticar</h2>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
+    <li><a href="./exercicio-01/">Exercício 01: Identificação de Células e Intervalos</a></li>
+    <li><a href="./exercicio-02/">Exercício 02: Entrada de Dados e Auto Preenchimento</a></li>
   </ul>
 </section>
