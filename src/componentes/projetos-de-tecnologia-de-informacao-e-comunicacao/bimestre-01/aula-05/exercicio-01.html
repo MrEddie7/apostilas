@@ -1,41 +1,107 @@
 ---
 layout: exercicio
-title: "Exercício 01 - Configuração de Página e Estilos"
+title: "Automatização de Documentos Acadêmicos com Estilos Word (Padrão ABNT)"
 exercicio_numero: "01"
 aula_numero: "05"
-description: "Atividade prática para configurar as margens, fontes e hierarquia de títulos no Microsoft Word seguindo as normas ABNT."
+description: "Configuração de um modelo de documento acadêmico reutilizável utilizando Estilos e ferramentas de
+automação do Microsoft Word conforme as normas ABNT."
 ---
 
 <section class="section-box">
-  <h2>Enunciado</h2>
-  <p>Abra um novo documento no Microsoft Word e realize as seguintes configurações técnicas fundamentais:</p>
-  
+  <h2>Objetivo</h2>
+  <p>Desenvolver as habilidades de organização, padronização e produtividade no Microsoft Word, configurando um modelo
+    de documento acadêmico reutilizável que atenda rigorosamente às principais normas da ABNT (Associação Brasileira de
+    Normas Técnicas).</p>
+  <p>Em vez de formatar o texto manualmente linha por linha, você aprenderá a configurar a estrutura do software para
+    trabalhar a seu favor através da criação e modificação de <strong>Estilos</strong>.</p>
+</section>
+
+<section class="section-box">
+  <h2>Instruções e Requisitos Técnicos</h2>
+  <p>Abra um documento em branco no Microsoft Word e aplique as seguintes configurações:</p>
+
+  <h3>1. Configuração da Página (Margens e Papel)</h3>
+  <ul>
+    <li><strong>Tamanho do Papel:</strong> A4 (21 cm x 29,7 cm).</li>
+    <li><strong>Margens:</strong>
+      <ul>
+        <li>Superior: 3,0 cm</li>
+        <li>Esquerda: 3,0 cm</li>
+        <li>Inferior: 2,0 cm</li>
+        <li>Direita: 2,0 cm</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>2. Criação e Modificação de Estilos</h3>
+  <p><strong>Atenção:</strong> Você não deve formatar o texto usando a barra de ferramentas padrão diretamente no corpo
+    do texto. Modifique os Estilos na guia "Página Inicial":</p>
+
+  <ul>
+    <li><strong>Estilo "Normal" (Texto Corrido):</strong>
+      <ul>
+        <li>Fonte: Arial ou Times New Roman (Tamanho 12).</li>
+        <li>Cor: Automática/Preto | Alinhamento: Justificado.</li>
+        <li>Espaçamento entre linhas: 1,5 linha.</li>
+        <li>Espaçamento entre parágrafos: 0 pt (antes e depois).</li>
+        <li>Recuo da primeira linha: 1,25 cm.</li>
+      </ul>
+    </li>
+    <li><strong>Estilo "Título 1" (Seções Primárias):</strong>
+      <ul>
+        <li>Fonte: Mesma do texto (Tamanho 12), em <strong>NEGRITO</strong> e todas em <strong>MAIÚSCULAS</strong>.</li>
+        <li>Espaçamento: 1,5 linha (com 12 pt antes e depois para separar do texto).</li>
+      </ul>
+    </li>
+    <li><strong>Estilo "Título 2" (Seções Secundárias):</strong>
+      <ul>
+        <li>Fonte: Tamanho 12, em <strong>NEGRITO</strong>, apenas a primeira letra em maiúscula.</li>
+      </ul>
+    </li>
+    <li><strong>Estilo "Citação Longa" (Mais de 3 linhas) — Crie um novo estilo:</strong>
+      <ul>
+        <li>Fonte: Tamanho 10 | Alinhamento: Justificado.</li>
+        <li>Espaçamento entre linhas: Simples.</li>
+        <li>Recuo esquerdo: 4,0 cm em relação à margem (sem recuo na primeira linha).</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>3. Elementos de Estrutura Automatizada</h3>
+  <ul>
+    <li><strong>Numeração de Páginas:</strong> Canto superior direito (margem de 2 cm). A contagem começa na capa, mas a
+      numeração só aparece a partir da Introdução (use Quebra de Seção).</li>
+    <li><strong>Sumário Automático:</strong> Inserir Sumário Dinâmico baseado nos estilos "Título 1" e "Título 2".</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>Conteúdo de Teste (Estrutura da Entrega)</h2>
+  <p>Preencha o documento com textos fictícios (use o gerador <code class="one-line-code">=Lorem()</code>) seguindo esta
+    ordem:</p>
   <ol>
-    <li><strong>Layout da Página:</strong> Configure o tamanho para <strong>A4</strong> e as margens para:
-      <ul>
-        <li>Superior: 3 cm</li>
-        <li>Esquerda: 3 cm</li>
-        <li>Inferior: 2 cm</li>
-        <li>Direita: 2 cm</li>
-      </ul>
-    </li>
-    <li><strong>Configuração de Fonte:</strong> Defina a fonte padrão como <strong>Arial</strong> ou <strong>Times New Roman</strong>, tamanho <strong>12</strong>, com alinhamento <strong>Justificado</strong> e espaçamento entre linhas de <strong>1,5</strong>.</li>
-    <li><strong>Estruturação de Títulos:</strong> Escreva os seguintes títulos e aplique os estilos corretos:
-      <ul>
-        <li>"1 INTRODUÇÃO" -> Aplique o estilo <strong>Título 1</strong>.</li>
-        <li>"1.1 OBJETIVOS" -> Aplique o estilo <strong>Título 2</strong>.</li>
-        <li>"2 DESENVOLVIMENTO" -> Aplique o estilo <strong>Título 1</strong>.</li>
-      </ul>
-    </li>
+    <li><strong>Capa:</strong> Configurada manualmente (limpa, sem numeração).</li>
+    <li><strong>Sumário:</strong> Gerado de forma 100% automática.</li>
+    <li><strong>1. INTRODUÇÃO (Título 1):</strong> Dois parágrafos de texto (Estilo Normal).</li>
+    <li><strong>1.1 OBJETIVOS (Título 2):</strong> Um parágrafo explicativo e um exemplo de <strong>Citação
+        Longa</strong> (aplicando o respectivo estilo).</li>
   </ol>
 </section>
 
 <div class="tip-box">
-  <h4>Orientações</h4>
+  <h4>Critérios de Avaliação</h4>
   <ul>
-    <li>Para configurar as margens, acesse a guia <strong>Layout > Margens > Margens Personalizadas</strong>.</li>
-    <li>Para modificar um estilo (como o Título 1), clique com o botão direito sobre ele na galeria de estilos e escolha <strong>Modificar</strong>.</li>
-    <li>Certifique-se de que o recuo da primeira linha de cada parágrafo de texto seja de <strong>1,25 cm</strong>.</li>
+    <li>Configuração correta das margens e papel A4.</li>
+    <li>Uso <strong>exclusivo</strong> de Estilos (formatação manual "por fora" perderá nota).</li>
+    <li>Recuo de parágrafo (1,25 cm) configurado direto no estilo Normal.</li>
+    <li>Sumário dinâmico e atualizável.</li>
+    <li>Paginação correta (ocultada nas primeiras páginas).</li>
   </ul>
 </div>
 
+<section class="section-box">
+  <h2>Formato de Entrega</h2>
+  <p>Arquivo digital no formato <strong>.docx</strong> ou <strong><a href="../tutorial-dotx/">.dotx</a></strong>
+    (Modelo do Word).</p>
+  <a class="btn" href="../tutorial-dotx/">Guia Técnico: O Formato .DOTX (Modelos)</a>
+</section>
