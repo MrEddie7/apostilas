@@ -1,30 +1,81 @@
 ---
-title: "Entrega de Projeto 2: Esquema Lógico (Tabelas) derivado do projeto do 1º bimestre."
+title: "Estudo de Caso Orientado: Projeto MyPocket"
 aula_numero: "18"
 subject: "banco-de-dados-i"
-description: "Conteúdo da aula 18 do bimestre 2: Entrega de Projeto 2: Esquema Lógico (Tabelas) derivado do projeto do 1º bimestre.."
+description: "Modelagem lógica e conceitual focada em Engenharia de Dados para um sistema de gestão financeira."
 tags:
 - aula
 - bimestre-02
 ---
-aula_numero: "18"
-subject: "banco-de-dados-i"
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo teórico da aula 08 em desenvolvimento...</p>
+  <h2>1. Introdução: O Valor da Engenharia de Dados</h2>
+  <p>No mercado de tecnologia e sistemas corporativos, os dados são o ativo mais valioso de uma organização. Quando falamos do setor de tecnologia financeira (Fintechs), a precisão, a segurança e a consistência desses dados tornam-se uma questão de sobrevivência institucional. Um erro matemático de um centavo ou a perda acidental de um histórico de transações pode arruinar a reputação de um software e quebrar uma empresa.</p>
+  <p>Muitos desenvolvedores iniciantes cometem o erro de começar a escrever códigos de programação antes de desenhar a estrutura onde esses dados serão armazenados. O resultado disso são sistemas lentos, com dados duplicados e falhas graves de segurança.</p>
+  <p>O banco de dados é a "Memória" de um software. Se essa memória for mal estruturada, toda a aplicação será frágil. Neste projeto prático, você atuará como Engenheiro e Arquiteto de Dados para planejar, modelar e proteger a infraestrutura do <strong>MyPocket</strong>, um sistema de gestão financeira doméstica e auditoria de fluxo de caixa.</p>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo Prático</h2>
-  <p>Exemplo prático da aula 08 em desenvolvimento...</p>
+  <h2>2. O Minimundo e os Requisitos de Negócio (RN)</h2>
+  <p>O primeiro passo de qualquer modelagem é compreender o "Minimundo" (o recorte da realidade que o software vai controlar) e as Regras de Negócio impostas pelo cliente.</p>
+  
+  <h4>O Cenário (Minimundo):</h4>
+  <p>O MyPocket permite que usuários gerenciem suas finanças pessoais. O sistema deve identificar cada usuário por um código exclusivo, guardando seu nome e e-mail. Para proteger o patrimônio, cada usuário possui uma única Carteira onde fica registrado seu saldo disponível. Dentro dessa carteira, ocorrem diversas movimentações de dinheiro, chamadas de Transações. Cada transação possui um identificador único, uma descrição textual, a data em que ocorreu e o valor financeiro envolvido.</p>
+
+  <p>Para garantir que o sistema seja robusto e confiável, a diretoria da Fintech estabeleceu três Regras de Negócio inegociáveis que devem ser garantidas diretamente pela arquitetura do banco de dados:</p>
+  <ul>
+    <li><strong>RN01 - Controle Preventivo de Endividamento:</strong> O saldo acumulado da carteira do usuário nunca poderá ficar negativo no sistema. Nenhuma transação de saída de dinheiro pode ser processada se o valor for maior do que o saldo atual líquido disponível.</li>
+    <li><strong>RN02 - Classificação Rígida de Fluxo:</strong> Não existem movimentações genéricas. Toda e qualquer transação inserida na plataforma deve ser categorizada estritamente como uma Receita (ganho/entrada) ou uma Despesa (gasto/saída), permitindo a geração de relatórios analíticos limpos.</li>
+    <li><strong>RN03 - Histórico Inalterável (Imutabilidade):</strong> Por motivos de auditoria e consistência fiscal, uma transação gravada no banco de dados nunca poderá ser alterada ou apagada. Se um lançamento foi realizado com o valor incorreto, o usuário é proibido de editar o registro; ele deverá obrigatoriamente realizar uma nova transação de estorno (uma receita para anular uma despesa errada, ou vice-versa), mantendo a linha do tempo intacta.</li>
+  </ul>
 </section>
 
+<section class="section-box">
+  <h2>3. O Desafio Prático: Etapas de Execução</h2>
+  <p>Sua missão nesta atividade está dividida em três fases progressivas, simulando o fluxo de trabalho de um profissional de engenharia de dados no mercado de trabalho.</p>
 
+  <h4>Parte 1: Modelo Conceitual (Diagrama Entidade-Relacionamento)</h4>
+  <p>Utilizando uma ferramenta CASE (como brModelo, draw.io ou equivalente), crie o Modelo Entidade-Relacionamento (MER) abstrato do sistema seguindo as diretrizes teóricas:</p>
+  <ul>
+    <li><strong>Mapeamento de Entidades e Atributos:</strong> Identifique e desenhe as entidades fortes primárias (Usuario, Carteira e Transacao). Adicione a cada uma delas seus respectivos atributos descritivos, marcando de forma explícita quais serão os atributos identificadores (Chaves Primárias).</li>
+    <li><strong>Definição de Cardinalidades:</strong> Estabeleça as restrições de conectividade máxima e mínima para os relacionamentos. Lembre-se da regra do negócio: Um usuário possui uma, e apenas uma, carteira ativa; e uma carteira pertence exclusivamente a um único usuário.</li>
+    <li><strong>Abstração Avançada (Herança no Banco de Dados):</strong> Aplique o conceito de Generalização/Especialização para a entidade Transacao. O diagrama deve demonstrar visualmente que Transacao funciona como uma superclasse (entidade genérica) que se especializa nas subclasses Receita e Despesa. Classifique no triângulo de ligação se essa especialização é Total (t) ou Parcial (p), e se é Exclusiva (e) ou Compartilhada (c), baseando-se na RN02.</li>
+  </ul>
 
+  <h4>Parte 2: Modelo Lógico (Esquema Relacional de Tabelas)</h4>
+  <p>Realize a transposição do seu modelo abstrato (Parte 1) para um modelo lógico-relacional, aplicando estritamente as regras de derivação de diagramas para tabelas:</p>
+  <ul>
+    <li><strong>Padrão de Nomenclatura Corporativo:</strong> Escreva a estrutura textual das tabelas geradas adotando o padrão de nomes obrigatoriamente no plural (ex: usuarios, carteiras, transacoes).</li>
+    <li><strong>Padronização de Chaves:</strong> Todas as chaves primárias do sistema devem adotar obrigatoriamente a nomenclatura simplificada <code>id</code>. Campos compostos devem adotar o padrão snake_case (letras minúsculas separadas por sublinhado, ex: <code>data_transacao</code>).</li>
+    <li><strong>Resolução de Relacionamentos:</strong> Demonstre em qual tabela ficará posicionada a Chave Estrangeira (FK) para resolver o relacionamento 1:1 (Usuário/Carteira) de forma que o banco impeça um usuário de criar uma segunda carteira.</li>
+    <li><strong>Estratégia de Mapeamento de Herança:</strong> Defina e justifique textualmente qual estratégia de mapeamento de subclasses você escolheu para o banco de dados (Tabela Única para a Superclasse contendo um campo descritor/tipo; ou Tabelas Separadas para cada subclasse).</li>
+  </ul>
 
+  <h4>Parte 3: Dicionário de Dados e Restrições de Integridade</h4>
+  <p>A consistência dos dados depende de regras rígidas sobre o que cada campo pode aceitar. Crie o Dicionário de Dados técnico detalhando a estrutura das tabelas <code>carteiras</code> e <code>transacoes</code>. Monte uma tabela para cada uma contendo as seguintes colunas de documentação:</p>
+  <ul>
+    <li><strong>Nome do Campo:</strong> O nome físico da coluna na tabela.</li>
+    <li><strong>Tipo de Dado:</strong> O tipo exato de dado do banco de dados (Atenção: Justifique por que tipos de ponto flutuante imprecisos como <code>FLOAT</code> ou <code>DOUBLE</code> devem ser proibidos para armazenar dinheiro e qual tipo deve ser usado em seu lugar).</li>
+    <li><strong>Restrições (Constraints):</strong> Defina quais campos não aceitam valores vazios (<code>NOT NULL</code>), quais exigem valores únicos (<code>UNIQUE</code>) e quais devem possuir validações de valores permitidos (Cláusulas <code>CHECK</code> ou <code>ENUM</code>).</li>
+    <li><strong>Descrição:</strong> A finalidade de negócio daquele campo.</li>
+  </ul>
+</section>
 
+<div class="tip-box">
+  <h4>4. Orientações Finais e Critérios de Homologação</h4>
+  <p>Para que o seu projeto de modelagem seja aprovado pela governança de dados da Fintech, a estrutura apresentada passará por quatro testes de fogo lógicos:</p>
+  <ul>
+    <li><strong>O Teste da Unicidade Financeira:</strong> Olhando para o seu modelo lógico, o banco de dados rejeitará fisicamente se um script tentar associar uma nova carteira a um usuário que já possui uma cadastrada?</li>
+    <li><strong>O Teste da Imutabilidade Histórica:</strong> Se um usuário for descadastrado do sistema, as configurações das suas Chaves Estrangeiras (<code>ON DELETE</code> e <code>ON UPDATE</code>) foram configuradas para proibir a exclusão em cascata (<code>RESTRICT</code> / <code>NO ACTION</code>), impedindo que o histórico auditável de transações suma do mapa?</li>
+    <li><strong>O Teste da Precisão Centesimal:</strong> Se o sistema rodar um cálculo de soma acumulada de um milhão de transações, o tipo de dado escolhido para as colunas de valor garante que nenhum centavo se perca por arredondamento computacional?</li>
+    <li><strong>O Teste da Blindagem de Fluxo:</strong> O banco de dados impede que uma transação nasça sem dizer explicitamente se ela é uma Entrada ou uma Saída de dinheiro?</li>
+  </ul>
+  <p>A engenharia de dados de um sistema de grande porte começa no desenho do seu alicerce. Ao concluir estas três etapas, você terá desenhado uma estrutura de dados robusta, profissional, performática e completamente preparada para ser implementada em qualquer Sistema Gerenciador de Banco de Dados (SGBD) do mercado.</p>
+</div>
 
-
-
-
+<section class="section-box">
+  <h2>Para Praticar</h2>
+  <ul>
+    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
+  </ul>
+</section>

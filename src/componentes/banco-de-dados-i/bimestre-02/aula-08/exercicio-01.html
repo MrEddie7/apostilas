@@ -1,23 +1,73 @@
 ---
 layout: exercicio
-title: "Entrega de Projeto 1: Diagrama Conceitual (MER) de um cenário de pequeno porte."
+title: "Projeto MyPocket: Modelagem e Arquitetura de Dados Relacionais"
 exercicio_numero: "01"
-08ero: "08"
-description: "Primeira atividade prática para consolidar os conhecimentos da aula 08."
+aula_numero: "18"
+subject: "banco-de-dados-i"
+description: "Atividade Prática Dirigida de modelagem conceitual, lógica e dicionário de dados."
 ---
 
-<p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+<section class="section-box">
+  <h2>1. Enunciado e Contexto de Negócio</h2>
+  <p>Uma Startup de tecnologia financeira (Fintech) contratou você para realizar a modelagem do banco de dados de um novo produto: o <strong>MyPocket</strong>, um sistema de controle e auditoria de finanças domésticas.</p>
+  <p>Diferente de planilhas comuns, o grande diferencial competitivo do MyPocket no mercado é a sua arquitetura de segurança de dados, projetada para atuar na prevenção do endividamento e garantir a integridade absoluta do histórico financeiro do usuário.</p>
+  
+  <p>Para que o sistema funcione com segurança, o banco de dados deve ser modelado seguindo Regras de Negócio (RN) estritas:</p>
+  <ul>
+    <li><strong>RN01 - Controle de Endividamento:</strong> O saldo acumulado do usuário nunca poderá ficar negativo no sistema. Toda despesa que ultrapasse o saldo atual deve ser bloqueada antes de ser registrada.</li>
+    <li><strong>RN02 - Classificação Rígida de Fluxo:</strong> Não existem movimentações genéricas. Toda e qualquer transação deve ser categorizada estritamente como uma Receita (ganho/entrada) ou uma Despesa (gasto/saída).</li>
+    <li><strong>RN03 - Histórico Inalterável (Imutabilidade):</strong> Por questões de auditoria financeira, uma transação gravada no banco nunca poderá ser alterada (com o comando <code>UPDATE</code>) ou apagada (com o comando <code>DELETE</code>). Se um lançamento foi feito com valor errado, o usuário é obrigado a lançar uma nova transação de estorno (uma receita para anular uma despesa errada, ou vice-versa).</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>2. Preparação e Premissas Técnicas</h2>
+  <ul>
+    <li><strong>Ferramentas:</strong> Utilize um software CASE de modelagem de dados (sugestão: brModelo, draw.io ou equivalente).</li>
+    <li><strong>Restrições de Padrão de Projeto (Naming Conventions):</strong>
+      <ul>
+        <li>Nomes de tabelas devem ser definidos obrigatoriamente no plural (ex: <code>usuarios</code>).</li>
+        <li>Todas as chaves primárias devem adotar estritamente o nome <code>id</code>.</li>
+        <li>Campos compostos devem utilizar o padrão snake_case (letras minúsculas separadas por underline, ex: <code>data_transacao</code>).</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>3. O Desafio (Atividades Práticas)</h2>
+  
+  <h4>Parte 1: Modelo Conceitual (MER)</h4>
+  <p>Com base no contexto do sistema, elabore o Diagrama Entidade-Relacionamento (DER) abstrato atendendo aos seguintes critérios teóricos:</p>
+  <ul>
+    <li>Mapeie as entidades fortes primárias: <strong>Usuario</strong> (titular do sistema), <strong>Carteira</strong> (onde o saldo é guardado e protegido) e <strong>Transacao</strong>.</li>
+    <li>Defina as cardinalidades máximas e mínimas das associações. Atente-se à regra: Um usuário possui apenas uma carteira ativa no sistema, e uma carteira pertence a apenas um usuário.</li>
+    <li>Aplique o conceito de Abstração Avançada de Generalização/Especialização na entidade <strong>Transacao</strong>. O modelo deve demonstrar visualmente que Transacao é a superclasse que se especializa nas subclasses <strong>Receita</strong> e <strong>Despesa</strong>. Classifique no diagrama se essa especialização é Total (t) ou Parcial (p), Exclusiva (e) ou Compartilhada (c).</li>
+  </ul>
+
+  <h4>Parte 2: Modelo Lógico (Esquema Relacional)</h4>
+  <p>Aplique as regras de derivação para transformar seu modelo conceitual em um esquema lógico de tabelas textuais.</p>
+  <ul>
+    <li>Escreva a estrutura de dicionário/linhas das tabelas geradas.</li>
+    <li>Demonstre como a relação 1:1 entre Usuário e Carteira foi resolvida através do posicionamento estratégico da Chave Estrangeira (FK).</li>
+    <li><strong>Mapeamento de Herança:</strong> Justifique a estratégia adotada para mapear a herança de Transacao para a estrutura relacional (tabela única para a superclasse com campo discriminador, ou tabelas separadas para as subclasses).</li>
+  </ul>
+
+  <h4>Parte 3: Dicionário de Dados e Restrições de Integridade</h4>
+  <p>Documente a estrutura exata das tabelas <code>carteiras</code> e <code>transacoes</code>, montando uma tabela descritiva contendo:</p>
+  <ul>
+    <li>Nome do Campo.</li>
+    <li>Tipo de Dado específico (Justifique a escolha do tipo de dado ideal para os campos de valores financeiros, visando impedir problemas de arredondamento).</li>
+    <li>Restrições de Integridade (Identifique quais campos devem receber travas como <code>NOT NULL</code>, <code>UNIQUE</code>, ou cláusulas <code>CHECK</code>).</li>
+  </ul>
+</section>
 
 <div class="tip-box">
-  <h4>Orientações</h4>
+  <h4>4. Orientações Finais e Critérios de Homologação</h4>
+  <p>Para que o seu projeto seja aprovado pela governança de dados da Fintech, os seguintes pontos serão testados no seu modelo:</p>
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li><strong>Teste de Unicidade:</strong> O banco impede fisicamente que o mesmo usuário tenha duas carteiras registradas?</li>
+    <li><strong>Teste de Imutabilidade:</strong> As restrições e configurações das Chaves Estrangeiras (como <code>ON DELETE</code> e <code>ON UPDATE</code>) foram configuradas de modo a impedir que a exclusão de um usuário apague o histórico de transações que passaram por auditoria?</li>
+    <li><strong>Precisão Numérica:</strong> Foi evitado o uso de tipos de dados de ponto flutuante imprecisos (como <code>FLOAT</code> ou <code>DOUBLE</code>) para o dinheiro?</li>
   </ul>
 </div>
-
-
-
-
-
