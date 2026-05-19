@@ -1,23 +1,58 @@
 ---
 layout: exercicio
-title: "Modelo Entidade-Relacionamento (MER): Conceitos de Entidades e suas classificações."
+title: "Sistema de Gestão Hospitalar Vida & Saúde"
 exercicio_numero: "01"
-03ero: "03"
-description: "Primeira atividade prática para consolidar os conhecimentos da aula 03."
+aula_numero: "03"
+subject: "banco-de-dados-i"
+description: "Modelagem Conceitual e Física utilizando Generalização e Especialização para um sistema hospitalar."
 ---
 
-<p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+<section class="section-box">
+  <h2>1. Enunciado: Sistema de Gestão Hospitalar "Vida & Saúde"</h2>
+  <p>O Hospital Vida & Saúde deseja modernizar seu banco de dados para gerenciar melhor seus recursos humanos e pacientes. No levantamento de requisitos, identificou-se que todas as pessoas cadastradas compartilham dados básicos (Nome, CPF, Data de Nascimento). No entanto, existem regras de negócio específicas:</p>
+  <ul>
+    <li><strong>Funcionários:</strong> Possuem matrícula e salário base. Eles se dividem em Médicos (que precisam obrigatoriamente do CRM) e Enfermeiros (que precisam do COREN). Um funcionário não pode ser médico e enfermeiro ao mesmo tempo (especialização disjunta).</li>
+    <li><strong>Pacientes:</strong> Possuem um número de convênio e histórico de alergias.</li>
+    <li><strong>Médicos Residentes:</strong> Existe um grupo especial de médicos que também são Alunos da faculdade de medicina conveniada. Neste caso, a mesma pessoa desempenha o papel de médico e de aluno simultaneamente (sobreposição de papéis).</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>2. Preparação</h2>
+  <ul>
+    <li>Revise os conceitos de <strong>Herança de Atributos</strong>: lembre-se de que a subclasse herda automaticamente os atributos da superclasse.</li>
+    <li>Prepare uma ferramenta de diagramação (como o Mermaid Live Editor) ou papel e caneta.</li>
+    <li>Considere as restrições de Disjunção (D) e Sobreposição (O) para aplicar no diagrama.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>3. O Desafio</h2>
+  
+  <h4>Tarefa 1: Modelagem Conceitual (Diagrama)</h4>
+  <p>Crie um diagrama utilizando a sintaxe Mermaid que represente a hierarquia de especialização do hospital. Você deve:</p>
+  <ul>
+    <li>Definir a superclasse <strong>Pessoa</strong>.</li>
+    <li>Criar as subclasses <strong>Funcionário</strong> e <strong>Paciente</strong>.</li>
+    <li>Especializar <strong>Funcionário</strong> em <strong>Médico</strong> e <strong>Enfermeiro</strong> (usando a restrição correta).</li>
+    <li>Representar a sobreposição onde um <strong>Médico</strong> também pode ser um <strong>Aluno</strong>.</li>
+  </ul>
+
+  <h4>Tarefa 2: Identificação de Atributos</h4>
+  <p>Liste quais atributos ficam na superclasse e quais devem ser exclusivos das subclasses, garantindo que não haja redundância de dados (ex: não repetir o nome da pessoa na tabela de médicos).</p>
+
+  <h4>Tarefa 3: Mapeamento para o Modelo Físico (SQL)</h4>
+  <p>Escreva o script SQL (DDL) para criar as tabelas dessa hierarquia seguindo a Regra de Transposição de Generalizações:</p>
+  <ul>
+    <li>A chave primária (PK) das subclasses deve ser a mesma PK da superclasse (Ex: o CPF da Pessoa é a PK na tabela de Médicos e também a FK para a tabela Pessoa).</li>
+  </ul>
+</section>
 
 <div class="tip-box">
-  <h4>Orientações</h4>
+  <h4>Orientações Finais</h4>
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li><strong>Integridade Referencial:</strong> Ao criar o modelo físico, não esqueça de definir as chaves estrangeiras (<code>FOREIGN KEY</code>) que apontam para a superclasse.</li>
+    <li><strong>Restrições Semânticas:</strong> No diagrama Mermaid, utilize as siglas (D) para especializações onde os subtipos são exclusivos e (O) para casos onde há sobreposição de papéis.</li>
+    <li><strong>Dica de Ouro:</strong> Na superclasse Pessoa, é recomendável criar um atributo "Tipo" (ex: <code>tipo_pessoa</code>) para atuar como discriminante, facilitando a identificação de qual subclasse aquele registro pertence no modelo físico.</li>
   </ul>
 </div>
-
-
-
-
-

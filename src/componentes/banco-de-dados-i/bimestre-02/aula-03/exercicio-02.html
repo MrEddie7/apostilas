@@ -1,23 +1,307 @@
 ---
-layout: exercicio
-title: "Modelo Entidade-Relacionamento (MER): Conceitos de Entidades e suas classificações."
+layout: questionario
+title: "Abstrações Avançadas: Especialização e Generalização"
 exercicio_numero: "02"
-03ero: "03"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 03."
+aula_numero: "13"
+description: "Questionário sobre superclasses, subclasses, herança de atributos, restrições de disjunção e sobreposição no MER."
+perguntas:
+  - texto: "O que o processo de abstração em modelagem de dados permite ao analista?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Criar códigos de programação automáticos a partir do diagrama conceitual."
+      - letra: "b"
+        texto: "Focar nos aspectos relevantes da realidade, ignorando detalhes que não influenciam o ambiente modelado."
+      - letra: "c"
+        texto: "Inserir o maior número possível de tabelas no banco de dados para garantir redundância."
+      - letra: "d"
+        texto: "Eliminar completamente a necessidade de chaves primárias e estrangeiras."
+
+  - texto: "Como é caracterizado o processo de Generalização na modelagem de dados?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Uma abordagem Bottom-Up, onde identificamos atributos comuns em várias entidades e as agrupamos em uma superclasse."
+      - letra: "b"
+        texto: "Uma abordagem Top-Down, onde decompomos uma entidade genérica em várias subclasses específicas."
+      - letra: "c"
+        texto: "A criação de chaves estrangeiras que apontam para a própria tabela de origem de forma recursiva."
+      - letra: "d"
+        texto: "O agrupamento de registros em tabelas temporárias durante a execução de consultas SQL complexas."
+
+  - texto: "Qual das alternativas apresenta um exemplo clássico e correto de Generalização?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "A divisão de uma entidade única em tabelas lógicas baseadas no tamanho dos registros."
+      - letra: "b"
+        texto: "A criação de um atributo específico que se aplica a todos os elementos de um banco de dados."
+      - letra: "c"
+        texto: "O agrupamento de entidades distintas como Carros e Caminhões em uma estrutura de nível superior chamada Veículo."
+      - letra: "d"
+        texto: "A junção de duas tabelas de movimentação financeira por meio de um comando de união de conjuntos."
+
+  - texto: "Como é caracterizado o processo de Especialização na modelagem de dados?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "A união de todas as tabelas do banco de dados em uma única entidade global."
+      - letra: "b"
+        texto: "O isolamento de dados comuns para que nenhuma entidade dependa de outra."
+      - letra: "c"
+        texto: "Uma abordagem Bottom-Up focada em remover atributos de entidades fracas."
+      - letra: "d"
+        texto: "Uma abordagem Top-Down, onde uma entidade de alto nível é decomposta em subclasses para representar grupos com atributos específicos."
+
+  - texto: "Qual é a regra fundamental de Herança nas estruturas de especialização?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "As subclasses herdam automaticamente todos os atributos e relacionamentos da superclasse."
+      - letra: "b"
+        texto: "A superclasse herda os atributos exclusivos criados em suas respectivas subclasses."
+      - letra: "c"
+        texto: "As subclasses perdem o vínculo com os relacionamentos da superclasse para ganhar autonomia."
+      - letra: "d"
+        texto: "A herança ocorre apenas para atributos do tipo texto, excluindo chaves numéricas."
+
+  - texto: "Qual é a regra obrigatória para a definição da Chave Primária (PK) de uma subclasse no modelo relacional?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A subclasse deve possuir uma chave primária sequencial totalmente nova e independente."
+      - letra: "b"
+        texto: "A chave primária da subclasse é obrigatoriamente a mesma chave primária da superclasse."
+      - letra: "c"
+        texto: "A chave primária da subclasse deve ser composta pela junção de seus atributos exclusivos."
+      - letra: "d"
+        texto: "As subclasses dispensam o uso de chaves primárias físicas, usando apenas índices lógicos."
+
+  - texto: "Qual é o critério técnico para justificar a criação de uma subclasse em um modelo de dados?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Sempre que a superclasse possuir um volume muito alto de registros cadastrados."
+      - letra: "b"
+        texto: "Quando desejamos replicar exatamente os mesmos atributos da superclasse em uma nova tabela."
+      - letra: "c"
+        texto: "Se ela possuir atributos próprios ou participar de relacionamentos que não se aplicam à superclasse como um todo."
+      - letra: "d"
+        texto: "Para garantir que o banco de dados fique com o maior número possível de tabelas pequenas."
+
+  - texto: "O que define uma restrição de Especialização Disjunta ou Exclusiva?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Indica que uma ocorrência da superclasse pode pertencer a, no máximo, uma única subclasse."
+      - letra: "b"
+        texto: "Indica que uma ocorrência pode pertencer a dois ou mais subtipos simultaneamente."
+      - letra: "c"
+        texto: "Determina que a exclusão de um registro na superclasse mantém os dados salvos nas subclasses."
+      - letra: "d"
+        texto: "Significa que os atributos exclusivos da subclasse podem ser herdados por entidades vizinhas."
+
+  - texto: "Qual dos cenários abaixo representa um exemplo de Especialização Disjunta?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Um cliente que pode atuar como comprador e fornecedor simultaneamente no sistema."
+      - letra: "b"
+        texto: "Um usuário que possui múltiplos perfis de acesso ativos ao mesmo tempo."
+      - letra: "c"
+        texto: "Um item de estoque classificado ao mesmo tempo como insumo básico e produto final."
+      - letra: "d"
+        texto: "Um funcionário que é classificado estritamente como mensalista ou horista, sem sobreposição."
+
+  - texto: "O que define uma restrição de Especialização com Sobreposição (Overlapping)?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Impede que qualquer subclasse possua chaves estrangeiras vinculadas à superclasse."
+      - letra: "b"
+        texto: "Indica que uma ocorrência da superclasse pode pertencer a dois ou mais subtipos ao mesmo tempo."
+      - letra: "c"
+        texto: "Obriga o SGBD a armazenar os dados de todas as subclasses em uma única linha física."
+      - letra: "d"
+        texto: "Garante que os atributos de uma subclasse substituam os tipos de dados da tabela pai."
+
+  - texto: "Qual das seguintes situações exemplifica corretamente a restrição de Sobreposição?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Um automóvel que só pode pertencer a uma categoria de uso por vez."
+      - letra: "b"
+        texto: "Um documento fiscal que possui um único emissor cadastrado."
+      - letra: "c"
+        texto: "Uma organização que atua simultaneamente nos papéis de Cliente e de Fornecedora no sistema."
+      - letra: "d"
+        texto: "Um produto que não pode ser enquadrado em nenhuma categoria de controle."
+
+  - texto: "No mapeamento conceitual para o modelo físico, quando é recomendado adotar a estratégia de Tabelas Separadas para as subclasses?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Quando as subclasses possuem muitos atributos distintos e exclusivos."
+      - letra: "b"
+        texto: "Quando as subclasses não possuem nenhum atributo próprio além da chave herdada."
+      - letra: "c"
+        texto: "Apenas quando o banco de dados trabalha com tabelas temporárias e sem índices."
+      - letra: "d"
+        texto: "Quando se deseja eliminar completamente a tabela da superclasse do modelo final."
+
+  - texto: "No modelo lógico gerado a partir de tabelas separadas para superclasse e subclasses, qual o papel da PK da subclasse?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Ela funciona exclusivamente como uma restrição de verificação de valores (CHECK)."
+      - letra: "b"
+        texto: "Ela serve apenas para indexação de buscas textuais de strings longas."
+      - letra: "c"
+        texto: "Ela atua apenas como chave primária, sem qualquer relacionamento com a tabela pai."
+      - letra: "d"
+        texto: "Ela acumula o papel de Chave Primária (PK) e Chave Estrangeira (FK), apontando para a PK da superclasse."
+
+  - texto: "Qual a finalidade de incluir um Atributo Discriminante na tabela da superclasse no modelo físico?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Substituir a necessidade de chaves primárias na modelagem física."
+      - letra: "b"
+        texto: "Indicar explicitamente a qual subclasse aquele registro pertence, facilitando filtros e consultas."
+      - letra: "c"
+        texto: "Armazenar os valores numéricos agregados de todas as tabelas filhas."
+      - letra: "d"
+        texto: "Garantir o particionamento criptográfico dos dados confidenciais."
+
+  - texto: "Por que deve-se evitar colocar todos os atributos de todas as subclasses em uma única tabela genérica global?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Porque o modelo relacional proíbe tabelas com mais de cinco colunas."
+      - letra: "b"
+        texto: "Porque impossibilita a criação de chaves estrangeiras para tabelas externas."
+      - letra: "c"
+        texto: "Porque essa prática gera excesso de valores nulos (NULL) e fere os princípios de boa modelagem."
+      - letra: "d"
+        texto: "Porque inviabiliza o uso de comandos básicos de ordenação de dados."
+
+  - texto: "Qual é o principal impacto no desempenho do banco de dados ao modelar uma hierarquia com muitas tabelas separadas?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Pode exigir uma quantidade excessiva de junções (Joins) para reconstruir os dados completos."
+      - letra: "b"
+        texto: "Bloqueia completamente a inserção de novos registros na tabela principal."
+      - letra: "c"
+        texto: "Impede o SGBD de realizar funções de agregação como soma e contagem."
+      - letra: "d"
+        texto: "Força o banco de dados a deletar os registros da superclasse a cada nova pesquisa."
+
+  - texto: "Como a modelagem correta de hierarquias (super/subclasses) contribui para a manutenção do projeto de software?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Garantindo que os tipos de dados de todas as colunas sejam convertidos para texto."
+      - letra: "b"
+        texto: "Permitindo que o usuário altere as chaves primárias a qualquer momento sem restrições."
+      - letra: "c"
+        texto: "Reduzindo o espaço em disco por meio da eliminação física de chaves."
+      - letra: "d"
+        texto: "Permite adicionar novas subclasses no futuro de forma organizada, sem alterar a estrutura da superclasse já consolidada."
+
+  - texto: "Sob a ótica do mapeamento de entidades do mundo real, o uso de subclasses é justificado quando diferentes papéis de uma entidade genérica possuem:"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Diferentes servidores físicos de armazenamento."
+      - letra: "b"
+        texto: "Atributos específicos ou relacionamentos exclusivos que não se aplicam aos demais papéis."
+      - letra: "c"
+        texto: "Apenas chaves primárias com formatos de dados incompatíveis."
+      - letra: "d"
+        texto: "Nomes extensos que violam os limites de caracteres do SGBD."
+
+  - texto: "Ao modelar categorias como 'Pessoa Física' e 'Pessoa Jurídica' a partir de uma entidade genérica, o objetivo principal é:"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Tratar propriedades e documentos de identificação de natureza distinta de forma estruturada."
+      - letra: "b"
+        texto: "Obrigar que ambas possuam exatamente as mesmas características fiscais."
+      - letra: "c"
+        texto: "Separar os dados em bancos de dados relacionais e não-relacionados."
+      - letra: "d"
+        texto: "Eliminar a necessidade de relacionamentos com tabelas de vendas."
+
+  - texto: "Em uma estrutura hierárquica de frotas, quais atributos seriam tipicamente alocados na superclasse e não nas subclasses?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Propriedades comuns a todos os veículos, como número do chassi e ano de fabricação."
+      - letra: "b"
+        texto: "Apenas dados sobre a capacidade de carga específica de veículos pesados."
+      - letra: "c"
+        texto: "Atributos exclusivos de motocicletas, como a cilindrada."
+      - letra: "d"
+        texto: "O número de eixos e o tipo de carroceria de caminhões."
+
+  - texto: "No gerenciamento de categorias de itens de um sistema de produção, a especialização auxilia a:"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Separar os itens de acordo com suas propriedades e comportamentos específicos no processo produtivo."
+      - letra: "b"
+        texto: "Transformar todos os insumos em bens patrimoniais fixos e imutáveis."
+      - letra: "c"
+        texto: "Garantir que matérias-primas e produtos acabados usem as mesmas tabelas de preços."
+      - letra: "d"
+        texto: "Eliminar o rastreamento das etapas de transformação dos componentes."
+
+  - texto: "O que caracteriza a aplicação de Sobreposição em um banco de dados de profissionais de mídia?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Impedir que uma pessoa possua mais de um vínculo de trabalho cadastrado."
+      - letra: "b"
+        texto: "Criar chaves estrangeiras redundantes para cada contrato firmado."
+      - letra: "c"
+        texto: "Permitir que um mesmo indivíduo desempenhe múltiplos papéis (como ator e diretor) sem duplicar seus dados base."
+      - letra: "d"
+        texto: "Isolar completamente as informações biográficas de cada função exercida."
+
+  - texto: "Qual das alternativas abaixo resume um benefício de integridade trazido pelo uso de especializações em bancos de dados?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Garantir que todas as colunas de todas as tabelas aceitem valores nulos por padrão."
+      - letra: "b"
+        texto: "Garantir que atributos obrigatórios de um subtipo específico não fiquem espalhados ou vazios em tabelas genéricas."
+      - letra: "c"
+        texto: "Reduzir as restrições do SGBD de modo a agilizar inserções sem validação de chaves."
+      - letra: "d"
+        texto: "Tornar as chaves primárias opcionais nas tabelas de ligação de subclasses."
+
+  - texto: "Como a modelagem de superclasses e subclasses melhora a comunicação visual do modelo para diferentes áreas de uma organização?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Permite que cada setor foque nas propriedades específicas do subtipo que lhe interessa, mantendo a visão do todo integrada."
+      - letra: "b"
+        texto: "Ocultando completamente as tabelas do banco de dados para evitar o acesso visual."
+      - letra: "c"
+        texto: "Substituindo os nomes textuais das entidades por sequências lógicas binárias."
+      - letra: "d"
+        texto: "Forçando a exclusão de visões customizadas ou Views no SGBD."
+
+  - texto: "Como é representada graficamente a relação de generalização e especialização na modelagem conceitual?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Por meio de um losango tradicional de relacionamento conectado a duas tabelas quaisquer."
+      - letra: "b"
+        texto: "Pela indicação direta da sigla 'PK, FK' dentro dos retângulos das entidades superiores."
+      - letra: "c"
+        texto: "Usando exclusivamente linhas pontilhadas para conectar atributos multivalorados."
+      - letra: "d"
+        texto: "Por meio de linhas ou setas ligadas a um elemento centralizador (círculo de restrição) que conecta a superclasse às suas subclasses."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
-  </ul>
-</div>
-
-
-
-
-
