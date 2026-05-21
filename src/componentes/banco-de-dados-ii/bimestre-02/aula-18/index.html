@@ -1,70 +1,66 @@
 ---
-title: "Entrega de Projeto 2"
+title: "Projeto Integrador de Banco de Dados: Desafio StreamFlow"
 aula_numero: "18"
-description: "Dashboard analítico."
+description: "Foco: Engenharia de Dados, Performance e Business Intelligence"
 tags:
 - aula
 - bimestre-02
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo em desenvolvimento...</p>
+  <h2>1. Cenário e Contexto de Negócio</h2>
+  <p>Você foi contratado como Arquiteto e Engenheiro de Dados pela StreamFlow, uma startup em ascensão no mercado de streaming de vídeo sob demanda (concorrente direta de plataformas como Netflix, YouTube e Twitch).</p>
+  <p>Até o momento, a empresa utilizava uma estrutura de arquivos legada e descentralizada, o que gerava inconsistências, perda de histórico de clientes e lentidão generalizada na plataforma. Com o crescimento da base de usuários, a diretoria exigiu a migração total para um Sistema Gerenciador de Banco de Dados Relacional (SGBD).</p>
+  <p>Sua missão é projetar a estrutura física e lógica desse banco de dados e, posteriormente, criar e otimizar a camada de extração de relatórios e indicadores analíticos. Para que o projeto seja homologado, você precisará resolver problemas reais de arquitetura baseando-se em situações cotidianas da plataforma.</p>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
-  <p>Abaixo, apresentamos exemplos práticos comparando as sintaxes entre os dois ambientes.</p>
-  <div class="code-container">
-    <pre><code class="language-sql">-- [ MySQL ]
--- Código em desenvolvimento...
-
--- [ PostgreSQL ]
--- Código em desenvolvimento...</code></pre>
-  </div>
-</section>
-
-<section class="section-box">
-  <h2>Diagramação</h2>
-  <p>Representação visual dos conceitos abordados:</p>
-  <div class="mermaid">
-    graph TD
-    A[Início] --> B{Processo}
-    B --> C[Fim]
-  </div>
-</section>
-
-<div class="tip-box">
-  <h4>Dicas & Lembretes</h4>
+  <h2>2. O Desafio – Parte 1: Implementação Física e Integridade</h2>
+  <p>Nesta primeira fase, você deve criar o script de definição de dados (DDL) para erguer a infraestrutura do sistema. No entanto, em vez de receber uma lista pronta de tabelas, você deve deduzi-las a partir das dores mapeadas pelo suporte e pela engenharia da StreamFlow:</p>
   <ul>
-    <li>Dica importante sobre Entrega de Projeto 2 aparecerá aqui.</li>
-    <li>Sempre verifique a sintaxe específica do seu SGBD.</li>
+    <li><strong>Cenário A (Contas Compartilhadas):</strong> O modelo comercial da StreamFlow permite que um único cliente assinante (que possui e-mail cadastrado, CPF e dados de pagamento) gerencie até 5 perfis diferentes em sua conta (ex: perfil da mãe, do pai, do filho). Cada perfil possui seu próprio nome de exibição e suas preferências, e os históricos de reprodução devem ser associados ao perfil que assistiu, e não à conta do assinante principal.</li>
+    <li><strong>Cenário B (A Dor do Catálogo Dinâmico):</strong> Os estúdios de cinema e produtoras de conteúdo removem e inserem vídeos na plataforma frequentemente devido à expiração de contratos de licenciamento. O suporte relatou que, no sistema antigo, quando um filme era excluído do catálogo, todo o histórico de visualizações dos usuários que assistiram àquele filme sumia, quebrando os relatórios financeiros de auditoria. Você deve impedir que isso aconteça utilizando as regras de integridade referencial corretas nas chaves estrangeiras.</li>
+    <li><strong>Cenário C (Prevenção de Fraudes e Logs):</strong> O setor de segurança da informação exige que, no exato momento em que um perfil clique no "Play" para assistir a um vídeo (seja um filme ou um episódio de série), o banco registre de forma imutável o endereço IP da conexão, o tipo de dispositivo utilizado (Ex: SmartTV, Smartphone, Web) e o exato carimbo de data e hora (Timestamp) do evento. Nenhuma aplicação ou usuário comum pode ter permissão para alterar ou apagar esses registros após inseridos.</li>
   </ul>
-</div>
-
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
+  <h3>Entregáveis da Parte 1:</h3>
   <ul>
-    <li>Passo 1: Analise os requisitos.</li>
-    <li>Passo 2: Desenvolva o script SQL.</li>
-    <li>Passo 3: Valide os resultados.</li>
+    <li><strong>Script SQL de Criação (DDL):</strong> Criação do banco de dados contendo todas as chaves primárias (id), chaves estrangeiras, restrições de obrigatoriedade (NOT NULL), valores padrão (DEFAULT) e restrições de domínio (CHECK ou ENUM).</li>
+    <li><strong>Escolha Técnica de Tipos de Dados:</strong> Justificativa da tipagem de campos críticos, como o tempo de reprodução de um vídeo (se ele deve ser guardado em formato de tempo ou convertido para uma unidade numérica) e dados de identificação.</li>
+    <li><strong>Política de Privilégios (Segurança):</strong> Scripts de criação de usuários do banco de dados separando as permissões (GRANT, REVOKE, DENY) do sistema da aplicação web (que insere e lê dados) das permissões do analista de auditoria (que só lê os logs).</li>
   </ul>
 </section>
 
 <section class="section-box">
-  <h2>Referências</h2>
+  <h2>3. O Desafio – Parte 2: Performance e Extração de Dados Complexos</h2>
+  <p>Com a estrutura criada e populada (o professor fornecerá um script com milhares de registros simulados de visualizações), sua missão é criar as consultas que alimentarão o painel de Business Intelligence (BI) da diretoria e otimizar o tempo de resposta do sistema.</p>
+  <h3>Relatórios Solicitados pela Diretoria:</h3>
   <ul>
-    <li>MACHADO, Felipe Nery Rodrigues. Projeto e implementação de banco de dados. 3. ed. São Paulo: Érica, 2014.
-    </li>
-    <li>TAKAI, Osvaldo Kotaro; ITALIANO, Isabel Cristina; FERREIRA, João Eduardo. Introdução a Banco de Dados. São
-      Paulo: DCC-IME-USP, 2005.</li>
+    <li><strong>Painel da Tela Inicial ("Continuar Assistindo"):</strong> Crie uma consulta que recupere os vídeos que um perfil específico começou a assistir, mas ainda não concluiu, ordenando da visualização mais recente para a mais antiga.</li>
+    <li><strong>Relatório de Cobrança dos Estúdios (BI):</strong> O modelo de pagamento para as produtoras baseia-se no total de tempo consumido. Crie uma consulta que liste o nome de todas as produtoras parceiras e a soma total de minutos assistidos de seus respectivos vídeos durante um mês específico. Filtre o resultado para exibir apenas as produtoras que acumularam mais de 5.000 horas de consumo na plataforma.</li>
+    <li><strong>Auditoria de Tráfego por Região:</strong> Liste a quantidade total de acessos segmentada por estado (UF) do assinante e por tipo de dispositivo, permitindo identificar onde a infraestrutura de servidores precisa ser reforçada.</li>
+  </ul>
+  <h3>Gargalo de Performance e Segurança (O Teste de Fogo):</h3>
+  <ul>
+    <li><strong>Problema de Performance (Tuning):</strong> Ao rodar a consulta da tela inicial ("Continuar Assistindo") na base de dados massiva, o banco de dados realiza uma varredura completa na tabela (Full Table Scan), fazendo a tela do usuário demorar segundos para carregar. Você deve analisar o plano de execução da query e criar a estrutura de Índice (Clustered ou Non-Clustered) ideal para reduzir o tempo de busca para milissegundos.</li>
+    <li><strong>Conformidade com a LGPD (Visões):</strong> O setor jurídico da StreamFlow proibiu que a equipe de marketing e os analistas de dados tenham acesso a informações sensíveis dos assinantes (como CPF, e-mail e nome real). Crie uma View (Visão) que mascare esses dados, expondo para os analistas apenas as métricas de engajamento, idade (calculada a partir da data de nascimento) e região, garantindo a segurança institucional.</li>
   </ul>
 </section>
 
 <section class="section-box">
-  <h2>Para Praticar</h2>
+  <h2>4. Orientações Gerais e Critérios de Avaliação</h2>
+  <p>O projeto será avaliado com rigor técnico simulando uma entrega de produção (ambiente real). Os critérios de avaliação englobam:</p>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
+    <li><strong>Raciocínio Arquitetural:</strong> Como foi resolvida a herança e a especialização de conteúdos (filmes vs. episódios de séries) no banco de dados?</li>
+    <li><strong>Configuração de Cascata:</strong> A remoção de um vídeo ou de um usuário destrói dados de auditoria ou o banco impede a quebra de integridade de forma elegante?</li>
+    <li><strong>Qualidade da Query:</strong> As consultas analíticas utilizam junções adequadas (INNER, LEFT, RIGHT) e filtros eficientes, evitando redundâncias?</li>
+    <li><strong>O Desafio dos Milissegundos:</strong> O índice criado reduziu efetivamente o custo de processamento da consulta de alta demanda da plataforma?</li>
+    <li><strong>Semântica de Nomenclatura:</strong> Tabelas no plural e chaves primárias padronizadas estritamente como id.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>Material de Apoio</h2>
+  <ul>
+    <li><a href="./requisitos/">Engenharia de Requisitos do Sistema</a></li>
   </ul>
 </section>
