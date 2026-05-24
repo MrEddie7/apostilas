@@ -8,28 +8,367 @@ tags:
 ---
 
 <section class="section-box">
-  <h2>Prezados desenvolvedores,</h2>
-  <p>Chegamos ao encerramento do nosso segundo bimestre em Programação Web III. Ao longo das últimas semanas, deixamos de lado as aplicações estruturadas de página única e mergulhamos de cabeça em recursos que separam o desenvolvimento amador do profissional: Persistência Relacional Avançada, Mecanismos de Autenticação, Proteção Dinâmica de Rotas (Middlewares), Validação Rígida de Dados e Upload de Arquivos.</p>
+  <h2>1. Visão Geral do Produto (Overview)</h2>
 
-  <p>Para consolidar essas competências e simular um cenário real de mercado, vocês serão desafiados a construir o <strong>Passaporte.io</strong>, uma plataforma completa de Gestão de Eventos e Inscrições de Ingressos.</p>
+  <h3>1.1 Contextualização do Problema de Negócio</h3>
+  <p>No mercado de eventos e tecnologia, o maior desafio de uma plataforma em estágio inicial não é a quantidade de recursos, mas a confiabilidade da sua operação core: garantir que um usuário se inscreva em um evento, que sua vaga esteja de fato reservada e que seu ingresso seja autêntico. Falhas na validação de dados e segurança de acesso destroem a reputação de um sistema logo no lançamento, gerando superlotação e vazamento de dados gerenciais.</p>
+  
+  <p>O Passaporte.io nasce para resolver essa dor central através de uma arquitetura enxuta, focada na estabilidade transacional entre organizadores e participantes.</p>
 
-  <p>Esqueçam o conceito de "criar dados soltos no banco". Neste projeto, as informações possuem donos, regras de tempo e dependências complexas. Um usuário participante não pode acessar a área de um organizador; um organizador não pode alterar o evento de outro; e uma inscrição gera, de forma totalmente automatizada, um registro intermediário seguro contendo um código único de ingresso.</p>
-
-  <p>Além de testar sua capacidade técnica de codificação em Laravel e design com DaisyUI, esta atividade exigirá atenção extrema a dois pilares fundamentais do desenvolvimento moderno: Segurança e Performance (otimização de consultas N+1).</p>
-</section>
-
-<section class="section-box">
-  <h2>Por que este projeto é diferente?</h2>
-  <p>Este não é um sistema que morrerá ao final deste bimestre. O <strong>Passaporte.io</strong> foi planejado como um projeto evolutivo e incremental. Toda a estrutura de banco de dados e relacionamentos que vocês desenharem e validarem agora servirá como base obrigatória para o próximo bimestre, onde avançaremos com a geração de ingressos em PDF, emissão de QR Codes e automação de disparos de e-mails.</p>
-
-  <p>Leiam atentamente os requisitos técnicos descritos a seguir, configurem suas migrations com precisão e organizem seus repositórios no GitHub. O mercado de trabalho procura profissionais que sabem arquitetar soluções seguras e performáticas — e este projeto será o primeiro grande portfólio de vocês nessa jornada.</p>
-
-  <p>Bom desenvolvimento e mãos ao código!</p>
-</section>
-
-<section class="section-box">
-  <h2>Para Praticar</h2>
+  <h3>1.2 A Solução: MVP Passaporte.io</h3>
+  <p>Para validar o produto rapidamente no mercado, a plataforma operará em uma versão de Mínimo Produto Viável (MVP), priorizando o fluxo crítico de valor em uma interface limpa e de alta performance. O sistema consistirá em:</p>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Entregável do Projeto Passaporte.io</a></li>
+    <li><strong>Portal Público de Descoberta:</strong> Uma vitrine otimizada para navegação e escolha de eventos por categoria.</li>
+    <li><strong>Mecanismo de Inscrição Segura:</strong> O motor transacional que vincula o participante ao evento, gerando um passaporte digital criptográfico instantaneamente.</li>
+    <li><strong>Backoffice do Organizador:</strong> Um painel focado exclusivamente no controle do inventário de eventos e integridade dos dados cadastrados.</li>
   </ul>
+
+  <h3>1.3 Objetivos Técnicos e Engenharia de Software</h3>
+  <p>Como este software possui um ciclo de desenvolvimento ágil e focado em entrega rápida, o sucesso da implementação não será medido pelo volume de telas, mas pela qualidade e robustez da engenharia aplicada no núcleo da aplicação:</p>
+  <ul>
+    <li><strong>Consistência e Integridade de Dados:</strong> O banco de dados relacional deve ser autossuficiente. As regras de integridade referencial nas tabelas e chaves estrangeiras devem impedir registros duplicados ou inconsistências na persistência de dados concorrentes na camada intermediária.</li>
+    <li><strong>Segurança e Isolamento de Recursos:</strong> Implementar barreiras de software que garantam o isolamento completo dos dados no nível da requisição. Usuários mal-intencionados não devem conseguir manipular parâmetros HTTP para interceptar, ler ou alterar registros de propriedade de terceiros.</li>
+    <li><strong>Otimização de Infraestrutura (Performance):</strong> Projetar as consultas ao banco de dados para suportar escalabilidade desde o primeiro dia. O sistema deve mitigar nativamente gargalos de processamento, impedindo que loops de renderização gerem conexões repetitivas e desnecessárias ao banco de dados nas listagens públicas.</li>
+  </ul>
+
+  <h3>1.4 Arquitetura Incremental e Fundações</h3>
+  <p>Este projeto foi desenhado sob o princípio do desenvolvimento evolucionário. Esta fase foca estritamente em Persistência Relacional Avançada, Segurança de Perfil e Validação de Negócio. A precisão técnica nesta entrega é um pré-requisito crítico, pois este núcleo estável e bem-feito funcionará como a fundação obrigatória para as futuras expansões do produto, que englobarão automação de serviços, processamento de arquivos e integrações externas.</p>
+</section>
+
+<section class="section-box">
+  <h2>2. Perfis de Usuário & Regras de Acesso (Personas & ACL)</h2>
+  <p>Para garantir o isolamento de recursos e a segurança das informações no ecossistema Passaporte.io, o sistema deve mapear e gerenciar três estados de perfis de acesso distintos. O comportamento de toda a aplicação será ditado por esta matriz de permissões.</p>
+
+  <h3>2.1 Definição das Personas</h3>
+  <ul>
+    <li><strong>Visitante (Guest / Anônimo):</strong> Qualquer usuário que acessa a plataforma sem estar autenticado no sistema. Seu escopo de navegação é estritamente de leitura e descoberta.</li>
+    <li><strong>Participante (User / Client):</strong> Usuário autenticado cujo objetivo principal é consumir o catálogo de eventos e garantir sua presença neles. Não possui privilégios para criar conteúdos ou visualizar métricas internas de outros organizadores.</li>
+    <li><strong>Organizador (Admin / Staff):</strong> Usuário autenticado responsável pelo fornecimento e gestão dos eventos na plataforma. Possui privilégios de escrita e gerenciamento sobre suas próprias publicações, mas atua como um usuário comum (leitura) em eventos de terceiros.</li>
+  </ul>
+
+  <h3>2.2 Matriz de Controle de Acesso (Access Control List - ACL)</h3>
+  <p>As permissões do sistema devem seguir rigorosamente a tabela de direitos operacionais abaixo:</p>
+  
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Funcionalidade / Recurso</th>
+          <th>Visitante (Guest)</th>
+          <th>Participante</th>
+          <th>Organizador</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Visualizar Vitrine de Eventos (Home)</td>
+          <td>Liberado</td>
+          <td>Liberado</td>
+          <td>Liberado</td>
+        </tr>
+        <tr>
+          <td>Visualizar Detalhes de um Evento</td>
+          <td>Liberado</td>
+          <td>Liberado</td>
+          <td>Liberado</td>
+        </tr>
+        <tr>
+          <td>Criar Nova Conta / Fazer Login</td>
+          <td>Liberado</td>
+          <td>Bloqueado</td>
+          <td>Bloqueado</td>
+        </tr>
+        <tr>
+          <td>Inscrever-se em um Evento</td>
+          <td>Bloqueado</td>
+          <td>Liberado</td>
+          <td>Bloqueado</td>
+        </tr>
+        <tr>
+          <td>Cancelar Própria Inscrição</td>
+          <td>Bloqueado</td>
+          <td>Liberado</td>
+          <td>Bloqueado</td>
+        </tr>
+        <tr>
+          <td>Acessar Painel de Controle de Eventos</td>
+          <td>Bloqueado</td>
+          <td>Bloqueado</td>
+          <td>Liberado</td>
+        </tr>
+        <tr>
+          <td>Cadastrar Novo Evento</td>
+          <td>Bloqueado</td>
+          <td>Bloqueado</td>
+          <td>Liberado</td>
+        </tr>
+        <tr>
+          <td>Editar/Excluir Próprio Evento</td>
+          <td>Bloqueado</td>
+          <td>Bloqueado</td>
+          <td>Liberado</td>
+        </tr>
+        <tr>
+          <td>Editar/Excluir Evento de Terceiros</td>
+          <td>Bloqueado</td>
+          <td>Bloqueado</td>
+          <td>Bloqueado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2.3 Regras de Proteção de Camada (Diretrizes de Implementação)</h3>
+  <p>O desenvolvedor deve estruturar a aplicação de forma que os seguintes comportamentos de segurança sejam validados no nível da requisição HTTP:</p>
+
+  <h4>2.3.1 Barreira de Autenticação Global (Garantia de Login)</h4>
+  <p>Qualquer tentativa de acesso a rotas que comecem com prefixos administrativos ou acionem intenções de transação (como o ato de se inscrever) deve interceptar a requisição e redirecionar o usuário imediatamente para a tela de login, caso ele esteja anônimo.</p>
+
+  <h4>2.3.2 Bloqueio Transversal de Perfil (Isolamento de Funcionalidade)</h4>
+  <p>O sistema deve validar as propriedades do usuário logado antes de entregar o recurso.</p>
+  <ul>
+    <li>Se um usuário com perfil de Participante tentar forçar a entrada digitando uma URL destinada a criadores de conteúdo, a aplicação deve abortar a execução imediatamente.</li>
+    <li>Se um usuário com perfil de Organizador tentar se inscrever em um evento, o sistema deve impedir a ação, garantindo que contas corporativas/gestoras não poluam a listagem de ingressos de participantes.</li>
+  </ul>
+
+  <h4>2.3.3 Proteção de Propriedade Regressiva (Isolamento de Registro)</h4>
+  <p>Estar autenticado como Organizador não concede direito irrestrito ao banco de dados. O sistema deve validar dinamicamente se o ID do organizador logado coincide com o ID do criador do evento que está sendo manipulado. Se um organizador tentar acessar o formulário de edição ou disparar uma requisição de exclusão contra o ID de um evento que pertence a outro usuário, o sistema deve bloquear a operação na hora.</p>
+</section>
+
+<section class="section-box">
+  <h2>3. Requisitos Funcionais (RF)</h2>
+  <p>Os Requisitos Funcionais descrevem as ações, recursos e comportamentos que o Passaporte.io deve executar para entregar valor aos usuários. Para este MVP de desenvolvimento ágil, as funcionalidades foram agrupadas em quatro módulos centrais de entrega.</p>
+
+  <h3>3.1 Módulo 1: Autenticação e Gestão de Contas (Auth)</h3>
+  <ul>
+    <li><strong>RF01 – Registro de Novos Usuários:</strong> O sistema deve fornecer uma interface para que visitantes se cadastrem informando Nome, E-mail, Senha e a escolha do Perfil de Acesso (Participante ou Organizador).</li>
+    <li><strong>RF02 – Autenticação de Identidade (Login):</strong> O sistema deve validar as credenciais (E-mail e Senha) dos usuários cadastrados para liberar o acesso às áreas restritas.</li>
+    <li><strong>RF03 – Encerramento de Sessão (Logout):</strong> O sistema deve permitir que o usuário desconecte sua conta com segurança, destruindo a sessão ativa no servidor.</li>
+  </ul>
+
+  <h3>3.2 Módulo 2: Backoffice do Organizador (Gestão de Inventário)</h3>
+  <ul>
+    <li><strong>RF04 – Listagem de Eventos do Organizador:</strong> O painel administrativo do organizador deve exibir uma tabela contendo apenas os eventos criados por ele, ordenados do mais recente para o mais antigo.</li>
+    <li><strong>RF05 – Criação de Evento:</strong> O organizador deve dispor de um formulário para cadastrar um evento informando: Título, Descrição, Data/Hora, Localização, Vagas Disponíveis, Categoria e o Upload do Banner de Capa.</li>
+    <li><strong>RF06 – Edição de Evento:</strong> O sistema deve permitir que o organizador altere qualquer informação de um evento existente, carregando os dados atuais nos campos do formulário para modificação.</li>
+    <li><strong>RF07 – Exclusão de Evento:</strong> O organizador deve ter a opção de remover um evento de sua propriedade do sistema. O sistema deve exigir uma confirmação antes de efetivar a exclusão.</li>
+  </ul>
+
+  <h3>3.3 Módulo 3: Motor de Inscrições (Core Transacional)</h3>
+  <ul>
+    <li><strong>RF08 – Registro de Presença (Inscrição):</strong> Na tela de detalhes do evento, o sistema deve disponibilizar um botão para que o participante autenticado solicite sua inscrição na lista de presença.</li>
+    <li><strong>RF09 – Geração do Passaporte Digital (Ingresso):</strong> No momento exato da confirmação da inscrição, o sistema deve gerar automaticamente um código identificador único alfanumérico para servir como o "ingresso" daquele participante para aquele evento.</li>
+    <li><strong>RF10 – Histórico de Inscrições do Participante:</strong> O participante deve ter acesso a uma área restrita que liste todos os eventos nos quais ele se inscreveu, exibindo o título do evento, a data e o código do seu respectivo ingresso.</li>
+    <li><strong>RF11 – Cancelamento de Inscrição:</strong> O participante deve poder abrir mão de sua vaga em um evento previamente inscrito, removendo seu nome da lista e invalidando o ingresso gerado.</li>
+  </ul>
+
+  <h3>3.4 Módulo 4: Portal Público de Descoberta (Vitrine)</h3>
+  <ul>
+    <li><strong>RF12 – Vitrine de Eventos (Home):</strong> A página inicial e pública do sistema deve exibir cards visuais de todos os eventos ativos cadastrados na plataforma.</li>
+    <li><strong>RF13 – Filtragem por Categoria:</strong> A vitrine deve disponibilizar um menu de navegação que permita ao visitante filtrar e visualizar apenas os eventos pertencientes a uma categoria selecionada (ex: clicar em "Tecnologia" e ocultar eventos de "Música").</li>
+    <li><strong>RF14 – Tela de Detalhes do Evento:</strong> Ao clicar em um card na vitrine, qualquer visitante pode acessar uma página exclusiva do evento para ler a descrição completa, ver o banner ampliado, checar o local, a data, o nome do organizador responsável e o total de vagas disponíveis.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>4. Regras de Negócio Obrigatórias (RN)</h2>
+  <p>As Regras de Negócio determinam as condições, restrições e políticas operacionais que o software deve fazer cumprir. Qualquer tentativa de violar estas regras deve ser interceptada pelo sistema, impedindo a persistência dos dados e retornando um feedback claro ao usuário.</p>
+
+  <h3>4.1 Restrições do Módulo de Eventos</h3>
+  <ul>
+    <li><strong>RN01 – Validação de Cronograma:</strong> Um evento não pode ser cadastrado ou editado com uma data e hora retroativas. A data do evento deve ser, obrigatoriamente, posterior à data e hora atual do servidor no momento da submissão.</li>
+    <li><strong>RN02 – Formato e Limite de Mídia:</strong> O banner de capa do evento deve ser obrigatoriamente um arquivo de imagem válido. O sistema deve rejeitar qualquer formato que não seja de imagem ou que ultrapasse o tamanho limite de 2 megabytes (2MB).</li>
+    <li><strong>RN03 – Exclusão com Salvaguarda de Inscrições:</strong> Um organizador não pode excluir um evento que já possua participantes inscritos. Caso o evento já tenha gerado ingressos, o sistema deve bloquear a exclusão e instruir o organizador a entrar em contato com o suporte ou cancelar as inscrições previamente.</li>
+  </ul>
+
+  <h3>4.2 Restrições do Módulo de Inscrições e Ingressos</h3>
+  <ul>
+    <li><strong>RN04 – Unicidade de Inscrição:</strong> Um participante está terminantemente proibido de se inscrever mais de uma vez no mesmo evento. O vínculo entre o usuário e o evento na tabela intermediária deve ser único.</li>
+    <li><strong>RN05 – Limite Absoluto de Capacidade (Lotação):</strong> O sistema deve monitorar o número de vagas disponíveis em tempo real. Se o total de participantes inscritos atingir a capacidade máxima configurada para o evento, o botão de inscrição deve ser desativado na interface, e qualquer tentativa de requisição direta de inscrição deve ser rejeitada com um aviso de "Vagas Esgotadas".</li>
+    <li><strong>RN06 – Impedimento de Auto-Inscrição:</strong> Um usuário com o perfil de Organizador não pode se inscrever em eventos (sejam eles de sua propriedade ou de terceiros). O fluxo de inscrição é exclusivo para o perfil de Participante.</li>
+  </ul>
+
+  <h3>4.3 Restrições de Segurança e Propriedade de Dados</h3>
+  <ul>
+    <li><strong>RN07 – Integridade de Vínculo na Escrita:</strong> No momento do cadastro de um evento, o sistema deve vincular automaticamente o registro ao ID do usuário autenticado que está enviando o formulário. O sistema não deve aceitar ou confiar em IDs enviados por campos ocultos manipuláveis no HTML para definir o proprietário do evento.</li>
+    <li><strong>RN08 – Imutabilidade de E-mail:</strong> O endereço de e-mail fornecido no momento do cadastro do usuário deve ser único em todo o sistema. Durante a edição de qualquer perfil ou dado, o sistema deve validar se o e-mail não colide com o de outro usuário já existente, impedindo a duplicidade.</li>
+    <li><strong>RN09 – Bloqueio de Edição Transversal:</strong> Um organizador está proibido de acessar os formulários de edição, atualizar dados ou disparar comandos de exclusão contra eventos criados por outros organizadores. O ID do autor do evento deve coincidir estritamente com o ID do usuário logado para liberar qualquer operação de escrita.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>5. Requisitos Não-Funcionais (RNF)</h2>
+  <p>Os Requisitos Não-Funcionais definem os critérios técnicos, padrões de arquitetura, restrições de infraestrutura e parâmetros de qualidade que o Passaporte.io deve obedecer. Eles determinam como o sistema deve executar suas funções, garantindo a robustez, a segurança e a escalabilidade da aplicação.</p>
+
+  <h3>5.1 Persistência e Modelagem de Banco de Dados (Database Architecture)</h3>
+  <ul>
+    <li><strong>RNF01 – Integridade Referencial Estrita:</strong> O banco de dados relacional deve impor restrições de chaves estrangeiras (foreign keys) em todas as associações. Se uma categoria for removida, o sistema deve impedir a exclusão caso existam eventos vinculados a ela, blindando o banco contra dados órfãos.</li>
+    <li><strong>RNF02 – Relação Muitos-para-Muitos Automatizada:</strong> O vínculo de inscrições deve ser gerenciado por uma tabela intermediária (pivô) formalizada. A persistência dessa relação deve atualizar de forma nativa e simultânea os campos de controle de data (timestamps) da tabela intermediária.</li>
+    <li><strong>RNF03 – Criptografia de Credenciais:</strong> Nenhuma senha de usuário pode ser armazenada em texto limpo no banco de dados. O sistema deve aplicar algoritmos de hash criptográfico seguros de forma nativa antes de persistir o dado.</li>
+  </ul>
+
+  <h3>5.2 Performance, Escalabilidade e Consumo de Recursos</h3>
+  <ul>
+    <li><strong>RNF04 – Mitigação Antigargalo (Problema N+1):</strong> É expressamente proibido realizar consultas repetitivas ao banco de dados dentro de laços de repetição (loops) na renderização de listagens. A listagem da vitrine pública deve carregar de forma ansiosa (Eager Loading) os relacionamentos de categoria e organizador. O sistema deve renderizar a página principal executando o número mínimo fixo de consultas, independentemente do volume de eventos exibidos.</li>
+    <li><strong>RNF05 – Paginação de Dados:</strong> O painel do organizador e o histórico do participante não devem carregar registros de forma ilimitada em uma única requisição. O sistema deve segmentar os resultados em lotes gerenciáveis por meio de paginação nativa na camada do banco de dados.</li>
+  </ul>
+
+  <h3>5.3 Segurança de Aplicação e Isolamento de Requisições</h3>
+  <ul>
+    <li><strong>RNF06 – Proteção Contra Injeção e Ataques Estruturais:</strong> Todos os dados recebidos via requisições HTTP devem ser sanitizados e tratados através de camadas de abstração segura (como Prepared Statements ou Query Binding), impedindo ataques de SQL Injection de forma nativa.</li>
+    <li><strong>RNF07 – Proteção Contra Falsificação de Requisições:</strong> O sistema deve exigir tokens de validação dinâmicos em todas as requisições que utilizem métodos de escrita (como POST, PUT ou DELETE), mitigando riscos de ataques do tipo CSRF (Cross-Site Request Forgery).</li>
+  </ul>
+
+  <h3>5.4 Sistema de Arquivos e Armazenamento (Storage)</h3>
+  <ul>
+    <li><strong>RNF08 – Isolamento de Arquivos Estáticos:</strong> Os uploads de banners enviados pelos organizadores devem ser armazenados em um diretório isolado e protegido do sistema de arquivos do servidor. O acesso público a essas mídias na interface web deve ser feito por meio de mapeamento de links simbólicos seguros, impedindo o acesso direto à raiz da aplicação.</li>
+    <li><strong>RNF09 – Ofuscação de Nomes de Arquivos:</strong> Ao salvar uma imagem de banner no servidor, o sistema deve renomear o arquivo utilizando hashes ou identificadores únicos aleatórios. Isso evita a colisão de nomes (dois arquivos com o mesmo nome se sobrescreverem) e impede que usuários adivinhem a estrutura de arquivos do servidor.</li>
+  </ul>
+
+  <h3>5.5 Interface, Usabilidade e Tratamento de Erros (UX/UI)</h3>
+  <ul>
+    <li><strong>RNF10 – Padronização de Feedback (Sessão Flash):</strong> O sistema deve utilizar a persistência em sessão de curto ciclo (mensagens flash) para enviar respostas de sucesso ou erro à interface. A interface visual, construída com DaisyUI, deve renderizar esses estados usando alertas semânticos (alert-success para operações concluídas e alert-error para falhas ou bloqueios).</li>
+    <li><strong>RNF11 – Preservação de Estado em Falhas:</strong> Caso uma validação de formulário falhe, o sistema deve reter temporariamente os dados válidos digitados pelo usuário na sessão, repovoando os campos automaticamente ao recarregar a página. Isso evita que o usuário precise preencher todo o formulário novamente.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>6. Critérios de Aceite & Formato de Entrega</h2>
+  <p>Para que o projeto Passaporte.io seja considerado concluído e aceito para avaliação, ele deve passar com sucesso por todos os critérios de validação operacional e ser entregue seguindo os padrões profissionais de governança de código descritos abaixo.</p>
+
+  <h3>6.1 Critérios de Aceite (Definição de Pronto / DoD)</h3>
+  <p>O projeto só receberá parecer favorável se atender integralmente às seguintes verificações práticas:</p>
+  <ul>
+    <li><strong>CA01 – Fluxo de Cadastro e Isolamento de Telas:</strong> O visitante deve conseguir se cadastrar escolhendo seu perfil. Se logar como Participante, as rotas <code>/admin/*</code> devem retornar erro de acesso imediatamente. Se logar como Organizador, a rota de inscrição deve ser bloqueada.</li>
+    <li><strong>CA02 – Validação Transacional de Eventos:</strong> O formulário de eventos deve rejeitar com sucesso títulos curtos, imagens acima de 2MB e, principalmente, datas retroativas, exibindo os alertas de erro em português logo abaixo de cada campo respectivo.</li>
+    <li><strong>CA03 – Persistência Segura com Upload:</strong> Ao salvar um evento, a imagem correspondente deve aparecer renderizada no card da vitrine pública. O banco de dados deve registrar o caminho ofuscado do arquivo e vincular o evento ao ID do organizador sem o uso de inputs ocultos manipuláveis pelo usuário no formulário de criação.</li>
+    <li><strong>CA04 – Validação do Motor de Inscrição (Tabela Pivô):</strong> Ao clicar em "Inscrever-se", o sistema deve reduzir logicamente o total de vagas ou validar a capacidade. O banco de dados deve gerar uma nova linha na tabela intermediária contendo as duas chaves estrangeiras corretas, além do ticket_code alfanumérico aleatório e o timestamp da operação.</li>
+    <li><strong>CA05 – Comprovação de Mitigação N+1:</strong> O código da página inicial não deve conter consultas repetitivas dentro de loops. A listagem deve resolver o carregamento do organizador e da categoria usando carregamento ansioso.</li>
+  </ul>
+
+  <h3>6.2 Formato de Entrega Obrigatório</h3>
+  <p>O projeto simulará o hand-off de código de uma equipe de desenvolvimento para o time de operações ou engenharia de QA. Os seguintes artefatos devem ser fornecidos:</p>
+
+  <h4>6.2.1 Repositório no GitHub</h4>
+  <ul>
+    <li>O código-fonte completo deve ser disponibilizado em um repositório na nuvem (público ou privado com acesso liberado para o professor).</li>
+    <li><strong>Histórico de Commits Semântico:</strong> O repositório deve demonstrar a evolução do desenvolvimento por meio de commits claros e organizados (ex: <code>feat: implementa autenticação de perfis</code>, <code>fix: corrige validacao de data retroativa</code>), evitando envios massivos com mensagens genéricas (ex: "projeto pronto" ou "ajustes").</li>
+  </ul>
+
+  <h4>6.2.2 Automação de Banco de Dados (Ambiente Pronto)</h4>
+  <ul>
+    <li>O projeto não deve depender de dumps de arquivos <code>.sql</code> manuais. O repositório deve conter todas as Migrations necessárias para estruturar o banco de dados do zero.</li>
+    <li><strong>Seeders Obrigatórios:</strong> Deve ser fornecido um arquivo de Seeder para popular a tabela de categorias (ex: "Tecnologia", "Música", "Negócios") de forma automatizada, permitindo que o avaliador teste o sistema imediatamente após subir o ambiente.</li>
+  </ul>
+
+  <h4>6.2.3 Documentação de Engenharia (O Arquivo README.md)</h4>
+  <p>A raiz do projeto deve conter um arquivo markdown detalhando exatamente como colocar o software em execução. O documento deve cobrir:</p>
+  <ul>
+    <li><strong>Requisitos de Ambiente:</strong> Versão utilizada do ecossistema e qual banco de dados foi configurado.</li>
+    <li><strong>Passo a Passo de Inicialização:</strong> Comandos necessários para instalar as dependências, gerar a chave de segurança da aplicação e criar o link simbólico do sistema de arquivos (storage).</li>
+    <li><strong>Instruções de Migração:</strong> Comando exato para rodar as migrations junto com os seeders de teste.</li>
+    <li><strong>Credenciais de Teste Padrão:</strong> O documento deve listar um e-mail e senha criados previamente (via Seeder ou instrução de cadastro) para uma conta de Organizador e outra de Participante, permitindo a validação imediata das matrizes de acesso (ACL) sem a necessidade de criar novas contas do zero durante a correção.</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>7. Diagramas de Arquitetura</h2>
+  <p>Os diagramas a seguir oferecem uma representação visual dos aspectos mais críticos da aplicação: a modelagem física do banco de dados, as barreiras de segurança em nível de requisição e o ciclo de vida transacional da inscrição.</p>
+
+  <h3>7.1 Diagrama de Entidade-Relacionamento (ERD)</h3>
+  <p>Este diagrama evidencia a modelagem física do banco de dados, destacando as chaves estrangeiras e a anatomia da tabela intermediária <code>event_user</code> com seus atributos extras.</p>
+
+  <pre class="mermaid">
+erDiagram
+    USERS {
+        bigint id PK
+        string name
+        string email
+        string password
+        string role
+        timestamps created_at_updated_at
+    }
+    CATEGORIES {
+        bigint id PK
+        string name
+        timestamps created_at_updated_at
+    }
+    EVENTS {
+        bigint id PK
+        bigint user_id FK "Organizador Pai"
+        bigint category_id FK
+        string title
+        text description
+        datetime date_time
+        string location
+        integer capacity
+        string banner_path
+        timestamps created_at_updated_at
+    }
+    EVENT_USER {
+        bigint id PK
+        bigint user_id FK "Participante"
+        bigint event_id FK
+        string ticket_code "Hash único"
+        string status "Padrão: Confirmada"
+        timestamps created_at_updated_at
+    }
+
+    USERS ||--o{ EVENTS : "organiza"
+    CATEGORIES ||--o{ EVENTS : "classifica"
+    USERS ||--o{ EVENT_USER : "possui"
+    EVENTS ||--o{ EVENT_USER : "contém"
+  </pre>
+
+  <h3>7.2 Fluxo de Interceptação de Segurança (Middleware e ACL)</h3>
+  <p>Este fluxo desenha visualmente o comportamento que a aplicação deve ter ao receber uma requisição para a área administrativa (<code>/admin/eventos</code>). Ele deixa claro onde as travas de segurança atuam antes de o sistema tocar no banco.</p>
+
+  <pre class="mermaid">
+graph TD
+    A[Usuário tenta acessar /admin/eventos] --> B{Está Autenticado?}
+    B -- Não --> C[Redireciona para /login\nSessão Flash de Erro]
+    B -- Sim --> D{Qual o Perfil do Usuário?}
+
+    D -- Participante --> E[Abortar Requisição\nErro HTTP 403 Proibido]
+    D -- Organizador --> F{Ação de Escrita:\nEditar ou Excluir?}
+
+    F -- Não: Visualizar Painel --> G[Liberar Acesso ao Controller]
+    F -- Sim: Modificar Dado --> H{O Evento pertence ao\nOrganizador logado?}
+
+    H -- Não --> I[Abortar Operação\nErro HTTP 403 Proibido]
+    H -- Sim --> G
+  </pre>
+
+  <h3>7.3 Ciclo de Vida da Validação e Persistência da Inscrição</h3>
+  <p>Este diagrama detalha o processo lógico que ocorre quando um participante clica em "Inscrever-se", mapeando a sequência exata de verificações que o código deve executar.</p>
+
+  <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Participante
+    participant Sistema as Engine Laravel
+    participant Banco as Banco de Dados MySQL/PostgreSQL
+
+    Participante->>Sistema: Clica em Inscrever-se POST
+    Note over Sistema: Middleware garante Auth e Perfil Participante
+
+    Sistema->>Banco: Checa se o usuário já está na lista do evento
+    Banco-->>Sistema: Retorna contagem de registros
+
+    alt Inscrição já existe RN04
+        Sistema-->>Participante: Redireciona com Flash Erro: Já Inscrito
+    else Nova Inscrição
+        Sistema->>Banco: Consulta vagas preenchidas vs capacidade RN05
+        Banco-->>Sistema: Retorna dados de lotação
+
+        alt Vagas Esgotadas
+            Sistema-->>Participante: Redireciona com Flash Erro: Vagas Esgotadas
+        else Vagas Disponíveis
+            Note over Sistema: Gera código alfanumérico único ticket_code
+            Sistema->>Banco: Comando ATTACH na tabela pivô event_user
+            Banco-->>Sistema: Confirmação de persistência dos dados
+            Sistema-->>Participante: Redireciona com Flash Sucesso: Ingresso Gerado!
+        end
+    end
+  </pre>
 </section>
