@@ -9,13 +9,303 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 17 em desenvolvimento...</p>
+  <p>
+    O tratamento de exceções é um mecanismo que permite ao código lidar com problemas de execução de forma estruturada. Em vez de simplesmente interromper o script com uma mensagem de erro "feia", o desenvolvedor pode capturar o erro, tratá-lo e decidir se o programa deve continuar ou falhar graciosamente.
+  </p>
+
+  <h3>1. O que são Exceções?</h3>
+  <p>
+    Uma exceção é um objeto especial instanciado a partir da classe integrada <code>Exception</code> (ou de uma classe derivada). Enquanto os erros tradicionais do PHP (como notices ou warnings) são gerados pelo motor da linguagem, as exceções são disparadas manualmente pelo programador quando uma condição inesperada ocorre.
+  </p>
+  
+  <h4>A diferença entre Erros e Exceções</h4>
+  <ul>
+    <li><strong>Erros:</strong> Geralmente indicam falhas fatais no script ou problemas de sintaxe que o PHP detecta automaticamente.</li>
+    <li><strong>Exceções:</strong> São utilizadas para situações que você sabe que podem ocorrer em circunstâncias excepcionais (como um arquivo que não abre ou uma conexão de rede que falha).</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. A Estrutura try, catch e finally</h3>
+  <p>
+    Para gerenciar exceções, o PHP utiliza um bloco de controle dividido em três partes:
+  </p>
+  <ul>
+    <li>
+      <strong>O bloco <code>try</code> (Tentar):</strong> Você envolve o código propenso a erros dentro deste bloco. Ele diz ao PHP: "Tente executar este código; se algo der errado, eu tenho um plano".
+    </li>
+    <li>
+      <strong>O bloco <code>catch</code> (Capturar):</strong> Se uma exceção for disparada dentro do <code>try</code>, a execução é interrompida imediatamente e o controle salta para o <code>catch</code>. Este bloco recebe o objeto de exceção como um argumento, permitindo acessar detalhes do erro.
+    </li>
+    <li>
+      <strong>O bloco <code>finally</code> (Finalmente):</strong> Introduzido no PHP 5.5, este bloco é executado sempre, independentemente de ter ocorrido uma exceção ou não. É ideal para "limpar a bagunça", como fechar conexões de banco de dados ou liberar recursos de arquivos que não podem ficar abertos.
+    </li>
+  </ul>
+
+  <h4>Exemplo Prático: Fluxo Básico</h4>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+try {
+    echo "Iniciando processo...\n";
+    // Simulando um erro: divisão por zero ou função inexistente
+    if (!file_exists("config.txt")) {
+        throw new Exception("Arquivo de configuração não encontrado!");
+    }
+} catch (Exception $e) {
+    // O catch captura o objeto lançado pelo 'throw'
+    echo "Erro capturado: " . $e->getMessage() . "\n";
+} finally {
+    // Este código roda ocorrendo erro ou não
+    echo "Finalizando limpeza de recursos.\n";
+}
+?&gt;</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Disparando Exceções com <code>throw</code></h3>
+  <p>
+    A palavra-chave <code>throw</code> é usada para sinalizar que um erro ocorreu. Ela exige um objeto, geralmente uma instância da classe <code>Exception</code>, que aceita dois parâmetros opcionais: uma mensagem (string) e um código de erro (inteiro).
+  </p>
+
+  <hr>
+
+  <h3>4. A Classe Integrada Exception</h3>
+  <p>
+    Ao capturar uma exceção, você tem acesso a métodos úteis para diagnóstico:
+  </p>
+  <ul>
+    <li><code>getMessage()</code>: Retorna a mensagem de erro passada ao construtor.</li>
+    <li><code>getCode()</code>: Retorna o código numérico do erro.</li>
+    <li><code>getFile()</code>: Retorna o caminho completo do arquivo onde o erro ocorreu.</li>
+    <li><code>getLine()</code>: Retorna o número da linha da falha.</li>
+    <li><code>getTraceAsString()</code>: Fornece o "rastro" (stack trace) das funções que levaram ao erro, essencial para depuração.</li>
+  </ul>
+
+  <hr>
+
+  <h3>5. Exceções Customizadas (Subclassing)</h3>
+  <p>
+    Uma das maiores vantagens da Orientação a Objetos é a possibilidade de criar suas próprias categorias de erro estendendo a classe <code>Exception</code>. Isso permite o <em>Selective Catching</em> (captura seletiva), onde você trata erros diferentes de formas diferentes.
+  </p>
+
+  <h4>Exemplo Prático: Exceções Customizadas</h4>
+  <p>
+    Imagine um sistema que lida com conexões de banco de dados e arquivos. Você pode criar classes específicas para cada um:
+  </p>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+// Definindo exceções customizadas
+class BancoDadosException extends Exception {}
+class ArquivoNaoEncontradoException extends Exception {}
+
+class Logger {
+    public function salvarLog($msg) {
+        // Lógica de negócio...
+        if (rand(0, 1)) { // Simulando falha aleatória
+            throw new BancoDadosException("Falha ao gravar no banco!");
+        }
+        throw new ArquivoNaoEncontradoException("Caminho do log inválido.");
+    }
+}
+
+// Uso com múltiplos blocos catch
+try {
+    $log = new Logger();
+    $log->salvarLog("Acesso de usuário");
+} catch (BancoDadosException $e) {
+    echo "Ação: Tentar reconectar ao banco. Erro: " . $e->getMessage();
+} catch (ArquivoNaoEncontradoException $e) {
+    echo "Ação: Criar diretório e tentar novamente. Erro: " . $e->getMessage();
+} catch (Exception $e) {
+    echo "Erro genérico: " . $e->getMessage();
+}
+?&gt;</code></pre>
+  </div>
+  <p>
+    <strong>Regra de Ouro:</strong> Ao usar múltiplos blocos <code>catch</code>, sempre coloque as exceções mais específicas primeiro e a genérica (<code>Exception</code>) por último, como um "redutor de danos" (backstop).
+  </p>
+
+  <hr>
+
+  <h3>6. Boas Práticas e Lembretes</h3>
+  <ul>
+    <li><strong>Não use Exceções para Fluxo Normal:</strong> Exceções devem ser reservadas para circunstâncias excepcionais, não para a lógica comum do dia a dia (como um <code>if/else</code>).</li>
+    <li><strong>Evite o "Blanket Catch":</strong> Nunca capture uma exceção genérica e a ignore (ficar em silêncio). Isso esconde bugs reais e dificulta muito a manutenção.</li>
+    <li><strong>Hierarquia de Tipos:</strong> O PHP 7+ introduziu a interface <code>Throwable</code>, que é a base tanto para <code>Exception</code> quanto para a classe <code>Error</code> (erros internos do PHP), permitindo capturar quase tudo o que pode dar errado no sistema.</li>
+  </ul>
 </section>
 
 <section class="section-box">
   <h2>Exemplo de Código</h2>
+  
+  <h3>1. Nível Básico: O Bloco try/catch Tradicional</h3>
+  <p>
+    O objetivo deste exemplo é demonstrar o fluxo de interrupção: quando o código falha, o PHP interrompe a execução do bloco try e desvia imediatamente para o catch.
+  </p>
   <div class="code-container">
-    <pre><code class="language-php">// Em breve...</code></pre>
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+function validarIdade(int $idade): bool {
+    if ($idade &lt; 18) {
+        // O throw funciona como uma interrupção da função, disparando a exceção
+        throw new Exception("Acesso negado: O utilizador deve ser maior de idade.");
+    }
+    return true;
+}
+
+// Fluxo de teste
+try {
+    echo "Iniciando verificação...&lt;br&gt;";
+    
+    validarIdade(15); // Isto vai lançar a exceção
+    
+    echo "Esta linha NUNCA será executada se a idade for menor que 18.&lt;br&gt;";
+
+} catch (Exception $e) {
+    // Captura o objeto da exceção e extrai a mensagem contida nele
+    echo "Erro capturado: " . $e->getMessage() . "&lt;br&gt;";
+}
+
+echo "O script continua a executar normalmente daqui para baixo por causa do catch!";
+?&gt;</code></pre>
+  </div>
+
+  <h3>2. Nível Intermediário: Multi-catch (Múltiplas Exceções)</h3>
+  <p>
+    Este exemplo demonstra que um único bloco try pode disparar alarmes diferentes, permitindo que o sistema reaja de forma personalizada para cada tipo de problema.
+  </p>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+class ConversorCamadas {
+    public function processarUpload(array $arquivo, int $tamanhoMaximo): void {
+        if (!isset($arquivo['extensao']) || $arquivo['extensao'] !== 'mp3') {
+            // Lançando uma exceção nativa do PHP para argumentos inválidos
+            throw new InvalidArgumentException("Formato de arquivo inválido. Apenas MP3 é aceite.");
+        }
+
+        if ($arquivo['tamanho'] &gt; $tamanhoMaximo) {
+            // Lançando uma exceção nativa do PHP para limites estourados
+            throw new LengthException("O arquivo excede o limite máximo permitido de {$tamanhoMaximo} bytes.");
+        }
+
+        echo "Arquivo processado com sucesso!&lt;br&gt;";
+    }
+}
+
+// Fluxo de teste no Controller (processa.php)
+$conversor = new ConversorCamadas();
+$meuArquivo = ['extensao' => 'exe', 'tamanho' => 5000];
+
+try {
+    $conversor->processarUpload($meuArquivo, 2000);
+
+} catch (InvalidArgumentException $e) {
+    // Resposta específica para o formato do arquivo
+    echo "Erro de Formato: " . $e->getMessage();
+
+} catch (LengthException $e) {
+    // Resposta específica para o tamanho do arquivo
+    echo "Erro de Limite: " . $e->getMessage();
+
+} catch (Exception $e) {
+    // Proteção genérica para qualquer outro erro inesperado
+    echo "Erro desconhecido: " . $e->getMessage();
+}
+?&gt;</code></pre>
+  </div>
+
+  <h3>3. Nível Avançado: Exceções Customizadas de Domínio com Herança</h3>
+  <p>
+    Este exemplo aborda a criação de classes de exceção próprias estendendo a classe Exception nativa do PHP. Isto permite isolar as regras de negócio baseadas no domínio do projeto.
+  </p>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+// 1. Definição das Exceções do Domínio Financeiro (Herança de Exception)
+class TransacaoException extends Exception {}
+class SaldoInsuficienteException extends TransacaoException {}
+class LimiteDiarioExcedidoException extends TransacaoException {}
+
+// 2. Regra de Negócio usando as Exceções Customizadas
+class ContaBancaria {
+    private float $saldo = 100.00;
+    private float $limiteMaximoSaque = 500.00;
+
+    public function sacar(float $valor): void {
+        if ($valor &gt; $this->limiteMaximoSaque) {
+            throw new LimiteDiarioExcedidoException("O limite máximo por saque é de R$ {$this->limiteMaximoSaque}.");
+        }
+
+        if ($valor &gt; $this->saldo) {
+            throw new SaldoInsuficienteException("Saldo insuficiente. Saldo atual: R$ {$this->saldo}.");
+        }
+
+        $this->saldo -= $valor;
+        echo "Saque de R$ {$valor} realizado!&lt;br&gt;";
+    }
+}
+
+// 3. Aplicação Prática e captura hierárquica
+$conta = new ContaBancaria();
+
+try {
+    $conta->sacar(600.00); 
+
+} catch (SaldoInsuficienteException $e) {
+    // Trata especificamente a falta de saldo
+    echo "Banco: " . $e->getMessage();
+
+} catch (LimiteDiarioExcedidoException $e) {
+    // Trata especificamente a segurança de limite do caixa eletrônico
+    echo "Segurança: " . $e->getMessage();
+
+} catch (TransacaoException $e) {
+    // Captura QUALQUER exceção que seja filha de TransacaoException
+    echo "Erro na transação financeira: " . $e->getMessage();
+}
+?&gt;</code></pre>
+  </div>
+
+  <h3>4. Nível Profissional: O Bloco finally e Libertação de Recursos</h3>
+  <p>
+    Demonstração do uso do bloco finally, que executa obrigatoriamente, ocorrendo um erro ou não. É utilizado para fechar conexões de banco de dados ou libertar arquivos abertos na memória do servidor.
+  </p>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+class GerenciadorArquivo {
+    public function lerDadosConfiguracao(string $caminho): void {
+        echo "Abrindo conexão com o arquivo físico...&lt;br&gt;";
+        $arquivoAberto = true; // Simula o arquivo travado na memória do servidor
+
+        try {
+            if (!file_exists($caminho)) {
+                throw new RuntimeException("O arquivo de configuração solicitado não existe.");
+            }
+            
+            echo "Lendo dados...&lt;br&gt;";
+
+        } catch (RuntimeException $e) {
+            echo "Tratando erro interno: " . $e->getMessage() . "&lt;br&gt;";
+            
+        } finally {
+            // O FINALLY garante que o arquivo seja fechado independentemente do erro
+            $arquivoAberto = false;
+            echo "Bloco Finally Executado: Arquivo fechado com segurança e memória libertada.&lt;br&gt;";
+        }
+    }
+}
+
+// Teste
+$gerenciador = new GerenciadorArquivo();
+$gerenciador->lerDadosConfiguracao("config.json"); // Força o erro porque o arquivo não existe
+?&gt;</code></pre>
   </div>
 </section>
 
