@@ -1,0 +1,161 @@
+---
+layout: exercicio
+title: "Funções de Agregação e Agrupamento - Demonstração Prática"
+exercicio_numero: "01"
+aula_numero: "14"
+description: "Demonstração prática de extração de indicadores gerenciais utilizando funções agregadoras e agrupamento."
+---
+
+<div class="section-box">
+  <h2>Código</h2>
+  <div class="code-container">
+    <pre><code class="language-sql">create database campgames;
+use campgames;
+
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS visualizacoes_live;
+DROP TABLE IF EXISTS lives;
+DROP TABLE IF EXISTS streamers;
+DROP TABLE IF EXISTS jogos;
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE jogos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE streamers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nickname VARCHAR(50) NOT NULL,
+    repatria_patrocinio DECIMAL(10,2) NULL,
+    data_cadastro DATE NOT NULL
+);
+
+CREATE TABLE lives (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_streamer INT,
+    id_jogo INT,
+    duracao_minutos INT NOT NULL,
+    titulo_live VARCHAR(150),
+    FOREIGN KEY (id_streamer) REFERENCES streamers(id),
+    FOREIGN KEY (id_jogo) REFERENCES jogos(id)
+);
+
+CREATE TABLE visualizacoes_live (
+    id_live INT,
+    id_usuario_espectador INT,
+    minutos_assistidos INT NOT NULL,
+    dispositivo VARCHAR(30),
+    PRIMARY KEY (id_live, id_usuario_espectador),
+    FOREIGN KEY (id_live) REFERENCES lives(id)
+);
+
+-- Carga de Dados (Massa de Teste Estratégica)
+INSERT INTO jogos (id, nome, categoria) VALUES 
+(1, 'League of Legends', 'MOBA'),
+(2, 'Counter-Strike 2', 'FPS'),
+(3, 'Valorant', 'FPS'),
+(4, 'Minecraft', 'Sandbox'),
+(5, 'Elden Ring', 'RPG');
+
+INSERT INTO streamers (id, nickname, repatria_patrocinio, data_cadastro) VALUES 
+(10, 'Gaules', 15000.00, '2024-01-15'),
+(20, 'Alanzoka', 22500.50, '2024-02-20'),
+(30, 'Nobru', 12000.00, '2024-03-05'),
+(40, 'Coringa', NULL, '2024-04-12'),
+(50, 'StreamerNovato', NULL, '2026-01-01');
+
+INSERT INTO lives (id, id_streamer, id_jogo, duracao_minutos, titulo_live) VALUES 
+(101, 10, 2, 360, 'Major de CS2 - Grande Final'),
+(102, 10, 2, 180, 'Gameplay de CS2 com a Tribo'),
+(103, 20, 5, 240, 'Explorando a DLC de Elden Ring'),
+(104, 20, 4, 120, 'Construindo nossa vila pixelada'),
+(105, 30, 1, 150, 'Ranqueada solo até o Desafiante'),
+(106, 40, 1, 300, 'Torneio da Comunidade LoL'),
+(107, 40, 3, 180, 'Valorant com amigos');
+
+INSERT INTO visualizacoes_live (id_live, id_usuario_espectador, minutos_assistidos, dispositivo) VALUES 
+(101, 500, 120, 'PC'), (101, 501, 360, 'SmartTV'), (101, 502, 45, 'Mobile'),
+(102, 500, 30, 'PC'), (102, 503, 180, 'Mobile'),
+(103, 504, 240, 'PC'), (103, 505, 150, 'Console'),
+(104, 504, 10, 'PC'),
+(105, 506, 90, 'Mobile'), (105, 507, 120, 'SmartTV'),
+(106, 500, 300, 'PC'), (106, 501, 200, 'PC'), (106, 508, 150, 'Mobile'),
+(107, 509, 45, 'Console');
+
+-- Inserindo o Streamer de Teste
+INSERT INTO streamers (id, nickname, repatria_patrocinio, data_cadastro) 
+VALUES (99, 'GaulesDoParaguai', NULL, '2026-05-22');
+
+-- ATENÇÃO À ORDEM DE INSERÇÃO:
+-- 1º Inserimos uma live CURTA (o MySQL vai travar este título na memória do agrupamento)
+INSERT INTO lives (id, id_streamer, id_jogo, duracao_minutos, titulo_live) 
+VALUES (991, 99, 2, 60, 'Live Curta de Aquecimento');
+
+-- 2º Inserimos a live LONGA (que será o alvo do MAX)
+INSERT INTO lives (id, id_streamer, id_jogo, duracao_minutos, titulo_live) 
+VALUES (992, 99, 2, 600, 'CORUJÃO HISTÓRICO - 10 HORAS');
+
+select * from visualizacoes_live;
+select * from streamers;
+select * from jogos;
+select * from lives;
+
+select id_streamer, max(duracao_minutos) 
+from lives
+group by id_streamer;
+
+SELECT 
+    COUNT(*) AS total_streamers,
+    COUNT(repatria_patrocinio) AS streamers_patrocinados,
+    SUM(repatria_patrocinio) AS investimento_total,
+    round(AVG(repatria_patrocinio), 2) AS media_patrocinios_existentes
+FROM streamers;
+
+-- PRÓXIMO
+
+SET sql_mode = REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', '');
+SET sql_mode = CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY');
+SELECT 
+    id_streamer, 
+    MAX(duracao_minutos) AS maior_live,
+    titulo_live -- <-- A COLUNA DA ARMADILHA!
+FROM lives
+GROUP BY id_streamer;
+
+SELECT 
+    id_streamer, 
+    MAX(duracao_minutos) AS maior_live
+FROM lives
+GROUP BY id_streamer;
+
+SELECT id_streamer, duracao_minutos, titulo_live
+FROM lives
+WHERE (id_streamer, duracao_minutos) IN (
+    SELECT id_streamer, MAX(duracao_minutos)
+    FROM lives
+    GROUP BY id_streamer
+);
+
+-- PRÓXIMO
+
+SELECT 
+    l.id AS numero_live,
+    l.titulo_live,
+    j.categoria,
+    SUM(v.minutos_assistidos) AS tempo_total_audiencia
+FROM lives l
+INNER JOIN jogos j ON l.id_jogo = j.id
+INNER JOIN visualizacoes_live v ON l.id = v.id_live
+WHERE j.categoria = 'FPS' -- Filtra a origem antes de somar
+GROUP BY l.id, l.titulo_live, j.categoria
+HAVING SUM(v.minutos_assistidos) > 200; -- Filtra o resultado calculado
+
+-- ATENÇÃO: Isto causará um erro de compilação!
+SELECT id_live, SUM(minutos_assistidos)
+FROM visualizacoes_live
+WHERE SUM(minutos_assistidos) > 200 -- ERRO! Não pode usar agregador no WHERE
+GROUP BY id_live;</code></pre>
+  </div>
+</div>
