@@ -1,30 +1,185 @@
 ---
-title: "Introdução ao Modelo Lógico: O conceito de Tabelas e Domínios."
+title: "Introdução ao Modelo Lógico: O conceito de Tabelas e Domínios"
 aula_numero: "14"
 subject: "banco-de-dados-i"
-description: "Conteúdo da aula 14 do bimestre 2: Introdução ao Modelo Lógico: O conceito de Tabelas e Domínios.."
+description: "O Modelo Lógico traduz a visão conceitual em estruturas de tabelas (relações) formadas por colunas e linhas, cujos valores são restritos por domínios que definem os conjuntos de dados permitidos."
 tags:
 - aula
 - bimestre-02
 ---
-aula_numero: "14"
-subject: "banco-de-dados-i"
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo teórico da aula 04 em desenvolvimento...</p>
+  
+  <h3>1. O Modelo Lógico de Dados</h3>
+  <p>O Modelo Lógico é a segunda etapa do projeto de banco de dados, situada entre o modelo conceitual (independente de tecnologia) e o modelo físico (específico de um SGBD).</p>
+  <ul>
+    <li><strong>Objetivo:</strong> Descrever as estruturas que estarão no banco de dados de acordo com a abordagem tecnológica escolhida (neste caso, a Relacional), mas sem considerar características físicas como índices ou caminhos de acesso.</li>
+    <li><strong>Transição:</strong> Enquanto no modelo conceitual falamos em "Entidades" e "Relacionamentos", no modelo lógico passamos a falar em Tabelas (Relações), Atributos (Colunas) e Tuplas (Linhas).</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. O Conceito de Tabela (Relação)</h3>
+  <p>A abordagem relacional, criada por Edgar F. Codd em 1970, baseia-se no princípio de que as informações podem ser representadas uniformemente como tabelas bidimensionais.</p>
+  
+  <h4>A. Premissas de uma Tabela Relacional:</h4>
+  <p>Para que uma estrutura seja considerada uma tabela (relação) válida na teoria relacional, ela deve seguir certas regras:</p>
+  <ul>
+    <li><strong>Nome Único:</strong> Cada tabela deve ter um nome distinto das demais no banco de dados.</li>
+    <li><strong>Valores Atômicos:</strong> Cada atributo (coluna) deve conter valores indivisíveis. Não são permitidos "subgrupos" ou múltiplos valores em uma única célula (multivaloração).</li>
+    <li><strong>Unicidade das Linhas:</strong> Não podem existir duas linhas (tuplas) idênticas em uma mesma tabela.</li>
+    <li><strong>Ordem Irrelevante:</strong> A ordem em que as linhas ou colunas aparecem é tecnicamente irrelevante para o funcionamento lógico.</li>
+    <li><strong>Nomes de Colunas:</strong> Cada coluna possui um nome que identifica o significado de seu conteúdo.</li>
+  </ul>
+
+  <h4>B. Representação Gráfica (Estrutura Lógica)</h4>
+  <p>No modelo lógico, representamos a tabela e seus atributos, indicando qual coluna atua como identificador único.</p>
+  <pre><div class="mermaid">classDiagram
+    class CLIENTE {
+        +int Cod_Cliente (PK)
+        +string Nome
+        +string CPF
+        +string Cidade
+    }
+</div></pre>
+
+  <hr>
+
+  <h3>3. O Conceito de Domínio</h3>
+  <p>O Domínio é o fundamento da integridade dos dados no nível lógico. Ele representa o conjunto de valores atômicos admissíveis para uma determinada coluna.</p>
+  <ul>
+    <li><strong>Finalidade:</strong> Estabelecer restrições para garantir que os valores inseridos façam sentido. Por exemplo, um domínio de "Idade" pode ser restrito a números inteiros entre 0 e 120.</li>
+    <li><strong>Associação com Tipos:</strong> A cada domínio está associado um tipo de dado (integer, float, char, date) ou um formato específico.</li>
+  </ul>
+  <p><strong>Exemplos Práticos de Domínios:</strong></p>
+  <ul>
+    <li><strong>Sexo:</strong> Lista enumerada {'M', 'F'}.</li>
+    <li><strong>CPF:</strong> Conjunto de 11 dígitos numéricos.</li>
+    <li><strong>Salário:</strong> Valores numéricos decimais positivos.</li>
+  </ul>
+
+  <hr>
+
+  <h3>4. Demonstração Prática: Esquema vs. Instância</h3>
+  <p>A distinção entre a definição da tabela e os dados reais é crucial:</p>
+  <ul>
+    <li><strong>Esquema (Intenção):</strong> É a definição da estrutura. Exemplo: ESTUDANTE (Nome, NSS, Telefone, MPA).</li>
+    <li><strong>Instância (Extensão):</strong> É o conjunto de dados (tuplas) presentes na tabela em um determinado momento.</li>
+  </ul>
+  <p><strong>Exemplo de Tabela "FUNCIONÁRIO" (Instância):</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>NumReg (PK)</th>
+        <th>NomeFunc</th>
+        <th>DtAdmissão</th>
+        <th>Sexo</th>
+        <th>CdDepto (FK)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>101</td>
+        <td>Luis Sampaio</td>
+        <td>10/08/2003</td>
+        <td>M</td>
+        <td>D5</td>
+      </tr>
+      <tr>
+        <td>104</td>
+        <td>Carlos Pereira</td>
+        <td>02/03/2004</td>
+        <td>M</td>
+        <td>D6</td>
+      </tr>
+      <tr>
+        <td>195</td>
+        <td>Marta Silveira</td>
+        <td>05/01/2002</td>
+        <td>F</td>
+        <td>D5</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><em>Nota Teórica:</em> Na tabela acima, as colunas representam os atributos, e cada linha completa representa uma tupla (um fato sobre um funcionário específico).</p>
+
+  <hr>
+
+  <h3>5. Resumo da Correspondência entre Modelos</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Modelo Conceitual</th>
+        <th>Modelo Lógico</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Entidade</td>
+        <td>Tabela (Relação)</td>
+      </tr>
+      <tr>
+        <td>Atributo</td>
+        <td>Coluna</td>
+      </tr>
+      <tr>
+        <td>Instância de Entidade</td>
+        <td>Tupla (Linha)</td>
+      </tr>
+      <tr>
+        <td>Conjunto de Valores</td>
+        <td>Domínio</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Esta transposição garante que a realidade captada no minimundo seja fielmente retratada em estruturas lógicas robustas antes da implementação física no SGBD.</p>
+
 </section>
 
 <section class="section-box">
-  <h2>Exemplo Prático</h2>
-  <p>Exemplo prático da aula 04 em desenvolvimento...</p>
+  <h2>Dicas & Lembretes</h2>
+  
+  <h3>1. Estrutura e Premissas das Tabelas (Relações)</h3>
+  <ul>
+    <li><strong>Terminologia Técnica:</strong> Lembre-se de que, formalmente, uma tabela é chamada de relação, uma linha é uma tupla e uma coluna é um atributo.</li>
+    <li><strong>Unicidade:</strong> Não podem existir duas linhas idênticas em uma mesma tabela. Cada fato registrado deve ser distinguível dos demais através de sua Chave Primária (PK).</li>
+    <li><strong>Ordem Irrelevante:</strong> Tecnicamente, a ordem em que as linhas ou colunas aparecem no banco de dados não afeta o resultado lógico das consultas.</li>
+    <li><strong>Nomenclatura:</strong> Cada tabela deve possuir um nome exclusivo dentro do banco de dados para evitar ambiguidades.</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. Domínios e Atributos</h3>
+  <ul>
+    <li><strong>Valores Atômicos:</strong> Cada célula da tabela deve conter apenas um valor indivisível. Não é permitido o uso de subgrupos ou listas de valores (multivaloração) dentro de um único atributo.</li>
+    <li><strong>O Papel do Domínio:</strong> O domínio define o conjunto de valores "legais" para uma coluna (ex: um domínio de "Nota" entre 0 e 10). Ele impede que dados sem sentido sejam inseridos e garante que as comparações em consultas sejam válidas.</li>
+    <li><strong>Tipos de Dados:</strong> A cada domínio está associado um tipo físico (integer, char, date, etc.), mas o domínio é um conceito mais restritivo que o simples tipo.</li>
+  </ul>
+
+  <hr>
+
+  <h3>3. Esquema vs. Instância</h3>
+  <ul>
+    <li><strong>Esquema (Intenção):</strong> É a "fotocópia" ou o plano do banco de dados, definindo as tabelas e suas regras. Ele raramente muda.</li>
+    <li><strong>Instância (Extensão):</strong> São os dados reais presentes no banco em um momento específico. A instância muda constantemente conforme registros são inseridos ou deletados.</li>
+  </ul>
+
+  <hr>
+
+  <h3>4. Integridade de Entidade (Chave Primária)</h3>
+  <ul>
+    <li><strong>Regra de Ouro:</strong> Os atributos que compõem a Chave Primária nunca podem aceitar valores nulos (NOT NULL).</li>
+    <li><strong>Identificação Unívoca:</strong> Se a PK for nula, o registro torna-se "desconhecido" e não distinguível, o que violaria a integridade da tabela.</li>
+    <li><strong>Chaves Candidatas:</strong> Uma tabela pode ter várias colunas com valores únicos (chaves candidatas), mas apenas uma é escolhida para ser a Chave Primária oficial.</li>
+  </ul>
+
+  <hr>
+
+  <h3>5. Boas Práticas de Modelagem Lógica</h3>
+  <ul>
+    <li><strong>Evite Nulos Excessivos:</strong> Projetar tabelas onde a maioria das tuplas possui valores nulos em certas colunas pode indicar um erro de modelagem (talvez esses dados devessem estar em uma tabela separada).</li>
+    <li><strong>Semântica Clara:</strong> Cada tabela deve representar apenas um assunto ou tipo de entidade. Misturar atributos de entidades diferentes (ex: colocar dados do departamento na tabela de funcionários de forma repetitiva) gera redundâncias e anomalias de atualização.</li>
+    <li><strong>Independência de Dados:</strong> O modelo lógico deve ser construído pensando na tecnologia escolhida (ex: Relacional), mas ainda sem se preocupar com detalhes físicos de hardware ou armazenamento, garantindo maior flexibilidade.</li>
+  </ul>
 </section>
-
-
-
-
-
-
-
-
-

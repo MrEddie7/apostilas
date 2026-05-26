@@ -9,7 +9,105 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo em desenvolvimento...</p>
+  <h3>1. Definição e Propriedade de Fechamento</h3>
+  <p>Uma subquery é um comando SELECT aninhado dentro de outra instrução SQL (como outro SELECT, INSERT, UPDATE ou DELETE). Essa capacidade deriva da propriedade de fechamento da álgebra relacional: como o resultado de qualquer operação relacional é sempre uma nova relação (tabela), podemos usar uma expressão de tabela em qualquer lugar onde o nome de uma tabela física seria aceito.</p>
+  
+  <h3>2. Subqueries na Cláusula WHERE</h3>
+  <p>Este é o uso mais comum, servindo para filtrar resultados com base em um conjunto de dados dinâmico.</p>
+  
+  <h4>A. Operador IN e NOT IN</h4>
+  <p>O operador IN verifica se um valor pertence ao conjunto retornado pela subconsulta.</p>
+  <p>Exemplo: Listar produtos que participam de qualquer pedido com quantidade igual a 10.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT descricao_produto 
+FROM produto 
+WHERE codigo_produto IN (
+    SELECT codigo_produto 
+    FROM item_de_pedido 
+    WHERE quantidade = 10
+);</code></pre>
+  </div>
+  <p>O NOT IN identifica o que não está presente no conjunto, sendo útil para encontrar "buracos" ou registros sem correspondência.</p>
+  
+  <h4>B. Operador EXISTS e NOT EXISTS</h4>
+  <p>Diferente do IN, o EXISTS não retorna valores, mas um valor booleano (verdadeiro/falso) se a subconsulta retornar ao menos uma linha. Ele é frequentemente mais performático para checar a existência de relacionamentos.</p>
+  <p>Exemplo: Listar clientes que possuem ao menos um pedido cadastrado.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT nome_cliente 
+FROM cliente C 
+WHERE EXISTS (
+    SELECT 1 
+    FROM pedido P 
+    WHERE P.codigo_cliente = C.codigo_cliente
+);</code></pre>
+  </div>
+  
+  <h3>3. Subqueries na Cláusula FROM (Tabelas Derivadas)</h3>
+  <p>Também chamadas de Inline Views, essas subqueries permitem tratar o resultado de um SELECT como se fosse uma tabela física, o que é ideal para realizar agregações antes de uma junção.</p>
+  <p>Exemplo: Comparar o preço de pinturas com o valor máximo por artista.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT A.name, P.title, P.price
+FROM artist AS A 
+INNER JOIN painting AS P ON A.a_id = P.a_id
+INNER JOIN (
+    SELECT a_id, MAX(price) AS max_price 
+    FROM painting 
+    GROUP BY a_id
+) AS tmp ON P.a_id = tmp.a_id AND P.price = tmp.max_price;</code></pre>
+  </div>
+  
+  <h3>4. Subqueries Correlacionadas vs. Independentes</h3>
+  <ul>
+    <li><strong>Independentes:</strong> A subquery interna é executada apenas uma vez, e seu resultado é usado pela consulta externa.</li>
+    <li><strong>Correlacionadas:</strong> A subquery interna faz referência a colunas da consulta externa. Ela é executada repetidamente, uma vez para cada linha processada pela consulta principal, o que pode impactar o desempenho se não houver indexação adequada.</li>
+  </ul>
+  
+  <h3>5. Otimização e Performance</h3>
+  <p>O uso indiscriminado de subqueries pode degradar o tempo de resposta do banco de dados.</p>
+  <ul>
+    <li><strong>Evite Subqueries no SELECT:</strong> Um erro comum é colocar subqueries na lista de campos do SELECT para buscar descrições individuais, o que força o banco a executar milhares de mini-consultas. Prefira usar JOIN sempre que possível.</li>
+    <li><strong>Restrições Precoces:</strong> Filtrar os dados (WHERE) dentro da subquery antes de passá-los para a consulta externa é uma técnica de otimização que reduz a massa de dados processada.</li>
+    <li><strong>Indexação:</strong> Chaves estrangeiras envolvidas em subqueries correlacionadas devem ser indexadas para que a busca interna seja instantânea.</li>
+    <li><strong>Cashing:</strong> SGBDs modernos como o PostgreSQL podem aumentar a velocidade em até 10% ou mais ao colocar em buffer os resultados de subqueries repetitivas.</li>
+  </ul>
+  
+  <h3>Resumo de Operadores de Comparação em Subqueries</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Operador</th>
+        <th>Função</th>
+        <th>Resultado esperado da Subquery</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>IN</td>
+        <td>Verifica inclusão em lista.</td>
+        <td>Uma coluna com múltiplas linhas.</td>
+      </tr>
+      <tr>
+        <td>EXISTS</td>
+        <td>Verifica se há algum retorno.</td>
+        <td>Booleano (True/False).</td>
+      </tr>
+      <tr>
+        <td>ALL</td>
+        <td>Compara com todos os valores.</td>
+        <td>Conjunto de valores.</td>
+      </tr>
+      <tr>
+        <td>ANY / SOME</td>
+        <td>Compara com ao menos um valor.</td>
+        <td>Conjunto de valores.</td>
+      </tr>
+      <tr>
+        <td>Escalar</td>
+        <td>Usa =, &lt;, &gt; etc.</td>
+        <td>Uma única linha e uma única coluna.</td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="section-box">
