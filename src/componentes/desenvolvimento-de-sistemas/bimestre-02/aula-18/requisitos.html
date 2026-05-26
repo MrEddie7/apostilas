@@ -17,7 +17,7 @@ description: "Documento de especificação contendo as Regras de Negócio e Requ
     <li><strong>RN01 - Cálculo de Frete para Vans:</strong> O valor base do frete para veículos da categoria Van é fixado em R$ 2,50 por quilômetro rodado.</li>
     <li><strong>RN02 - Taxa de Carga para Vans:</strong> Se uma Van possuir uma capacidade de carga superior a 1000 kg, o sistema deve obrigatoriamente aplicar uma taxa fixa adicional de risco de R$ 30,00 ao valor final do frete.</li>
     <li><strong>RN03 - Cálculo de Frete para Caminhões:</strong> O valor base do frete para veículos da categoria Caminhão é fixado em R$ 4,50 por quilômetro rodado.</li>
-    <li><strong>RN04 - Multiplicador de Eixos:</strong> Devido aos custos de pedágio em rodovias, o valor do frete de um Caminhão deve ser multiplicado pelo seu número de eixos (Fórmula: <code>distancia * 4.50 * eixos</code>).</li>
+    <li><strong>RN04 - Multiplicador de Eixos:</strong> Devido aos custos de pedágio em rodovias, o valor do frete de um Caminhão deve ser multiplicado pelo seu número de eixos (Fórmula: <code class="one-line-code">distancia * 4.50 * eixos</code>).</li>
     <li><strong>RN05 - Integridade de Carga:</strong> O sistema não pode aceitar veículos com capacidade de carga menor ou igual a zero. Caso o usuário tente digitar um valor inválido, a capacidade deve ser ajustada automaticamente para um valor padrão seguro de 100 kg.</li>
   </ul>
 </section>
@@ -42,8 +42,8 @@ description: "Documento de especificação contendo as Regras de Negócio e Requ
     <li><strong>RNF01 - Paradigma de Programação:</strong> O sistema deve ser desenvolvido obrigatoriamente utilizando o paradigma de Programação Orientada a Objetos (POO).</li>
     <li><strong>RNF02 - Tecnologia e Linguagem:</strong> O projeto deve ser codificado na linguagem Java, utilizando recursos normatizados do JDK.</li>
     <li><strong>RNF03 - Interface com Usuário:</strong> A interface do sistema deve ser estritamente em modo texto (Console/Terminal), utilizando a entrada padrão de dados do teclado.</li>
-    <li><strong>RNF04 - Proteção de Dados (Encapsulamento):</strong> Todos os atributos das classes de entidade (<code>Veiculo</code>, <code>Van</code>, <code>Caminhao</code>) devem ser fortemente encapsulados usando o modificador de acesso <code>private</code>, impedindo alterações diretas externas.</li>
-    <li><strong>RNF05 - Extensibilidade (Polimorfismo):</strong> O método de cálculo de frete deve ser abstrato na classe mãe e submetido ao polimorfismo dinâmico em tempo de execução através da anotação <code>@Override</code>. O laço que exibe o relatório não pode fazer checagens manuais de tipo (como usar <code>instanceof</code>).</li>
-    <li><strong>RNF06 - Persistência em Memória:</strong> Os dados serão mantidos de forma volátil em memória RAM através da coleção <code>ArrayList</code>, não sendo necessário o uso de banco de dados nesta versão do protótipo.</li>
+    <li><strong>RNF04 - Proteção de Dados (Encapsulamento):</strong> Todos os atributos das classes de entidade (<code class="one-line-code">Veiculo</code>, <code class="one-line-code">Van</code>, <code class="one-line-code">Caminhao</code>) devem ser fortemente encapsulados usando o modificador de acesso <code class="one-line-code">private</code>, impedindo alterações diretas externas.</li>
+    <li><strong>RNF05 - Extensibilidade (Polimorfismo):</strong> O método de cálculo de frete deve ser abstrato na classe mãe e submetido ao polimorfismo dinâmico em tempo de execução através da anotação <code class="one-line-code">@Override</code>. O laço que exibe o relatório não pode fazer checagens manuais de tipo (como usar <code class="one-line-code">instanceof</code>).</li>
+    <li><strong>RNF06 - Persistência em Memória:</strong> Os dados serão mantidos de forma volátil em memória RAM através da coleção <code class="one-line-code">ArrayList</code>, não sendo necessário o uso de banco de dados nesta versão do protótipo.</li>
   </ul>
 </section>

@@ -14,13 +14,13 @@ description: "Nesta atividade, você irá se familiarizar com os conceitos funda
 <section class="section-box">
   <h2>Preparação</h2>
   <ol>
-    <li>Crie uma pasta para o projeto chamada <code>player_poo</code>.</li>
-    <li>Dentro dela, crie uma subpasta chamada <code>musicas</code> e coloque nela 2 ou 3 arquivos <code>.mp3</code>.
+    <li>Crie uma pasta para o projeto chamada <code class="one-line-code">player_poo</code>.</li>
+    <li>Dentro dela, crie uma subpasta chamada <code class="one-line-code">musicas</code> e coloque nela 2 ou 3 arquivos <code class="one-line-code">.mp3</code>.
       <ul>
-        <li><strong>Dica:</strong> Renomeie os arquivos para um padrão simples, ex: <code>linkinpark-numb.mp3</code>.</li>
+        <li><strong>Dica:</strong> Renomeie os arquivos para um padrão simples, ex: <code class="one-line-code">linkinpark-numb.mp3</code>.</li>
       </ul>
     </li>
-    <li>Crie os arquivos <code>Musica.php</code>, <code>Playlist.php</code> e <code>index.php</code> na raiz da pasta do projeto.</li>
+    <li>Crie os arquivos <code class="one-line-code">Musica.php</code>, <code class="one-line-code">Playlist.php</code> e <code class="one-line-code">index.php</code> na raiz da pasta do projeto.</li>
   </ol>
 </section>
 
@@ -188,20 +188,20 @@ $musicasParaExibir = $minhaPlaylist->getMusicas();
 
 <section class="section-box">
   <h2>O Desafio (A Atividade)</h2>
-  <p>Com as classes estruturadas, você deve configurar o arquivo <code>index.php</code> para realizar a montagem manual do sistema:</p>
+  <p>Com as classes estruturadas, você deve configurar o arquivo <code class="one-line-code">index.php</code> para realizar a montagem manual do sistema:</p>
   <ol>
-    <li><strong>Instanciação da Playlist:</strong> No topo do <code>index.php</code>, crie um objeto da classe <code>Playlist</code> passando o nome e o nome da pasta onde estão os arquivos (ex: "musicas").</li>
-    <li><strong>Instanciação das Músicas:</strong> Crie pelo menos duas instâncias da classe <code>Musica</code>. No parâmetro do arquivo, digite exatamente o nome do arquivo que está na pasta (ex: "linkinpark-numb.mp3").</li>
-    <li><strong>Associação:</strong> Utilize o método <code>adicionar()</code> da sua playlist para inserir os objetos de música criados.</li>
-    <li><strong>Exibição:</strong> Use o código HTML/PHP para o <code>index.php</code> em Código Base no seu <code>index.php</code> para renderizar o player.</li>
+    <li><strong>Instanciação da Playlist:</strong> No topo do <code class="one-line-code">index.php</code>, crie um objeto da classe <code class="one-line-code">Playlist</code> passando o nome e o nome da pasta onde estão os arquivos (ex: "musicas").</li>
+    <li><strong>Instanciação das Músicas:</strong> Crie pelo menos duas instâncias da classe <code class="one-line-code">Musica</code>. No parâmetro do arquivo, digite exatamente o nome do arquivo que está na pasta (ex: "linkinpark-numb.mp3").</li>
+    <li><strong>Associação:</strong> Utilize o método <code class="one-line-code">adicionar()</code> da sua playlist para inserir os objetos de música criados.</li>
+    <li><strong>Exibição:</strong> Use o código HTML/PHP para o <code class="one-line-code">index.php</code> em Código Base no seu <code class="one-line-code">index.php</code> para renderizar o player.</li>
   </ol>
 </section>
 
 <div class="tip-box">
   <h4>Orientações Finais</h4>
   <ul>
-    <li><strong>O Papel do $this:</strong> Observe que, ao clicar no botão, o PHP usa <code>$m->getArquivo()</code>. Dentro da classe, o <code>$this</code> garante que o arquivo retornado seja exatamente o daquela música específica clicada, e não de outra.</li>
-    <li><strong>Encapsulamento:</strong> Verifique se você consegue acessar <code>$m->titulo</code> diretamente no <code>index.php</code>. Se o PHP der erro, parabéns! Seu encapsulamento está funcionando e o dado está protegido, acessível apenas via método.</li>
-    <li><strong>Teste Real:</strong> Abra o terminal na pasta do projeto e execute <code>php -S localhost:8000</code>. Se ao clicar na música o som começar a tocar, sua arquitetura de objetos foi implementada com sucesso.</li>
+    <li><strong>O Papel do $this:</strong> Observe que, ao clicar no botão, o PHP usa <code class="one-line-code">$m->getArquivo()</code>. Dentro da classe, o <code class="one-line-code">$this</code> garante que o arquivo retornado seja exatamente o daquela música específica clicada, e não de outra.</li>
+    <li><strong>Encapsulamento:</strong> Verifique se você consegue acessar <code class="one-line-code">$m->titulo</code> diretamente no <code class="one-line-code">index.php</code>. Se o PHP der erro, parabéns! Seu encapsulamento está funcionando e o dado está protegido, acessível apenas via método.</li>
+    <li><strong>Teste Real:</strong> Abra o terminal na pasta do projeto e execute <code class="one-line-code">php -S localhost:8000</code>. Se ao clicar na música o som começar a tocar, sua arquitetura de objetos foi implementada com sucesso.</li>
   </ul>
 </div>

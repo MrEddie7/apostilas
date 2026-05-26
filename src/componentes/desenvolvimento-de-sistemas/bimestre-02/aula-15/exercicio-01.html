@@ -16,22 +16,22 @@ métodos."
     código, pois ambos possuem título, ano de lançamento e um método para exibir a ficha técnica.</p>
   <p>Sua missão é aplicar o conceito de <strong>Herança</strong> para criar uma superclasse chamada
     <strong>Midia</strong>, eliminando a duplicidade de código e organizando as subclasses Filme e Serie usando a
-    palavra-chave <code>extends</code>.</p>
+    palavra-chave <code class="one-line-code">extends</code>.</p>
 </section>
 
 <section class="section-box">
   <h2>2. Preparação</h2>
   <ul>
-    <li><strong>Nome do Arquivo:</strong> <code>JavaFlixApp.java</code></li>
-    <li><strong>Conceitos Focados:</strong> Reutilização com <code>extends</code>, uso do construtor com
-      <code>super()</code> e sobrescrita de métodos com <code>@Override</code>.</li>
+    <li><strong>Nome do Arquivo:</strong> <code class="one-line-code">JavaFlixApp.java</code></li>
+    <li><strong>Conceitos Focados:</strong> Reutilização com <code class="one-line-code">extends</code>, uso do construtor com
+      <code class="one-line-code">super()</code> e sobrescrita de métodos com <code class="one-line-code">@Override</code>.</li>
   </ul>
 </section>
 
 <section class="section-box">
   <h2>3. Código Base</h2>
   <p>Copie o código abaixo para iniciar sua atividade. A estrutura principal e a classe mãe já estão prontas, assim como
-    o método <code>main</code>. Seu foco deve ser exclusivamente construir as classes filhas conectando-as ao pai.</p>
+    o método <code class="one-line-code">main</code>. Seu foco deve ser exclusivamente construir as classes filhas conectando-as ao pai.</p>
 
   <div class="code-container">
     <pre><code class="language-java">// SUPERCLASSE (Classe Pai)
@@ -85,24 +85,24 @@ public class JavaFlixApp {
 
   <h3>A. Implementar a classe Filme</h3>
   <ul>
-    <li>Deve herdar de <code>Midia</code> usando a palavra-chave <code>extends</code>.</li>
-    <li>Deve possuir o atributo específico: <code>private int duracaoEmMinutos;</code>.</li>
-    <li>Deve conter um construtor que receba <code>titulo</code>, <code>anoLancamento</code> e
-      <code>duracaoEmMinutos</code>. Use o <code>super(titulo, anoLancamento)</code> para repassar os dados para o pai.
+    <li>Deve herdar de <code class="one-line-code">Midia</code> usando a palavra-chave <code class="one-line-code">extends</code>.</li>
+    <li>Deve possuir o atributo específico: <code class="one-line-code">private int duracaoEmMinutos;</code>.</li>
+    <li>Deve conter um construtor que receba <code class="one-line-code">titulo</code>, <code class="one-line-code">anoLancamento</code> e
+      <code class="one-line-code">duracaoEmMinutos</code>. Use o <code class="one-line-code">super(titulo, anoLancamento)</code> para repassar os dados para o pai.
     </li>
-    <li>Deve sobrescrever (<code>@Override</code>) o método <code>exibirFicha()</code>. Dentro dele, chame
-      <code>super.exibirFicha()</code> para reaproveitar a impressão do pai e adicione a linha para exibir a duração.
+    <li>Deve sobrescrever (<code class="one-line-code">@Override</code>) o método <code class="one-line-code">exibirFicha()</code>. Dentro dele, chame
+      <code class="one-line-code">super.exibirFicha()</code> para reaproveitar a impressão do pai e adicione a linha para exibir a duração.
     </li>
   </ul>
 
   <h3>B. Implementar a classe Serie</h3>
   <ul>
-    <li>Deve herdar de <code>Midia</code> usando a palavra-chave <code>extends</code>.</li>
-    <li>Deve possuir o atributo específico: <code>private int totalTemporadas;</code>.</li>
-    <li>Deve conter um construtor que receba <code>titulo</code>, <code>anoLancamento</code> e
-      <code>totalTemporadas</code>. Use o <code>super(...)</code> corretamente.</li>
-    <li>Deve sobrescrever (<code>@Override</code>) o método <code>exibirFicha()</code>. Use
-      <code>super.exibirFicha()</code> e adicione a linha para exibir o total de temporadas.</li>
+    <li>Deve herdar de <code class="one-line-code">Midia</code> usando a palavra-chave <code class="one-line-code">extends</code>.</li>
+    <li>Deve possuir o atributo específico: <code class="one-line-code">private int totalTemporadas;</code>.</li>
+    <li>Deve conter um construtor que receba <code class="one-line-code">titulo</code>, <code class="one-line-code">anoLancamento</code> e
+      <code class="one-line-code">totalTemporadas</code>. Use o <code class="one-line-code">super(...)</code> corretamente.</li>
+    <li>Deve sobrescrever (<code class="one-line-code">@Override</code>) o método <code class="one-line-code">exibirFicha()</code>. Use
+      <code class="one-line-code">super.exibirFicha()</code> e adicione a linha para exibir o total de temporadas.</li>
   </ul>
 
   <h3>Resultado Esperado no Terminal</h3>
@@ -124,11 +124,11 @@ Total de Temporadas: 4 temporadas</code></pre>
   <h3>Orientação Finais</h3>
   <ul>
     <li><strong>O erro do Construtor:</strong> Se você tentar criar a classe filha e não chamar o
-      <code>super(...)</code> no construtor, o Java vai dar um erro de compilação dizendo que não encontrou um
-      construtor padrão na classe pai. O <code>super</code> deve ser sempre a primeira linha do construtor do filho.
+      <code class="one-line-code">super(...)</code> no construtor, o Java vai dar um erro de compilação dizendo que não encontrou um
+      construtor padrão na classe pai. O <code class="one-line-code">super</code> deve ser sempre a primeira linha do construtor do filho.
     </li>
-    <li><strong>Visualização do Polimorfismo:</strong> Note que no método <code>main</code>, chamamos
-      <code>.exibirFicha()</code> tanto para o filme quanto para a série. Graças à herança e à sobrescrita, cada objeto
+    <li><strong>Visualização do Polimorfismo:</strong> Note que no método <code class="one-line-code">main</code>, chamamos
+      <code class="one-line-code">.exibirFicha()</code> tanto para o filme quanto para a série. Graças à herança e à sobrescrita, cada objeto
       responde exibindo suas informações exclusivas, além das informações comuns guardadas no pai.</li>
   </ul>
 </div>

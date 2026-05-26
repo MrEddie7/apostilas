@@ -46,17 +46,17 @@ tags:
   <p>Realize a transposição do seu modelo abstrato (Parte 1) para um modelo lógico-relacional, aplicando estritamente as regras de derivação de diagramas para tabelas:</p>
   <ul>
     <li><strong>Padrão de Nomenclatura Corporativo:</strong> Escreva a estrutura textual das tabelas geradas adotando o padrão de nomes obrigatoriamente no plural (ex: usuarios, carteiras, transacoes).</li>
-    <li><strong>Padronização de Chaves:</strong> Todas as chaves primárias do sistema devem adotar obrigatoriamente a nomenclatura simplificada <code>id</code>. Campos compostos devem adotar o padrão snake_case (letras minúsculas separadas por sublinhado, ex: <code>data_transacao</code>).</li>
+    <li><strong>Padronização de Chaves:</strong> Todas as chaves primárias do sistema devem adotar obrigatoriamente a nomenclatura simplificada <code class="one-line-code">id</code>. Campos compostos devem adotar o padrão snake_case (letras minúsculas separadas por sublinhado, ex: <code class="one-line-code">data_transacao</code>).</li>
     <li><strong>Resolução de Relacionamentos:</strong> Demonstre em qual tabela ficará posicionada a Chave Estrangeira (FK) para resolver o relacionamento 1:1 (Usuário/Carteira) de forma que o banco impeça um usuário de criar uma segunda carteira.</li>
     <li><strong>Estratégia de Mapeamento de Herança:</strong> Defina e justifique textualmente qual estratégia de mapeamento de subclasses você escolheu para o banco de dados (Tabela Única para a Superclasse contendo um campo descritor/tipo; ou Tabelas Separadas para cada subclasse).</li>
   </ul>
 
   <h4>Parte 3: Dicionário de Dados e Restrições de Integridade</h4>
-  <p>A consistência dos dados depende de regras rígidas sobre o que cada campo pode aceitar. Crie o Dicionário de Dados técnico detalhando a estrutura das tabelas <code>carteiras</code> e <code>transacoes</code>. Monte uma tabela para cada uma contendo as seguintes colunas de documentação:</p>
+  <p>A consistência dos dados depende de regras rígidas sobre o que cada campo pode aceitar. Crie o Dicionário de Dados técnico detalhando a estrutura das tabelas <code class="one-line-code">carteiras</code> e <code class="one-line-code">transacoes</code>. Monte uma tabela para cada uma contendo as seguintes colunas de documentação:</p>
   <ul>
     <li><strong>Nome do Campo:</strong> O nome físico da coluna na tabela.</li>
-    <li><strong>Tipo de Dado:</strong> O tipo exato de dado do banco de dados (Atenção: Justifique por que tipos de ponto flutuante imprecisos como <code>FLOAT</code> ou <code>DOUBLE</code> devem ser proibidos para armazenar dinheiro e qual tipo deve ser usado em seu lugar).</li>
-    <li><strong>Restrições (Constraints):</strong> Defina quais campos não aceitam valores vazios (<code>NOT NULL</code>), quais exigem valores únicos (<code>UNIQUE</code>) e quais devem possuir validações de valores permitidos (Cláusulas <code>CHECK</code> ou <code>ENUM</code>).</li>
+    <li><strong>Tipo de Dado:</strong> O tipo exato de dado do banco de dados (Atenção: Justifique por que tipos de ponto flutuante imprecisos como <code class="one-line-code">FLOAT</code> ou <code class="one-line-code">DOUBLE</code> devem ser proibidos para armazenar dinheiro e qual tipo deve ser usado em seu lugar).</li>
+    <li><strong>Restrições (Constraints):</strong> Defina quais campos não aceitam valores vazios (<code class="one-line-code">NOT NULL</code>), quais exigem valores únicos (<code class="one-line-code">UNIQUE</code>) e quais devem possuir validações de valores permitidos (Cláusulas <code class="one-line-code">CHECK</code> ou <code class="one-line-code">ENUM</code>).</li>
     <li><strong>Descrição:</strong> A finalidade de negócio daquele campo.</li>
   </ul>
 </section>
@@ -66,7 +66,7 @@ tags:
   <p>Para que o seu projeto de modelagem seja aprovado pela governança de dados da Fintech, a estrutura apresentada passará por quatro testes de fogo lógicos:</p>
   <ul>
     <li><strong>O Teste da Unicidade Financeira:</strong> Olhando para o seu modelo lógico, o banco de dados rejeitará fisicamente se um script tentar associar uma nova carteira a um usuário que já possui uma cadastrada?</li>
-    <li><strong>O Teste da Imutabilidade Histórica:</strong> Se um usuário for descadastrado do sistema, as configurações das suas Chaves Estrangeiras (<code>ON DELETE</code> e <code>ON UPDATE</code>) foram configuradas para proibir a exclusão em cascata (<code>RESTRICT</code> / <code>NO ACTION</code>), impedindo que o histórico auditável de transações suma do mapa?</li>
+    <li><strong>O Teste da Imutabilidade Histórica:</strong> Se um usuário for descadastrado do sistema, as configurações das suas Chaves Estrangeiras (<code class="one-line-code">ON DELETE</code> e <code class="one-line-code">ON UPDATE</code>) foram configuradas para proibir a exclusão em cascata (<code class="one-line-code">RESTRICT</code> / <code class="one-line-code">NO ACTION</code>), impedindo que o histórico auditável de transações suma do mapa?</li>
     <li><strong>O Teste da Precisão Centesimal:</strong> Se o sistema rodar um cálculo de soma acumulada de um milhão de transações, o tipo de dado escolhido para as colunas de valor garante que nenhum centavo se perca por arredondamento computacional?</li>
     <li><strong>O Teste da Blindagem de Fluxo:</strong> O banco de dados impede que uma transação nasça sem dizer explicitamente se ela é uma Entrada ou uma Saída de dinheiro?</li>
   </ul>

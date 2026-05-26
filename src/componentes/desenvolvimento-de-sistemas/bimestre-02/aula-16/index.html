@@ -19,14 +19,14 @@ tags:
     referenciado de várias maneiras.</p>
   <p>É fundamental entender que um objeto não se transforma: ele nasce de um tipo específico e morre como esse tipo na
     memória. O que muda é a referência (a variável) que utilizamos para alcançá-lo. Por exemplo, se a classe
-    <code>Gerente</code> estende <code>Funcionario</code>, um objeto do tipo <code>Gerente</code> é um
-    <code>Funcionario</code> e, portanto, pode ser guardado em uma variável do tipo <code>Funcionario</code>.</p>
+    <code class="one-line-code">Gerente</code> estende <code class="one-line-code">Funcionario</code>, um objeto do tipo <code class="one-line-code">Gerente</code> é um
+    <code class="one-line-code">Funcionario</code> e, portanto, pode ser guardado em uma variável do tipo <code class="one-line-code">Funcionario</code>.</p>
 
   <p><strong>Exemplo Prático de Referência:</strong></p>
   <pre><code class="language-java">// Um Gerente é instanciado, mas referenciado como um Funcionario (Tipo Geral)
 Funcionario f = new Gerente();</code></pre>
-  <p>Neste caso, a variável <code>f</code> guarda uma referência para um <code>Funcionario</code>, mas o objeto real na
-    memória é um <code>Gerente</code>.</p>
+  <p>Neste caso, a variável <code class="one-line-code">f</code> guarda uma referência para um <code class="one-line-code">Funcionario</code>, mas o objeto real na
+    memória é um <code class="one-line-code">Gerente</code>.</p>
 
   <hr>
 
@@ -35,8 +35,8 @@ Funcionario f = new Gerente();</code></pre>
     superclasses ou interfaces, podemos criar métodos que processam diferentes tipos de objetos de forma uniforme, desde
     que pertençam à mesma hierarquia.</p>
   <p><strong>Vantagem na Extensibilidade:</strong> Imagine um método que aceita um parâmetro do tipo
-    <code>Funcionario</code>. Ele poderá receber um <code>Gerente</code>, um <code>Diretor</code> ou qualquer nova
-    classe que venha a ser escrita no futuro como filha de <code>Funcionario</code>, sem que o código desse método
+    <code class="one-line-code">Funcionario</code>. Ele poderá receber um <code class="one-line-code">Gerente</code>, um <code class="one-line-code">Diretor</code> ou qualquer nova
+    classe que venha a ser escrita no futuro como filha de <code class="one-line-code">Funcionario</code>, sem que o código desse método
     precise ser alterado. Isso diminui drasticamente o acoplamento entre as classes.</p>
 
   <hr>
@@ -50,7 +50,7 @@ Funcionario f = new Gerente();</code></pre>
     <li><strong>Assinatura Idêntica:</strong> O método na subclasse deve ter exatamente o mesmo nome e a mesma lista de
       parâmetros (quantidade e tipos) que o método da superclasse.</li>
     <li><strong>Modificadores de Acesso:</strong> O método sobrescrito não pode ser mais restrito que o original. Um
-      método <code>public</code> na mãe não pode ser <code>private</code> ou <code>protected</code> na filha, pois isso
+      método <code class="one-line-code">public</code> na mãe não pode ser <code class="one-line-code">private</code> ou <code class="one-line-code">protected</code> na filha, pois isso
       violaria o contrato de que "todo objeto da subclasse deve responder às mensagens da superclasse".</li>
     <li><strong>Retorno:</strong> O tipo de retorno deve ser compatível com o definido na superclasse.</li>
   </ul>
@@ -72,7 +72,7 @@ class Gerente extends Funcionario {
   <hr>
 
   <h3>4. A Anotação @Override</h3>
-  <p>Introduzida no Java 1.5, a anotação <code>@Override</code> funciona como um "post-it" ou marcação que notifica o
+  <p>Introduzida no Java 1.5, a anotação <code class="one-line-code">@Override</code> funciona como um "post-it" ou marcação que notifica o
     compilador sobre a intenção de sobrescrever um método.</p>
   <ul>
     <li><strong>Validação em Tempo de Compilação:</strong> Se o programador errar o nome do método ou a assinatura, o
@@ -86,10 +86,10 @@ class Gerente extends Funcionario {
   <h3>5. Vinculação Dinâmica (Dynamic Binding)</h3>
   <p>O segredo do polimorfismo reside na forma como a Máquina Virtual Java (JVM) invoca os métodos. Em Java, a decisão
     de qual método será executado ocorre em tempo de execução (runtime), e não em tempo de compilação.</p>
-  <p>Quando você chama <code>f.getBonificacao()</code>, a JVM não olha para o tipo da variável
-    (<code>Funcionario</code>), mas sim para o objeto real que está na memória. Se o objeto for um <code>Gerente</code>,
-    a versão do método definida em <code>Gerente</code> será executada, mesmo que a referência usada seja de
-    <code>Funcionario</code>. Este processo é conhecido como vinculação tardia ou dinâmica.</p>
+  <p>Quando você chama <code class="one-line-code">f.getBonificacao()</code>, a JVM não olha para o tipo da variável
+    (<code class="one-line-code">Funcionario</code>), mas sim para o objeto real que está na memória. Se o objeto for um <code class="one-line-code">Gerente</code>,
+    a versão do método definida em <code class="one-line-code">Gerente</code> será executada, mesmo que a referência usada seja de
+    <code class="one-line-code">Funcionario</code>. Este processo é conhecido como vinculação tardia ou dinâmica.</p>
 
   <hr>
 
@@ -98,10 +98,10 @@ class Gerente extends Funcionario {
     subclasse.</p>
   <ul>
     <li><strong>Downcasting:</strong> É o processo de converter uma referência de tipo geral de volta para um tipo
-      específico (ex: transformar um <code>Funcionario</code> de volta em <code>Gerente</code>).</li>
-    <li><strong>Operador instanceof:</strong> Antes de fazer o casting, deve-se usar o <code>instanceof</code> para
+      específico (ex: transformar um <code class="one-line-code">Funcionario</code> de volta em <code class="one-line-code">Gerente</code>).</li>
+    <li><strong>Operador instanceof:</strong> Antes de fazer o casting, deve-se usar o <code class="one-line-code">instanceof</code> para
       verificar se o objeto realmente pertence àquele tipo, evitando uma exceção do tipo
-      <code>ClassCastException</code>.</li>
+      <code class="one-line-code">ClassCastException</code>.</li>
   </ul>
 
   <p><strong>Exemplo de Operação Específica:</strong></p>
@@ -115,10 +115,10 @@ class Gerente extends Funcionario {
   <h3>7. Restrições: Métodos e Classes final</h3>
   <p>Nem todos os comportamentos podem ser polimórficos:</p>
   <ul>
-    <li><strong>Métodos final:</strong> Um método declarado como <code>final</code> na superclasse não pode ser
+    <li><strong>Métodos final:</strong> Um método declarado como <code class="one-line-code">final</code> na superclasse não pode ser
       sobrescrito pelas subclasses. Isso garante que a implementação original seja preservada em toda a hierarquia, o
       que é útil por questões de segurança.</li>
-    <li><strong>Classes final:</strong> Uma classe <code>final</code> não pode possuir subclasses, impedindo qualquer
+    <li><strong>Classes final:</strong> Uma classe <code class="one-line-code">final</code> não pode possuir subclasses, impedindo qualquer
       forma de herança ou polimorfismo a partir dela.</li>
   </ul>
 </section>
@@ -127,7 +127,7 @@ class Gerente extends Funcionario {
   <h2>Exemplos de Código</h2>
 
   <h3>1. Nível Básico: Sobre-escrita Simples</h3>
-  <p>Neste exemplo, a subclasse <code>Gerente</code> redefine o comportamento do método herdado para atender a uma regra
+  <p>Neste exemplo, a subclasse <code class="one-line-code">Gerente</code> redefine o comportamento do método herdado para atender a uma regra
     de negócio específica (bônus de 15% em vez de 10%).</p>
   <pre><code class="language-java">class Funcionario {
     protected double salario;
@@ -149,7 +149,7 @@ class Gerente extends Funcionario {
 
   <h3>2. Nível Intermediário: Reaproveitamento com super</h3>
   <p>Muitas vezes, a subclasse não quer descartar a lógica da superclasse, mas sim complementá-la. Usamos
-    <code>super.metodo()</code> para invocar a versão original.</p>
+    <code class="one-line-code">super.metodo()</code> para invocar a versão original.</p>
   <pre><code class="language-java">class Gerente extends Funcionario {
     @Override
     public double getBonificacao() {
@@ -161,8 +161,8 @@ class Gerente extends Funcionario {
   <hr>
 
   <h3>3. Nível Avançado: Programando para o "Tipo Geral"</h3>
-  <p>O polimorfismo permite que um método aceite qualquer objeto de uma hierarquia. O método <code>registra</code>
-    abaixo funciona para <code>Gerente</code>, <code>Diretor</code> ou qualquer futuro tipo de <code>Funcionario</code>.
+  <p>O polimorfismo permite que um método aceite qualquer objeto de uma hierarquia. O método <code class="one-line-code">registra</code>
+    abaixo funciona para <code class="one-line-code">Gerente</code>, <code class="one-line-code">Diretor</code> ou qualquer futuro tipo de <code class="one-line-code">Funcionario</code>.
   </p>
   <pre><code class="language-java">class ControleDeBonificacoes {
     private double totalDeBonificacoes = 0;
@@ -246,9 +246,9 @@ public class PayrollSystemTest {
 
     VAR -->|"Aponta para"| OBJ
   </div>
-  <p><em>Nota: A Variável de Referência possui o tipo <code>Funcionario</code> (Geral), mas o Objeto Real na Memória
-      possui o tipo <code>Gerente</code> (Específico).</em></p>
-  <p><strong>Destaque:</strong> Embora a variável seja <code>Funcionario</code>, ela tem acesso apenas aos métodos
+  <p><em>Nota: A Variável de Referência possui o tipo <code class="one-line-code">Funcionario</code> (Geral), mas o Objeto Real na Memória
+      possui o tipo <code class="one-line-code">Gerente</code> (Específico).</em></p>
+  <p><strong>Destaque:</strong> Embora a variável seja <code class="one-line-code">Funcionario</code>, ela tem acesso apenas aos métodos
     definidos na superclasse, mas executará as versões sobrescritas pela subclasse.</p>
 
   <hr>
@@ -301,8 +301,8 @@ public class PayrollSystemTest {
 
     note for Payable "Contrato comum para classes distintas"
   </div>
-  <p><strong>Nota:</strong> Tanto uma Fatura (<code>Invoice</code>) quanto um Empregado (<code>Employee</code>) podem
-    ser guardados em uma variável do tipo <code>Payable</code>, pois ambos implementam o contrato de pagamento.</p>
+  <p><strong>Nota:</strong> Tanto uma Fatura (<code class="one-line-code">Invoice</code>) quanto um Empregado (<code class="one-line-code">Employee</code>) podem
+    ser guardados em uma variável do tipo <code class="one-line-code">Payable</code>, pois ambos implementam o contrato de pagamento.</p>
 
   <hr>
 
@@ -334,11 +334,11 @@ public class PayrollSystemTest {
 
   <h5>Dicas de Programação e Boas Práticas</h5>
   <ul>
-    <li><strong>Sempre utilize a anotação <code>@Override</code>:</strong> Ao sobrescrever um método, essa anotação
+    <li><strong>Sempre utilize a anotação <code class="one-line-code">@Override</code>:</strong> Ao sobrescrever um método, essa anotação
       notifica o compilador sobre sua intenção. Se você cometer um erro de digitação no nome do método ou na lista de
       parâmetros, o compilador emitirá um erro, evitando bugs de lógica difíceis de encontrar.</li>
     <li><strong>Programe voltado à Interface:</strong> É uma "regra de ouro" referenciar objetos por meio de suas
-      interfaces ou superclasses mais genéricas (ex: <code>List lista = new ArrayList();</code>). Isso reduz o
+      interfaces ou superclasses mais genéricas (ex: <code class="one-line-code">List lista = new ArrayList();</code>). Isso reduz o
       acoplamento e permite trocar a implementação interna sem afetar as classes que utilizam o objeto.</li>
     <li><strong>Aplique o Polimorfismo para Extensibilidade:</strong> O polimorfismo permite que você adicione novas
       subclasses ao sistema sem precisar modificar os métodos que já processam a superclasse. O código torna-se "aberto
@@ -352,23 +352,23 @@ public class PayrollSystemTest {
   <ul>
     <li><strong>Objeto Real vs. Referência:</strong> Lembre-se que o Java utiliza vinculação dinâmica (dynamic binding).
       A JVM decide qual método executar em tempo de execução baseando-se no objeto real criado na memória
-      (<code>new</code>), e não no tipo da variável de referência.</li>
+      (<code class="one-line-code">new</code>), e não no tipo da variável de referência.</li>
     <li><strong>Restrições de Visibilidade:</strong> Ao sobrescrever um método, você não pode torná-lo mais restrito do
-      que o original. Se um método é <code>public</code> na superclasse, ele deve obrigatoriamente ser
-      <code>public</code> na subclasse.</li>
+      que o original. Se um método é <code class="one-line-code">public</code> na superclasse, ele deve obrigatoriamente ser
+      <code class="one-line-code">public</code> na subclasse.</li>
     <li><strong>Segurança com instanceof:</strong> Antes de realizar um downcasting (converter uma referência de tipo
-      geral para um tipo específico), use sempre o operador <code>instanceof</code> para verificar se o objeto realmente
-      pertence àquela subclasse. Isso evita a exceção <code>ClassCastException</code>.</li>
+      geral para um tipo específico), use sempre o operador <code class="one-line-code">instanceof</code> para verificar se o objeto realmente
+      pertence àquela subclasse. Isso evita a exceção <code class="one-line-code">ClassCastException</code>.</li>
     <li><strong>A Classe Object é a Raiz:</strong> Toda classe em Java, mesmo que não declare explicitamente, herda de
-      <code>java.lang.Object</code>. Isso permite que qualquer objeto no Java possa ser referenciado como um
-      <code>Object</code>, possibilitando o polimorfismo universal para métodos como <code>toString()</code> e
-      <code>equals()</code>.</li>
-    <li><strong>Métodos e Classes final:</strong> Um método marcado como <code>final</code> não pode ser sobrescrito. Da
-      mesma forma, uma classe marcada como <code>final</code> não pode ter subclasses, o que encerra qualquer
+      <code class="one-line-code">java.lang.Object</code>. Isso permite que qualquer objeto no Java possa ser referenciado como um
+      <code class="one-line-code">Object</code>, possibilitando o polimorfismo universal para métodos como <code class="one-line-code">toString()</code> e
+      <code class="one-line-code">equals()</code>.</li>
+    <li><strong>Métodos e Classes final:</strong> Um método marcado como <code class="one-line-code">final</code> não pode ser sobrescrito. Da
+      mesma forma, uma classe marcada como <code class="one-line-code">final</code> não pode ter subclasses, o que encerra qualquer
       possibilidade de comportamento polimórfico a partir dela.</li>
     <li><strong>Inicialização e Nulos:</strong> Em arrays de referências (tipos polimórficos), cada elemento é
-      inicializado como <code>null</code> por padrão. Tentar invocar um método em uma referência nula resultará em um
-      <code>NullPointerException</code>.</li>
+      inicializado como <code class="one-line-code">null</code> por padrão. Tentar invocar um método em uma referência nula resultará em um
+      <code class="one-line-code">NullPointerException</code>.</li>
   </ul>
 </div>
 

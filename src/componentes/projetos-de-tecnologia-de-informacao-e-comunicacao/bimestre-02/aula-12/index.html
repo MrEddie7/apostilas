@@ -70,10 +70,10 @@ tags:
     <li>Multiplicação * e Divisão /.</li>
     <li>Adição + e Subtração -.</li>
   </ol>
-  <p><strong>Exemplo:</strong> Em <code>=5+2*10</code>, o resultado é 25 (multiplicação primeiro). Em <code>=(5+2)*10</code>, o resultado é 70 (parênteses primeiro).</p>
+  <p><strong>Exemplo:</strong> Em <code class="one-line-code">=5+2*10</code>, o resultado é 25 (multiplicação primeiro). Em <code class="one-line-code">=(5+2)*10</code>, o resultado é 70 (parênteses primeiro).</p>
 
   <h3>3. Anatomia de uma Função</h3>
-  <p>Toda função segue uma estrutura padrão: <code>=NOME_DA_FUNÇÃO(argumento1; argumento2; ...)</code></p>
+  <p>Toda função segue uma estrutura padrão: <code class="one-line-code">=NOME_DA_FUNÇÃO(argumento1; argumento2; ...)</code></p>
   <ul>
     <li><strong>Nome:</strong> Identifica a ação (ex: SOMA, MÉDIA).</li>
     <li><strong>Parênteses:</strong> Obrigatórios após o nome para indicar onde os argumentos começam e terminam.</li>
@@ -85,25 +85,25 @@ tags:
   <h4>SOMA</h4>
   <p>Adiciona todos os números em um intervalo de células.</p>
   <ul>
-    <li><strong>Exemplo:</strong> <code>=SOMA(A1:A10)</code> soma todos os valores da célula A1 até a A10.</li>
+    <li><strong>Exemplo:</strong> <code class="one-line-code">=SOMA(A1:A10)</code> soma todos os valores da célula A1 até a A10.</li>
   </ul>
 
   <h4>MÉDIA</h4>
   <p>Retorna a média aritmética dos argumentos.</p>
   <ul>
-    <li><strong>Exemplo:</strong> <code>=MÉDIA(B1:B5)</code> soma os valores de B1 a B5 e divide por 5.</li>
+    <li><strong>Exemplo:</strong> <code class="one-line-code">=MÉDIA(B1:B5)</code> soma os valores de B1 a B5 e divide por 5.</li>
   </ul>
 
   <h4>MÁXIMO e MÍNIMO</h4>
   <p>Identificam, respectivamente, o maior e o menor valor de um conjunto.</p>
   <ul>
-    <li><strong>Exemplo:</strong> <code>=MÁXIMO(C1:C100)</code> mostra o maior valor encontrado nesse intervalo.</li>
+    <li><strong>Exemplo:</strong> <code class="one-line-code">=MÁXIMO(C1:C100)</code> mostra o maior valor encontrado nesse intervalo.</li>
   </ul>
 
   <h4>RAIZ</h4>
   <p>Calcula a raiz quadrada de um número.</p>
   <ul>
-    <li><strong>Exemplo:</strong> <code>=RAIZ(64)</code> retornará 8.</li>
+    <li><strong>Exemplo:</strong> <code class="one-line-code">=RAIZ(64)</code> retornará 8.</li>
   </ul>
 
   <h3>5. Funções Lógicas para Automação</h3>
@@ -111,33 +111,33 @@ tags:
   <h4>Operadores de Comparação</h4>
   <p>Usados dentro das funções lógicas para testar valores:</p>
   <ul>
-    <li><code>=</code> (Igual), <code>&gt;</code> (Maior), <code>&lt;</code> (Menor), <code>&gt;=</code> (Maior ou igual), <code>&lt;=</code> (Menor ou igual), <code>&lt;&gt;</code> (Diferente).</li>
+    <li><code class="one-line-code">=</code> (Igual), <code class="one-line-code">&gt;</code> (Maior), <code class="one-line-code">&lt;</code> (Menor), <code class="one-line-code">&gt;=</code> (Maior ou igual), <code class="one-line-code">&lt;=</code> (Menor ou igual), <code class="one-line-code">&lt;&gt;</code> (Diferente).</li>
   </ul>
 
   <h4>Função SE (IF)</h4>
   <p>É uma das funções mais poderosas. Ela verifica uma condição e devolve um resultado se for verdadeira e outro se for falsa.</p>
   <ul>
-    <li><strong>Sintaxe:</strong> <code>=SE(teste_lógico; valor_se_verdadeiro; valor_se_falso)</code>.</li>
-    <li><strong>Exemplo Prático (Situação Escolar):</strong> Imagine que a média para aprovação é 6. Na célula C2 está a média do aluno. <code>=SE(C2&gt;=6; "APROVADO"; "REPROVADO")</code>. Se C2 for 7, o Excel escreverá "APROVADO". Se for 5, escreverá "REPROVADO".</li>
-    <li><strong>SE Aninhado:</strong> Você pode colocar um "SE" dentro de outro para testar múltiplas condições (até 7 níveis). Exemplo: <code>=SE(A1&gt;89;"A";SE(A1&gt;79;"B";"C"))</code>.</li>
+    <li><strong>Sintaxe:</strong> <code class="one-line-code">=SE(teste_lógico; valor_se_verdadeiro; valor_se_falso)</code>.</li>
+    <li><strong>Exemplo Prático (Situação Escolar):</strong> Imagine que a média para aprovação é 6. Na célula C2 está a média do aluno. <code class="one-line-code">=SE(C2&gt;=6; "APROVADO"; "REPROVADO")</code>. Se C2 for 7, o Excel escreverá "APROVADO". Se for 5, escreverá "REPROVADO".</li>
+    <li><strong>SE Aninhado:</strong> Você pode colocar um "SE" dentro de outro para testar múltiplas condições (até 7 níveis). Exemplo: <code class="one-line-code">=SE(A1&gt;89;"A";SE(A1&gt;79;"B";"C"))</code>.</li>
   </ul>
 
   <h4>Função E (AND)</h4>
   <p>Retorna VERDADEIRO apenas se todas as condições testadas forem verdadeiras.</p>
   <ul>
-    <li><strong>Exemplo:</strong> <code>=E(A1&gt;10; B1&lt;5)</code> só será verdadeiro se A1 for maior que 10 e B1 for menor que 5 simultaneamente.</li>
+    <li><strong>Exemplo:</strong> <code class="one-line-code">=E(A1&gt;10; B1&lt;5)</code> só será verdadeiro se A1 for maior que 10 e B1 for menor que 5 simultaneamente.</li>
   </ul>
 
   <h3>6. Tratamento de Erros: Função SEERRO</h3>
   <p>Muitas vezes, uma fórmula pode gerar erros como #DIV/0! (divisão por zero) ou #VALOR! (tipo de dado inválido). A função SEERRO permite personalizar o que aparece quando algo dá errado, evitando que a planilha fique com aspecto amador.</p>
   <ul>
-    <li><strong>Sintaxe:</strong> <code>=SEERRO(valor; valor_se_erro)</code>.</li>
-    <li><strong>Exemplo:</strong> <code>=SEERRO(A1/B1; "Cálculo Indisponível")</code>. Se B1 for zero, ao invés do erro padrão, aparecerá o texto "Cálculo Indisponível".</li>
+    <li><strong>Sintaxe:</strong> <code class="one-line-code">=SEERRO(valor; valor_se_erro)</code>.</li>
+    <li><strong>Exemplo:</strong> <code class="one-line-code">=SEERRO(A1/B1; "Cálculo Indisponível")</code>. Se B1 for zero, ao invés do erro padrão, aparecerá o texto "Cálculo Indisponível".</li>
   </ul>
 
   <div class="tip-box">
     <h4>Dica de Produtividade: AutoSoma</h4>
-    <p>O Excel possui o botão AutoSoma na guia Página Inicial. Ao clicá-lo, o programa identifica automaticamente o intervalo de números vizinhos e escreve a função <code>=SOMA()</code> para você, bastando pressionar ENTER para confirmar.</p>
+    <p>O Excel possui o botão AutoSoma na guia Página Inicial. Ao clicá-lo, o programa identifica automaticamente o intervalo de números vizinhos e escreve a função <code class="one-line-code">=SOMA()</code> para você, bastando pressionar ENTER para confirmar.</p>
   </div>
 </section>
 

@@ -23,7 +23,7 @@ tags:
   <hr>
 
   <h3>2. A Palavra-Chave extends</h3>
-  <p>No Java, utilizamos a palavra-chave <code>extends</code> na declaração da classe para indicar de qual classe ela está herdando. É importante notar que o Java suporta apenas a herança única, o que significa que uma classe pode ter apenas uma superclasse direta.</p>
+  <p>No Java, utilizamos a palavra-chave <code class="one-line-code">extends</code> na declaração da classe para indicar de qual classe ela está herdando. É importante notar que o Java suporta apenas a herança única, o que significa que uma classe pode ter apenas uma superclasse direta.</p>
   
   <h4>Exemplo Prático: Hierarquia de Funcionários</h4>
   <div class="code-container">
@@ -51,20 +51,20 @@ public class Gerente extends Funcionario {
   <hr>
 
   <h3>3. A Hierarquia Universal: Classe Object</h3>
-  <p>Se uma classe não especifica explicitamente de quem ela herda, o Java automaticamente define que ela <code>extends Object</code>. Por isso, a classe Object é considerada a superclasse direta ou indireta de todas as classes no ecossistema Java, fornecendo métodos universais como <code>toString()</code> e <code>equals()</code>.</p>
+  <p>Se uma classe não especifica explicitamente de quem ela herda, o Java automaticamente define que ela <code class="one-line-code">extends Object</code>. Por isso, a classe Object é considerada a superclasse direta ou indireta de todas as classes no ecossistema Java, fornecendo métodos universais como <code class="one-line-code">toString()</code> e <code class="one-line-code">equals()</code>.</p>
 
   <hr>
 
   <h3>4. Controle de Acesso e o Modificador protected</h3>
-  <p>Ao trabalhar com herança, o encapsulamento ganha uma nova camada de visibilidade. Enquanto membros <code>private</code> não são acessíveis nem mesmo para subclasses, o modificador <code>protected</code> oferece um meio-termo: ele torna o membro visível para a própria classe, para suas subclasses e para outras classes dentro do mesmo pacote.</p>
-  <p><strong>Ponto de atenção:</strong> Embora facilite o acesso direto, o uso excessivo de <code>protected</code> pode criar classes "frágeis", onde uma mudança na superclasse pode quebrar acidentalmente as subclasses. A boa prática recomenda, sempre que possível, manter atributos <code>private</code> e acessá-los via métodos <code>public</code> ou <code>protected</code> herdados.</p>
+  <p>Ao trabalhar com herança, o encapsulamento ganha uma nova camada de visibilidade. Enquanto membros <code class="one-line-code">private</code> não são acessíveis nem mesmo para subclasses, o modificador <code class="one-line-code">protected</code> oferece um meio-termo: ele torna o membro visível para a própria classe, para suas subclasses e para outras classes dentro do mesmo pacote.</p>
+  <p><strong>Ponto de atenção:</strong> Embora facilite o acesso direto, o uso excessivo de <code class="one-line-code">protected</code> pode criar classes "frágeis", onde uma mudança na superclasse pode quebrar acidentalmente as subclasses. A boa prática recomenda, sempre que possível, manter atributos <code class="one-line-code">private</code> e acessá-los via métodos <code class="one-line-code">public</code> ou <code class="one-line-code">protected</code> herdados.</p>
 
   <hr>
 
   <h3>5. Construtores em Hierarquias de Herança</h3>
   <p>Os construtores não são herdados. Quando um objeto de uma subclasse é instanciado, ocorre uma cadeia de chamadas de construtores: a subclasse deve, obrigatoriamente, chamar o construtor de sua superclasse direta como primeira tarefa.</p>
   <ul>
-    <li><strong>A referência super():</strong> Se não for especificado, o compilador insere uma chamada implícita para o construtor padrão (sem argumentos) da superclasse. Caso a superclasse exija parâmetros, deve-se usar <code>super(argumentos)</code> explicitamente.</li>
+    <li><strong>A referência super():</strong> Se não for especificado, o compilador insere uma chamada implícita para o construtor padrão (sem argumentos) da superclasse. Caso a superclasse exija parâmetros, deve-se usar <code class="one-line-code">super(argumentos)</code> explicitamente.</li>
   </ul>
 
   <h4>Exemplo Prático: Cadeia de Construtores</h4>
@@ -83,7 +83,7 @@ public class Gerente extends Funcionario {
   <p>Uma subclasse pode reescrever (sobrescrever) métodos herdados para fornecer uma implementação mais adequada ao seu tipo específico.</p>
   <ul>
     <li><strong>Anotação @Override:</strong> Utilizada para notificar o compilador de que o método pretende sobrescrever um método da classe mãe, ajudando a capturar erros de assinatura em tempo de compilação.</li>
-    <li><strong>Chamando a Versão Original:</strong> Se a subclasse precisar realizar a lógica da mãe e adicionar algo mais, ela pode invocar a versão original usando <code>super.metodo()</code>.</li>
+    <li><strong>Chamando a Versão Original:</strong> Se a subclasse precisar realizar a lógica da mãe e adicionar algo mais, ela pode invocar a versão original usando <code class="one-line-code">super.metodo()</code>.</li>
   </ul>
 
   <h4>Exemplo Prático: Sobrescrita de Método</h4>
@@ -124,22 +124,22 @@ public class Gerente extends Funcionario {
     </thead>
     <tbody>
       <tr>
-        <td><code>extends</code></td>
+        <td><code class="one-line-code">extends</code></td>
         <td>Cria o vínculo de herança.</td>
         <td>"Herdei os olhos azuis do meu pai."</td>
       </tr>
       <tr>
-        <td><code>super</code></td>
+        <td><code class="one-line-code">super</code></td>
         <td>Acessa métodos ou construtores do pai.</td>
         <td>"Pai, me empresta aquela sua ferramenta?"</td>
       </tr>
       <tr>
-        <td><code>@Override</code></td>
+        <td><code class="one-line-code">@Override</code></td>
         <td>Reescreve um método herdado.</td>
         <td>"Meu pai cozinha feijão, mas eu faço o meu com bacon."</td>
       </tr>
       <tr>
-        <td><code>protected</code></td>
+        <td><code class="one-line-code">protected</code></td>
         <td>Modificador de acesso para herança.</td>
         <td>"Apenas quem é da família pode mexer nisso."</td>
       </tr>
@@ -151,7 +151,7 @@ public class Gerente extends Funcionario {
   <h2>Exemplos de Código</h2>
 
   <h3>1. Nível Básico: O Conceito "É UM"</h3>
-  <p>Neste nível, mostramos que a subclasse é uma versão da superclasse. O foco aqui é a palavra-chave <code>extends</code>.</p>
+  <p>Neste nível, mostramos que a subclasse é uma versão da superclasse. O foco aqui é a palavra-chave <code class="one-line-code">extends</code>.</p>
   <div class="code-container">
     <pre><code class="language-java">// Superclasse (Pai)
 class Animal {
@@ -182,7 +182,7 @@ public class ExemploBasico {
   <hr>
 
   <h3>2. Nível Intermediário: Sobrescrita e a palavra super</h3>
-  <p>Aqui as coisas ficam interessantes. A filha pode herdar o comportamento, mas pode querer fazê-lo de um jeito diferente (Sobrescrita). Também aprendemos a chamar o construtor do pai com o <code>super</code>.</p>
+  <p>Aqui as coisas ficam interessantes. A filha pode herdar o comportamento, mas pode querer fazê-lo de um jeito diferente (Sobrescrita). Também aprendemos a chamar o construtor do pai com o <code class="one-line-code">super</code>.</p>
   <div class="code-container">
     <pre><code class="language-java">class Funcionario {
     String nome;
@@ -212,13 +212,13 @@ class Gerente extends Funcionario {
   </div>
 
   <div class="tip-box">
-    <p><strong>Dica:</strong> O <code>@Override</code> não é obrigatório, mas é uma rede de segurança. Se você digitar o nome do método errado, o Java te avisa na hora.</p>
+    <p><strong>Dica:</strong> O <code class="one-line-code">@Override</code> não é obrigatório, mas é uma rede de segurança. Se você digitar o nome do método errado, o Java te avisa na hora.</p>
   </div>
 
   <hr>
 
   <h3>3. Nível Avançado: Classes Abstratas e Polimorfismo</h3>
-  <p>No nível avançado, usamos <code>abstract</code> para garantir que ninguém instancie a classe "mãe" (que é genérica demais) e mostramos o poder do polimorfismo.</p>
+  <p>No nível avançado, usamos <code class="one-line-code">abstract</code> para garantir que ninguém instancie a classe "mãe" (que é genérica demais) e mostramos o poder do polimorfismo.</p>
   <div class="code-container">
     <pre><code class="language-java">// Classe abstrata: Não pode ser instanciada (new Forma() daria erro)
 abstract class Forma {
@@ -337,20 +337,20 @@ public class SistemaGeométrico {
         <li><strong>Exemplo errado:</strong> Uma Janela é um Botão? Não, a janela tem um botão. Se o relacionamento for "tem um", usamos composição (criar o objeto dentro da classe), e não herança.</li>
       </ul>
     </li>
-    <li><strong>Herança Única (Regra de Ouro do Java):</strong> O Java não permite herança múltipla de classes. Uma classe filha só pode ter uma única classe mãe direta. Códigos como <code>class Carro extends Veiculo, Motor</code> geram erro de compilação automático!</li>
-    <li><strong>O "Pedágio" do Construtor (super):</strong> Quando você instancia um filho, o Java obrigatoriamente constrói o pai primeiro. Se a classe pai tiver um construtor customizado (com parâmetros), você é obrigado a chamá-lo usando <code>super(parametros)</code> logo na primeira linha do construtor da classe filha.</li>
+    <li><strong>Herança Única (Regra de Ouro do Java):</strong> O Java não permite herança múltipla de classes. Uma classe filha só pode ter uma única classe mãe direta. Códigos como <code class="one-line-code">class Carro extends Veiculo, Motor</code> geram erro de compilação automático!</li>
+    <li><strong>O "Pedágio" do Construtor (super):</strong> Quando você instancia um filho, o Java obrigatoriamente constrói o pai primeiro. Se a classe pai tiver um construtor customizado (com parâmetros), você é obrigado a chamá-lo usando <code class="one-line-code">super(parametros)</code> logo na primeira linha do construtor da classe filha.</li>
     <li><strong>A Proteção do protected:</strong>
       <ul>
-        <li>Se um atributo for <code>private</code> na classe pai, o filho não consegue mexer nele diretamente.</li>
-        <li>Se for <code>public</code>, qualquer um mexe.</li>
-        <li>O meio-termo ideal para herança é o <code>protected</code>: o atributo fica visível para as classes filhas (e classes do mesmo pacote), mas protegido do resto do sistema.</li>
+        <li>Se um atributo for <code class="one-line-code">private</code> na classe pai, o filho não consegue mexer nele diretamente.</li>
+        <li>Se for <code class="one-line-code">public</code>, qualquer um mexe.</li>
+        <li>O meio-termo ideal para herança é o <code class="one-line-code">protected</code>: o atributo fica visível para as classes filhas (e classes do mesmo pacote), mas protegido do resto do sistema.</li>
       </ul>
     </li>
-    <li><strong>A Rede de Segurança do @Override:</strong> Sempre que for reescrever um método herdado do pai, use a anotação <code>@Override</code>. Ela não altera o funcionamento, mas avisa ao compilador o que você está fazendo. Se você errar uma única letra no nome do método (ex: escrever <code>comer()</code> no pai e <code>commer()</code> no filho), o Java acusa o erro na hora e te salva de um bug silencioso.</li>
+    <li><strong>A Rede de Segurança do @Override:</strong> Sempre que for reescrever um método herdado do pai, use a anotação <code class="one-line-code">@Override</code>. Ela não altera o funcionamento, mas avisa ao compilador o que você está fazendo. Se você errar uma única letra no nome do método (ex: escrever <code class="one-line-code">comer()</code> no pai e <code class="one-line-code">commer()</code> no filho), o Java acusa o erro na hora e te salva de um bug silencioso.</li>
     <li><strong>O Ponto Final (final):</strong>
       <ul>
-        <li>Uma classe marcada como <code>final</code> (como a classe <code>String</code> do próprio Java) barra a herança. Ninguém pode dar <code>extends</code> nela.</li>
-        <li>Um método marcado como <code>final</code> pode ser herdado e usado pelos filhos, mas nunca poderá ser sobrescrito (<code>@Override</code>).</li>
+        <li>Uma classe marcada como <code class="one-line-code">final</code> (como a classe <code class="one-line-code">String</code> do próprio Java) barra a herança. Ninguém pode dar <code class="one-line-code">extends</code> nela.</li>
+        <li>Um método marcado como <code class="one-line-code">final</code> pode ser herdado e usado pelos filhos, mas nunca poderá ser sobrescrito (<code class="one-line-code">@Override</code>).</li>
       </ul>
     </li>
   </ul>
@@ -362,8 +362,8 @@ public class SistemaGeométrico {
   <h3>1. Gateways de Pagamento (E-commerce)</h3>
   <p>Em qualquer grande site de vendas (como Amazon ou Mercado Livre), o sistema precisa processar pagamentos de formas diferentes, mas todos os pagamentos seguem um fluxo básico: validar dados, cobrar e gerar um recibo.</p>
   <ul>
-    <li><strong>Superclasse (Payment):</strong> Guarda o ID da transação, o valor e o método comum <code>processar()</code>.</li>
-    <li><strong>Subclasses (PixPayment, CreditCardPayment, BoletoPayment):</strong> Herdam a estrutura, mas cada uma reescreve (<code>@Override</code>) o método <code>processar()</code> para falar com bancos diferentes.</li>
+    <li><strong>Superclasse (Payment):</strong> Guarda o ID da transação, o valor e o método comum <code class="one-line-code">processar()</code>.</li>
+    <li><strong>Subclasses (PixPayment, CreditCardPayment, BoletoPayment):</strong> Herdam a estrutura, mas cada uma reescreve (<code class="one-line-code">@Override</code>) o método <code class="one-line-code">processar()</code> para falar com bancos diferentes.</li>
   </ul>
   <div class="code-container">
     <pre><code class="language-java">// Código simplificado do mundo real
@@ -390,25 +390,25 @@ public class ProcessadorPix extends ProcessadorPagamento {
   <h3>2. Desenvolvimento de Games (Engine de Jogos)</h3>
   <p>Seja em jogos independentes ou em grandes produções (como Minecraft ou RPGs), tudo o que se move na tela compartilha propriedades físicas básicos: posição X e Y, velocidade e peso.</p>
   <ul>
-    <li><strong>Superclasse (Entity ou GameObject):</strong> Define a posição no mapa e o método <code>atualizarPosicao()</code>.</li>
+    <li><strong>Superclasse (Entity ou GameObject):</strong> Define a posição no mapa e o método <code class="one-line-code">atualizarPosicao()</code>.</li>
     <li><strong>Subclasses (Player, Monster, NPC):</strong> Herdam o movimento básico. O Monster adiciona inteligência para perseguir o jogador, enquanto o Player adiciona leituras dos comandos do teclado.</li>
   </ul>
-  <p><strong>Por que usam aqui?</strong> Se a física do jogo mudar (por exemplo, a gravidade diminuir), o programador altera apenas a classe mãe <code>Entity</code>, e automaticamente todos os monstros, itens e jogadores do jogo inteiro passam a flutuar!</p>
+  <p><strong>Por que usam aqui?</strong> Se a física do jogo mudar (por exemplo, a gravidade diminuir), o programador altera apenas a classe mãe <code class="one-line-code">Entity</code>, e automaticamente todos os monstros, itens e jogadores do jogo inteiro passam a flutuar!</p>
 
   <hr>
 
   <h3>3. Controle de Acesso e Usuários (SaaS / Netflix)</h3>
   <p>Em plataformas de streaming ou sistemas empresariais, existem diferentes níveis de usuários, mas todos eles precisam de e-mail e senha para fazer login.</p>
   <ul>
-    <li><strong>Superclasse (Usuario):</strong> Possui email, senha e o método <code>fazerLogin()</code>.</li>
-    <li><strong>Subclasses (Cliente, Administrador, Suporte):</strong> O administrador herda o login do cliente, mas ganha métodos como <code>deletarConta()</code> ou <code>alterarPreco()</code>.</li>
+    <li><strong>Superclasse (Usuario):</strong> Possui email, senha e o método <code class="one-line-code">fazerLogin()</code>.</li>
+    <li><strong>Subclasses (Cliente, Administrador, Suporte):</strong> O administrador herda o login do cliente, mas ganha métodos como <code class="one-line-code">deletarConta()</code> ou <code class="one-line-code">alterarPreco()</code>.</li>
   </ul>
-  <p><strong>O uso do protected na prática:</strong> O atributo senha na classe mãe é marcado como <code>protected</code>. Isso permite que a classe Administrador possa resetar a senha de um usuário diretamente caso ele peça suporte, mas impede que invasores externos acesssem a senha de fora do sistema.</p>
+  <p><strong>O uso do protected na prática:</strong> O atributo senha na classe mãe é marcado como <code class="one-line-code">protected</code>. Isso permite que a classe Administrador possa resetar a senha de um usuário diretamente caso ele peça suporte, mas impede que invasores externos acesssem a senha de fora do sistema.</p>
 
   <hr>
 
   <h3>4. Frameworks Web e Aplicativos (Android / Spring)</h3>
-  <p>No Android, para criar uma tela, você não cria o comportamento do zero. Você herda de uma classe do Google chamada <code>Activity</code>.</p>
+  <p>No Android, para criar uma tela, você não cria o comportamento do zero. Você herda de uma classe do Google chamada <code class="one-line-code">Activity</code>.</p>
   <div class="code-container">
     <pre><code class="language-java">// No mundo real do desenvolvimento Android:
 public class MinhaTelaLogin extends AppCompatActivity {
@@ -419,7 +419,7 @@ public class MinhaTelaLogin extends AppCompatActivity {
     }
 }</code></pre>
   </div>
-  <p><strong>Por que usam aqui?</strong> O Google gastou anos programando como uma tela gerencia bateria, rotação e toque. Ao dar <code>extends AppCompatActivity</code>, seu aplicativo ganha tudo isso de graça em apenas uma linha.</p>
+  <p><strong>Por que usam aqui?</strong> O Google gastou anos programando como uma tela gerencia bateria, rotação e toque. Ao dar <code class="one-line-code">extends AppCompatActivity</code>, seu aplicativo ganha tudo isso de graça em apenas uma linha.</p>
 </section>
 
 <section class="section-box">

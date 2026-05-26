@@ -1,0 +1,207 @@
+---
+layout: exercicio
+title: "Código para Demonstração Prática - Implementação de Blocos try/catch e Exceções Customizadas"
+exercicio_numero: "00"
+aula_numero: "17"
+description: "Implementação de Blocos try/catch e Exceções Customizadas para Demonstração Prática."
+---
+
+<div class="section-box">
+  <h2>Códigos</h2>
+  <h3>Exemplo Ruim</h3>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+function dividir(float $a, float $b) {
+    if ($b == 0) {
+        return false; // Ruim: força o programador a tratar com ifs externos
+    }
+    return $a / $b;
+}
+
+$resultado = dividir(10, 0);
+if ($resultado === false) {
+    echo "Erro ao dividir.";
+}
+
+if($resultado != false){
+  echo $resultado;
+}</code></pre>
+  </div>
+
+  <h3>Exemplo Bom</h3>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+function dividir(float $a, float $b): float {
+    if ($b === 0.0) {
+        // Lança uma exceção nativa do PHP indicando argumento inválido
+        throw new InvalidArgumentException("Divisão por zero não é permitida no sistema.");
+    }
+    return $a / $b;
+}
+
+try {
+    // Código perigoso
+    echo dividir(10, 2);
+} catch (InvalidArgumentException $e) {
+    // Código de recuperação: captura apenas erros de argumento inválido
+    echo "Erro de validação: " . $e->getMessage();
+} catch (Exception $e) {
+    // Captura qualquer outro erro genérico que possa ter acontecido
+    echo "Erro inesperado: " . $e->getMessage();
+}</code></pre>
+  </div>
+
+  <h3>Carregando dados de um arquivo CSV</h3>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+declare(strict_types=1);
+
+$linhasParaExibir = [];
+$mensagemErro = null;
+$ponteiroArquivo = null; // Armazenará o recurso do arquivo aberto
+
+try {
+    $caminhoArquivo = __DIR__ . '/dados.csv';
+
+    if (!file_exists($caminhoArquivo)) {
+        throw new RuntimeException("O arquivo solicitado 'dados.csv' não foi encontrado no servidor.");
+    }
+
+    $ponteiroArquivo = fopen($caminhoArquivo, 'r');
+
+    if ($ponteiroArquivo === false) {
+        throw new RuntimeException("Não foi possível abrir o arquivo. Verifique as permissões de leitura.");
+    }
+
+    $numeroLinha = 0;
+    while (($dados = fgetcsv($ponteiroArquivo, 1000, ";")) !== false) {
+        $numeroLinha++;
+
+        if (empty($dados) || $dados[0] === null) {
+            continue;
+        }
+
+        if (count($dados) !== 4) {
+            throw new ValueError("Erro de formatação na linha {$numeroLinha}: A linha não possui as 4 colunas obrigatórias.");
+        }
+
+        $linhasParaExibir[] = [
+            'data'      => $dados[0],
+            'descricao' => $dados[1],
+            'tipo'      => $dados[2],
+            'valor'     => (float) $dados[3]
+        ];
+    }
+
+} catch (RuntimeException $e) {
+    $mensagemErro = "Erro de Sistema: " . $e->getMessage();
+
+} catch (ValueError $e) {
+    $mensagemErro = "Erro de Dados: " . $e->getMessage();
+
+} catch (Exception $e) {
+    $mensagemErro = "Erro Inesperado: " . $e->getMessage();
+
+} finally {
+    if ($ponteiroArquivo) {
+        fclose($ponteiroArquivo);
+    }
+}
+?&gt;
+&lt;!DOCTYPE html>
+&lt;html lang="pt-br"&gt;
+
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Importador de Arquivos POO&lt;/title&gt;
+
+  &lt;link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" /&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"&gt;&lt;/script&gt;
+  &lt;link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" /&gt;
+&lt;/head&gt;
+
+&lt;body data-theme="light" class="min-h-screen p-4 md:p-8"&gt;
+  &lt;div class="max-w-4xl mx-auto"&gt;
+
+    &lt;header class="mb-8"&gt;
+      &lt;h1 class="text-3xl font-extrabold tracking-tight uppercase text-primary"&gt;
+        Importador de Extratos CSV
+      &lt;/h1&gt;
+      &lt;p class="text-sm opacity-75 mt-1"&gt;Manipulação segura de arquivos utilizando Try/Catch/Finally&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;?php if ($mensagemErro !== null): ?&gt;
+    &lt;div class="alert alert-error shadow-lg mb-6 border border-error/30"&gt;
+      &lt;div&gt;
+        &lt;h3 class="font-bold uppercase text-xs"&gt;Falha na Operação&lt;/h3&gt;
+        &lt;div class="text-sm"&gt;&lt;?= htmlspecialchars($mensagemErro) ?&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;?php endif; ?&gt;
+
+    &lt;div class="card bg-base-100 shadow-xl border border-base-300 overflow-hidden"&gt;
+      &lt;div class="overflow-x-auto"&gt;
+        &lt;table class="table table-zebra w-full"&gt;
+
+          &lt;thead class="bg-base-300 text-base-content uppercase tracking-wider text-xs"&gt;
+            &lt;tr&gt;
+              &lt;th class="py-4"&gt;Data&lt;/th&gt;
+              &lt;th class="py-4"&gt;Descrição&lt;/th&gt;
+              &lt;th class="py-4"&gt;Tipo&lt;/th&gt;
+              &lt;th class="py-4 text-right"&gt;Valor&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+
+          &lt;tbody&gt;
+            &lt;?php if (empty($linhasParaExibir) && $mensagemErro === null): ?&gt;
+            &lt;tr&gt;
+              &lt;td colspan="4" class="text-center py-8 text-base-content/50 italic"&gt;
+                Nenhum dado importado ou processado.
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;?php endif; ?&gt;
+
+            &lt;?php foreach ($linhasParaExibir as $linha): ?&gt;
+            &lt;tr class="hover"&gt;
+              &lt;td class="opacity-90"&gt;
+                &lt;?= htmlspecialchars(date('d/m/Y', strtotime($linha['data']))) ?&gt;
+              &lt;/td&gt;
+              &lt;td class="font-bold text-base-content"&gt;
+                &lt;?= htmlspecialchars($linha['descricao']) ?&gt;
+              &lt;/td&gt;
+              &lt;td&gt;
+                &lt;?php if ($linha['tipo'] === 'Receita'): ?&gt;
+                &lt;span class="badge badge-success font-semibold uppercase text-xs"&gt;Entrada&lt;/span&gt;
+                &lt;?php else: ?&gt;
+                &lt;span class="badge badge-error font-semibold uppercase text-xs"&gt;Saída&lt;/span&gt;
+                &lt;?php endif; ?&gt;
+              &lt;/td&gt;
+              &lt;td class="text-right font-mono font-bold"&gt;
+                R$ &lt;?= number_format($linha['valor'], 2, ',', '.') ?&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;?php endforeach; ?&gt;
+          &lt;/tbody&gt;
+
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+  </div>
+  <h3>Arquivo .CSV</h3>
+  <div class="code-container">
+    <pre><code class="language-ini">
+2026-05-10;Salário Mensal;Receita;5500.00
+2026-05-12;Aluguel Ap;Despesa;1800.00
+2026-05-15;Mercado Central;Despesa;450.00
+2026-05-18;Freelance Web;Receita;1200.00
+    </code></pre>
+  </div>
+</div>

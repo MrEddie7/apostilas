@@ -20,7 +20,7 @@ tags:
   <h2>Por que esta atividade é importante?</h2>
   <p>No mercado de trabalho real, um engenheiro de software raramente cria um código para ser usado uma única vez e descartado. O verdadeiro desafio da engenharia é a manutenção e a escalabilidade: como criar um sistema hoje que possa crescer amanhã sem quebrar e sem exigir que todo o código seja reescrito?</p>
 
-  <p>O sistema JavaLog Express simula exatamente esse cenário corporativo. Se fôssemos criar um sistema de logística usando apenas a lógica do primeiro bimestre, teríamos um código gigantesco, cheio de <code>if/else</code> espalhados, arrays paralelos difíceis de gerenciar e uma enorme duplicação de código. Qualquer mudança nas regras de frete se tornaria um pesadelo de manutenção.</p>
+  <p>O sistema JavaLog Express simula exatamente esse cenário corporativo. Se fôssemos criar um sistema de logística usando apenas a lógica do primeiro bimestre, teríamos um código gigantesco, cheio de <code class="one-line-code">if/else</code> espalhados, arrays paralelos difíceis de gerenciar e uma enorme duplicação de código. Qualquer mudança nas regras de frete se tornaria um pesadelo de manutenção.</p>
 
   <p>Com a Orientação a Objetos, nós mudamos essa história. Nós criamos um design inteligente.</p>
 </section>
@@ -29,10 +29,10 @@ tags:
   <h2>O Conhecimento Aplicado: As Peças se Unindo</h2>
   <p>Neste projeto, você verá a mágica do paradigma de objetos acontecer na prática através de uma estrutura hierárquica bem planejada:</p>
   <ul>
-    <li><strong>A Base Comum (Abstração & Herança):</strong> Em vez de programar uma Van e um Caminhao como coisas totalmente distintas, você criará uma superclasse abstrata chamada <code>Veiculo</code>. Ela servirá como o "DNA" da sua frota. O que for comum a todos os veículos nasce ali. As subclasses usarão a palavra-chave <code>extends</code> para herdar esse DNA, eliminando qualquer rastro de "copia e cola".</li>
-    <li><strong>A Segurança dos Dados (Encapsulamento & Construtores):</strong> Um sistema financeiro ou de logística não pode aceitar dados corrompidos (como uma placa vazia ou uma capacidade de carga negativa). Você usará modificadores <code>private</code> e métodos de validação para garantir que os objetos já nasçam saudáveis e permaneçam íntegros durante toda a execução.</li>
-    <li><strong>A Inteligência Central (Coleções Dinâmicas):</strong> O <code>ArrayList</code> do primeiro bimestre ganha um novo propósito aqui. Em vez de guardar simples tipos primitivos, ele gerenciará um conjunto de objetos complexos. É a sua frota ganhando vida e crescendo dinamicamente na memória.</li>
-    <li><strong>O Toque de Mestre (Polimorfismo & @Override):</strong> Esta é a engrenagem mais elegante do projeto. No menu do console, quando o sistema solicitar o relatório da frota, ele percorrerá a lista de veículos de forma genérica. O console não sabe (e não precisa saber) se o item atual da lista é um caminhão ou uma van; ele simplesmente chama o método <code>calcularCustoFrete()</code>. Graças ao Polimorfismo, cada objeto responderá calculando seu próprio valor com base nas suas regras exclusivas (peso, eixos, pedágios).</li>
+    <li><strong>A Base Comum (Abstração & Herança):</strong> Em vez de programar uma Van e um Caminhao como coisas totalmente distintas, você criará uma superclasse abstrata chamada <code class="one-line-code">Veiculo</code>. Ela servirá como o "DNA" da sua frota. O que for comum a todos os veículos nasce ali. As subclasses usarão a palavra-chave <code class="one-line-code">extends</code> para herdar esse DNA, eliminando qualquer rastro de "copia e cola".</li>
+    <li><strong>A Segurança dos Dados (Encapsulamento & Construtores):</strong> Um sistema financeiro ou de logística não pode aceitar dados corrompidos (como uma placa vazia ou uma capacidade de carga negativa). Você usará modificadores <code class="one-line-code">private</code> e métodos de validação para garantir que os objetos já nasçam saudáveis e permaneçam íntegros durante toda a execução.</li>
+    <li><strong>A Inteligência Central (Coleções Dinâmicas):</strong> O <code class="one-line-code">ArrayList</code> do primeiro bimestre ganha um novo propósito aqui. Em vez de guardar simples tipos primitivos, ele gerenciará um conjunto de objetos complexos. É a sua frota ganhando vida e crescendo dinamicamente na memória.</li>
+    <li><strong>O Toque de Mestre (Polimorfismo & @Override):</strong> Esta é a engrenagem mais elegante do projeto. No menu do console, quando o sistema solicitar o relatório da frota, ele percorrerá a lista de veículos de forma genérica. O console não sabe (e não precisa saber) se o item atual da lista é um caminhão ou uma van; ele simplesmente chama o método <code class="one-line-code">calcularCustoFrete()</code>. Graças ao Polimorfismo, cada objeto responderá calculando seu próprio valor com base nas suas regras exclusivas (peso, eixos, pedágios).</li>
   </ul>
 </section>
 
@@ -64,7 +64,7 @@ graph TD
   <h4>O que se espera de você?</h4>
   <p>Mais do que apenas acertar a sintaxe e fazer o programa rodar sem erros, este projeto avaliará o seu pensamento arquitetural. Queremos ver se você consegue decidir onde colocar cada responsabilidade, como proteger suas variáveis e como usar o polimorfismo para deixar o código limpo e elegante.</p>
   <p>Ao finalizar o JavaLog Express, você não terá apenas entregue um trabalho escolar. Você terá cruzado a linha de chegada que transforma um estudante de lógica em um desenvolvedor de software orientado a objetos.</p>
-  <p>Prepare o seu café, organize as suas chaves <code>{ }</code> e uma excelente jornada de desenvolvimento!</p>
+  <p>Prepare o seu café, organize as suas chaves <code class="one-line-code">{ }</code> e uma excelente jornada de desenvolvimento!</p>
 </div>
 
 <section class="section-box">

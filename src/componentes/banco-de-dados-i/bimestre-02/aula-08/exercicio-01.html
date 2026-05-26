@@ -16,7 +16,7 @@ description: "Atividade Prática Dirigida de modelagem conceitual, lógica e dic
   <ul>
     <li><strong>RN01 - Controle de Endividamento:</strong> O saldo acumulado do usuário nunca poderá ficar negativo no sistema. Toda despesa que ultrapasse o saldo atual deve ser bloqueada antes de ser registrada.</li>
     <li><strong>RN02 - Classificação Rígida de Fluxo:</strong> Não existem movimentações genéricas. Toda e qualquer transação deve ser categorizada estritamente como uma Receita (ganho/entrada) ou uma Despesa (gasto/saída).</li>
-    <li><strong>RN03 - Histórico Inalterável (Imutabilidade):</strong> Por questões de auditoria financeira, uma transação gravada no banco nunca poderá ser alterada (com o comando <code>UPDATE</code>) ou apagada (com o comando <code>DELETE</code>). Se um lançamento foi feito com valor errado, o usuário é obrigado a lançar uma nova transação de estorno (uma receita para anular uma despesa errada, ou vice-versa).</li>
+    <li><strong>RN03 - Histórico Inalterável (Imutabilidade):</strong> Por questões de auditoria financeira, uma transação gravada no banco nunca poderá ser alterada (com o comando <code class="one-line-code">UPDATE</code>) ou apagada (com o comando <code class="one-line-code">DELETE</code>). Se um lançamento foi feito com valor errado, o usuário é obrigado a lançar uma nova transação de estorno (uma receita para anular uma despesa errada, ou vice-versa).</li>
   </ul>
 </section>
 
@@ -26,9 +26,9 @@ description: "Atividade Prática Dirigida de modelagem conceitual, lógica e dic
     <li><strong>Ferramentas:</strong> Utilize um software CASE de modelagem de dados (sugestão: brModelo, draw.io ou equivalente).</li>
     <li><strong>Restrições de Padrão de Projeto (Naming Conventions):</strong>
       <ul>
-        <li>Nomes de tabelas devem ser definidos obrigatoriamente no plural (ex: <code>usuarios</code>).</li>
-        <li>Todas as chaves primárias devem adotar estritamente o nome <code>id</code>.</li>
-        <li>Campos compostos devem utilizar o padrão snake_case (letras minúsculas separadas por underline, ex: <code>data_transacao</code>).</li>
+        <li>Nomes de tabelas devem ser definidos obrigatoriamente no plural (ex: <code class="one-line-code">usuarios</code>).</li>
+        <li>Todas as chaves primárias devem adotar estritamente o nome <code class="one-line-code">id</code>.</li>
+        <li>Campos compostos devem utilizar o padrão snake_case (letras minúsculas separadas por underline, ex: <code class="one-line-code">data_transacao</code>).</li>
       </ul>
     </li>
   </ul>
@@ -54,11 +54,11 @@ description: "Atividade Prática Dirigida de modelagem conceitual, lógica e dic
   </ul>
 
   <h4>Parte 3: Dicionário de Dados e Restrições de Integridade</h4>
-  <p>Documente a estrutura exata das tabelas <code>carteiras</code> e <code>transacoes</code>, montando uma tabela descritiva contendo:</p>
+  <p>Documente a estrutura exata das tabelas <code class="one-line-code">carteiras</code> e <code class="one-line-code">transacoes</code>, montando uma tabela descritiva contendo:</p>
   <ul>
     <li>Nome do Campo.</li>
     <li>Tipo de Dado específico (Justifique a escolha do tipo de dado ideal para os campos de valores financeiros, visando impedir problemas de arredondamento).</li>
-    <li>Restrições de Integridade (Identifique quais campos devem receber travas como <code>NOT NULL</code>, <code>UNIQUE</code>, ou cláusulas <code>CHECK</code>).</li>
+    <li>Restrições de Integridade (Identifique quais campos devem receber travas como <code class="one-line-code">NOT NULL</code>, <code class="one-line-code">UNIQUE</code>, ou cláusulas <code class="one-line-code">CHECK</code>).</li>
   </ul>
 </section>
 
@@ -67,7 +67,7 @@ description: "Atividade Prática Dirigida de modelagem conceitual, lógica e dic
   <p>Para que o seu projeto seja aprovado pela governança de dados da Fintech, os seguintes pontos serão testados no seu modelo:</p>
   <ul>
     <li><strong>Teste de Unicidade:</strong> O banco impede fisicamente que o mesmo usuário tenha duas carteiras registradas?</li>
-    <li><strong>Teste de Imutabilidade:</strong> As restrições e configurações das Chaves Estrangeiras (como <code>ON DELETE</code> e <code>ON UPDATE</code>) foram configuradas de modo a impedir que a exclusão de um usuário apague o histórico de transações que passaram por auditoria?</li>
-    <li><strong>Precisão Numérica:</strong> Foi evitado o uso de tipos de dados de ponto flutuante imprecisos (como <code>FLOAT</code> ou <code>DOUBLE</code>) para o dinheiro?</li>
+    <li><strong>Teste de Imutabilidade:</strong> As restrições e configurações das Chaves Estrangeiras (como <code class="one-line-code">ON DELETE</code> e <code class="one-line-code">ON UPDATE</code>) foram configuradas de modo a impedir que a exclusão de um usuário apague o histórico de transações que passaram por auditoria?</li>
+    <li><strong>Precisão Numérica:</strong> Foi evitado o uso de tipos de dados de ponto flutuante imprecisos (como <code class="one-line-code">FLOAT</code> ou <code class="one-line-code">DOUBLE</code>) para o dinheiro?</li>
   </ul>
 </div>

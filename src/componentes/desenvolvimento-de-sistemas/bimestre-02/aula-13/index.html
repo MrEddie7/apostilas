@@ -247,7 +247,7 @@ public class TelaTermometro extends JFrame {
   <h2>Representações Gráficas</h2>
 
   <h3>1. Diagrama de Classe (Visão Estática)</h3>
-  <p>Este diagrama demonstra a visibilidade dos membros da classe utilizando a notação padrão UML (<code>-</code> para private e <code>+</code> para public). Ele deixa claro que os atributos estão trancados, enquanto os métodos servem de portaria.</p>
+  <p>Este diagrama demonstra a visibilidade dos membros da classe utilizando a notação padrão UML (<code class="one-line-code">-</code> para private e <code class="one-line-code">+</code> para public). Ele deixa claro que os atributos estão trancados, enquanto os métodos servem de portaria.</p>
   <div class="mermaid">
 classDiagram
     class Aluno {
@@ -299,8 +299,8 @@ sequenceDiagram
   <ul>
     <li><strong>Não crie Getters/Setters indiscriminadamente:</strong> Só forneça esses métodos se houver uma real necessidade de leitura ou escrita. Se um atributo for usado apenas internamente, ele não precisa de get/set.</li>
     <li><strong>Encapsulamento de Comportamento:</strong> Encapsular não é apenas proteger atributos; é também esconder a lógica de métodos complexos, deixando-os privados caso sejam apenas auxiliares para a própria classe.</li>
-    <li><strong>Convenção JavaBeans:</strong> Siga o padrão <code>getAtributo()</code> e <code>setAtributo()</code>. Muitas bibliotecas e frameworks Java (como Hibernate e Spring) dependem dessa nomenclatura para funcionar corretamente.</li>
-    <li><strong>Atalhos da IDE:</strong> No Eclipse, você pode gerar todos os getters e setters rapidamente usando o atalho <code>Alt + Shift + S</code> ou <code>Ctrl + 3</code> e digitando "ggas" (Generate Getters and Setters).</li>
+    <li><strong>Convenção JavaBeans:</strong> Siga o padrão <code class="one-line-code">getAtributo()</code> e <code class="one-line-code">setAtributo()</code>. Muitas bibliotecas e frameworks Java (como Hibernate e Spring) dependem dessa nomenclatura para funcionar corretamente.</li>
+    <li><strong>Atalhos da IDE:</strong> No Eclipse, você pode gerar todos os getters e setters rapidamente usando o atalho <code class="one-line-code">Alt + Shift + S</code> ou <code class="one-line-code">Ctrl + 3</code> e digitando "ggas" (Generate Getters and Setters).</li>
   </ul>
 </div>
 

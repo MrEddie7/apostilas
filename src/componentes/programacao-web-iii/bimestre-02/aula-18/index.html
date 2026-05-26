@@ -239,7 +239,7 @@ tags:
   <h3>6.1 Critérios de Aceite (Definição de Pronto / DoD)</h3>
   <p>O projeto só receberá parecer favorável se atender integralmente às seguintes verificações práticas:</p>
   <ul>
-    <li><strong>CA01 – Fluxo de Cadastro e Isolamento de Telas:</strong> O visitante deve conseguir se cadastrar escolhendo seu perfil. Se logar como Participante, as rotas <code>/admin/*</code> devem retornar erro de acesso imediatamente. Se logar como Organizador, a rota de inscrição deve ser bloqueada.</li>
+    <li><strong>CA01 – Fluxo de Cadastro e Isolamento de Telas:</strong> O visitante deve conseguir se cadastrar escolhendo seu perfil. Se logar como Participante, as rotas <code class="one-line-code">/admin/*</code> devem retornar erro de acesso imediatamente. Se logar como Organizador, a rota de inscrição deve ser bloqueada.</li>
     <li><strong>CA02 – Validação Transacional de Eventos:</strong> O formulário de eventos deve rejeitar com sucesso títulos curtos, imagens acima de 2MB e, principalmente, datas retroativas, exibindo os alertas de erro em português logo abaixo de cada campo respectivo.</li>
     <li><strong>CA03 – Persistência Segura com Upload:</strong> Ao salvar um evento, a imagem correspondente deve aparecer renderizada no card da vitrine pública. O banco de dados deve registrar o caminho ofuscado do arquivo e vincular o evento ao ID do organizador sem o uso de inputs ocultos manipuláveis pelo usuário no formulário de criação.</li>
     <li><strong>CA04 – Validação do Motor de Inscrição (Tabela Pivô):</strong> Ao clicar em "Inscrever-se", o sistema deve reduzir logicamente o total de vagas ou validar a capacidade. O banco de dados deve gerar uma nova linha na tabela intermediária contendo as duas chaves estrangeiras corretas, além do ticket_code alfanumérico aleatório e o timestamp da operação.</li>
@@ -252,12 +252,12 @@ tags:
   <h4>6.2.1 Repositório no GitHub</h4>
   <ul>
     <li>O código-fonte completo deve ser disponibilizado em um repositório na nuvem (público ou privado com acesso liberado para o professor).</li>
-    <li><strong>Histórico de Commits Semântico:</strong> O repositório deve demonstrar a evolução do desenvolvimento por meio de commits claros e organizados (ex: <code>feat: implementa autenticação de perfis</code>, <code>fix: corrige validacao de data retroativa</code>), evitando envios massivos com mensagens genéricas (ex: "projeto pronto" ou "ajustes").</li>
+    <li><strong>Histórico de Commits Semântico:</strong> O repositório deve demonstrar a evolução do desenvolvimento por meio de commits claros e organizados (ex: <code class="one-line-code">feat: implementa autenticação de perfis</code>, <code class="one-line-code">fix: corrige validacao de data retroativa</code>), evitando envios massivos com mensagens genéricas (ex: "projeto pronto" ou "ajustes").</li>
   </ul>
 
   <h4>6.2.2 Automação de Banco de Dados (Ambiente Pronto)</h4>
   <ul>
-    <li>O projeto não deve depender de dumps de arquivos <code>.sql</code> manuais. O repositório deve conter todas as Migrations necessárias para estruturar o banco de dados do zero.</li>
+    <li>O projeto não deve depender de dumps de arquivos <code class="one-line-code">.sql</code> manuais. O repositório deve conter todas as Migrations necessárias para estruturar o banco de dados do zero.</li>
     <li><strong>Seeders Obrigatórios:</strong> Deve ser fornecido um arquivo de Seeder para popular a tabela de categorias (ex: "Tecnologia", "Música", "Negócios") de forma automatizada, permitindo que o avaliador teste o sistema imediatamente após subir o ambiente.</li>
   </ul>
 
@@ -276,7 +276,7 @@ tags:
   <p>Os diagramas a seguir oferecem uma representação visual dos aspectos mais críticos da aplicação: a modelagem física do banco de dados, as barreiras de segurança em nível de requisição e o ciclo de vida transacional da inscrição.</p>
 
   <h3>7.1 Diagrama de Entidade-Relacionamento (ERD)</h3>
-  <p>Este diagrama evidencia a modelagem física do banco de dados, destacando as chaves estrangeiras e a anatomia da tabela intermediária <code>event_user</code> com seus atributos extras.</p>
+  <p>Este diagrama evidencia a modelagem física do banco de dados, destacando as chaves estrangeiras e a anatomia da tabela intermediária <code class="one-line-code">event_user</code> com seus atributos extras.</p>
 
   <pre class="mermaid">
 erDiagram
@@ -321,7 +321,7 @@ erDiagram
   </pre>
 
   <h3>7.2 Fluxo de Interceptação de Segurança (Middleware e ACL)</h3>
-  <p>Este fluxo desenha visualmente o comportamento que a aplicação deve ter ao receber uma requisição para a área administrativa (<code>/admin/eventos</code>). Ele deixa claro onde as travas de segurança atuam antes de o sistema tocar no banco.</p>
+  <p>Este fluxo desenha visualmente o comportamento que a aplicação deve ter ao receber uma requisição para a área administrativa (<code class="one-line-code">/admin/eventos</code>). Ele deixa claro onde as travas de segurança atuam antes de o sistema tocar no banco.</p>
 
   <pre class="mermaid">
 graph TD

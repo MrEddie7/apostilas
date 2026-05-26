@@ -12,7 +12,106 @@ subject: "banco-de-dados-i"
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo teórico da aula 07 em desenvolvimento...</p>
+
+  <h3>1. O que é o Dicionário de Dados?</h3>
+  <p>O Dicionário de Dados é um repositório que contém os metadados (dados sobre os dados) de um banco de dados. Ele atua como uma "ponte" entre os usuários e os dados reais, registrando formalmente o que cada informação significa e como ela deve ser armazenada.</p>
+  <ul>
+    <li><strong>Finalidade:</strong> Prover um contexto para a definição e o registro de todos os elementos que formam a base de dados (tabelas, colunas, índices e restrições).</li>
+    <li><strong>Transparência:</strong> Para o usuário final, o dicionário é muitas vezes invisível, mas ele é consultado pelo SGBD sempre que uma operação de consulta ou manipulação é solicitada para validar permissões e tipos de dados.</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. Metadados: O Coração da Documentação</h3>
+  <p>Diferente dos dados operacionais (como o nome de um cliente específico), os metadados descrevem a intenção (esquema) do banco de dados. O dicionário deve documentar:</p>
+  <ul>
+    <li><strong>Nomes das Tabelas (Relações):</strong> Identificação única de cada assunto no banco.</li>
+    <li><strong>Atributos (Colunas):</strong> Nomes, tipos físicos (integer, varchar, date) e tamanhos dos campos.</li>
+    <li><strong>Restrições de Integridade:</strong> Definição de Chaves Primárias (PK), Chaves Estrangeiras (FK) e regras de unicidade.</li>
+    <li><strong>Regras de Negócio e Validações:</strong> Instruções que restringem os valores aceitáveis para evitar anomalias.</li>
+  </ul>
+
+  <hr>
+
+  <h3>3. Documentando Domínios e Restrições</h3>
+  <p>O Domínio representa o conjunto de valores atômicos admissíveis para uma coluna. Documentar o domínio no dicionário de dados é vital para garantir que as comparações em consultas tenham sentido e que os dados inseridos sejam válidos.</p>
+  <p><strong>Exemplos de Documentação de Domínios:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Atributo</th>
+        <th>Domínio (Conjunto de Valores)</th>
+        <th>Tipo/Formato</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sexo</td>
+        <td>{'M', 'F'}</td>
+        <td>CHAR(1)</td>
+      </tr>
+      <tr>
+        <td>Idade</td>
+        <td>16 &le; idade &le; 70</td>
+        <td>INTEGER</td>
+      </tr>
+      <tr>
+        <td>CPF</td>
+        <td>Conjunto de 11 dígitos numéricos</td>
+        <td>CHAR(11)</td>
+      </tr>
+      <tr>
+        <td>Salário</td>
+        <td>Valores decimais positivos</td>
+        <td>DECIMAL(10,2)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3>4. Implementação Prática via DDL</h3>
+  <p>A montagem do dicionário de dados no SGBD é realizada através da Linguagem de Definição de Dados (DDL). Quando executamos comandos como CREATE TABLE, o SGBD compila essas instruções e as armazena no catálogo (dicionário físico).</p>
+  <p><strong>Exemplo de Documentação em Código (SQL):</strong></p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando a estrutura no dicionário de dados
+CREATE TABLE Empregado (
+    codigo_empregado INTEGER NOT NULL, -- PK: Não nulo e Único
+    nome             CHAR(35) NULL,
+    salario          DECIMAL(10,2) CHECK (salario > 0), -- Regra de Domínio
+    PRIMARY KEY (codigo_empregado)
+);
+
+-- Adicionando uma restrição de integridade referencial
+ALTER TABLE Empregado 
+ADD CONSTRAINT FK_Departamento 
+FOREIGN KEY (codigo_depto) REFERENCES Departamento(codigo_depto);</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>5. Arquitetura do Dicionário de Dados</h3>
+  <p>No SGBD, o dicionário é parte integrante do motor do banco, interagindo constantemente com os usuários e programadores.</p>
+  <div class="code-container">
+    <pre><code class="language-mermaid">graph LR
+    U[Usuários/Programadores] -- Consultas/DDL --> SGBD
+    subgraph SGBD
+        P[Software de Processamento] -- Acesso --> M[(Base de Metadados / Dicionário)]
+    end
+    M -- Define Estrutura --> D[(Base de Dados Real)]
+</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>6. Checklist de Documentação</h3>
+  <p>Para que um dicionário de dados seja completo, o analista deve verificar os seguintes pontos ao converter o modelo lógico em físico:</p>
+  <ul>
+    <li><strong>Opção de Nulo:</strong> Definir se a coluna aceita valores desconhecidos (NULL) ou se o preenchimento é obrigatório (NOT NULL).</li>
+    <li><strong>Regras de Validação:</strong> Expressões que estabelecem intervalos (ex: NumItens >= 5 AND NumItens <= 15).</li>
+    <li><strong>Chaves Substitutas:</strong> Documentar se a PK é uma chave natural do negócio ou uma chave artificial (ID numérico gerado pelo sistema).</li>
+    <li><strong>Descrições Semânticas:</strong> Explicar o significado de cada atributo para que usuários e desenvolvedores interpretem os dados da mesma forma.</li>
+  </ul>
 </section>
 
 <section class="section-box">

@@ -15,10 +15,10 @@ description: "Desenvolvimento de um ecossistema de classes para controle de fina
 <section class="section-box">
   <h2>2. Requisitos Técnicos (O que será avaliado)</h2>
   <ul>
-    <li><strong>Encapsulamento Rigoroso:</strong> O saldo da carteira deve ser <code>private</code>. Nenhuma classe externa pode fazer <code>$carteira->saldo = 1000</code>.</li>
-    <li><strong>Herança e Abstração:</strong> Deve existir uma classe abstrata <code>Transacao</code> que sirva de molde para as classes <code>Receita</code> e <code>Despesa</code>.</li>
-    <li><strong>Métodos Mágicos:</strong> Uso do <code>__construct</code> para garantir que toda transação nasça com valor, data e descrição.</li>
-    <li><strong>Tratamento de Exceções:</strong> Implementação de <code>try/catch</code> para impedir que o usuário lance uma despesa maior que o saldo disponível.</li>
+    <li><strong>Encapsulamento Rigoroso:</strong> O saldo da carteira deve ser <code class="one-line-code">private</code>. Nenhuma classe externa pode fazer <code class="one-line-code">$carteira->saldo = 1000</code>.</li>
+    <li><strong>Herança e Abstração:</strong> Deve existir uma classe abstrata <code class="one-line-code">Transacao</code> que sirva de molde para as classes <code class="one-line-code">Receita</code> e <code class="one-line-code">Despesa</code>.</li>
+    <li><strong>Métodos Mágicos:</strong> Uso do <code class="one-line-code">__construct</code> para garantir que toda transação nasça com valor, data e descrição.</li>
+    <li><strong>Tratamento de Exceções:</strong> Implementação de <code class="one-line-code">try/catch</code> para impedir que o usuário lance uma despesa maior que o saldo disponível.</li>
     <li><strong>Polimorfismo:</strong> Cada tipo de transação deve saber identificar se é uma "Entrada" ou "Saída" através de um método comum.</li>
   </ul>
 </section>
@@ -26,7 +26,7 @@ description: "Desenvolvimento de um ecossistema de classes para controle de fina
 <section class="section-box">
   <h2>3. Estrutura de Arquivos Sugerida</h2>
   <div class="code-container">
-    <pre><code>/mypocket
+    <pre><code class="one-line-code">/mypocket
   ├── classes/
   │    ├── Transacao.php  (Classe Abstrata)
   │    ├── Receita.php    (Extende Transacao)
@@ -41,9 +41,9 @@ description: "Desenvolvimento de um ecossistema de classes para controle de fina
   <h2>4. O Desafio Prático</h2>
   <p>Seu sistema deve ser capaz de:</p>
   <ol>
-    <li>Cadastrar uma <strong>Receita</strong> (ex: Salário) que aumenta o saldo da <code>Carteira</code>.</li>
-    <li>Cadastrar uma <strong>Despesa</strong> (ex: Aluguel) que diminui o saldo da <code>Carteira</code>.</li>
-    <li><strong>Impedir o Saldo Negativo:</strong> Caso o usuário tente cadastrar uma despesa de R$ 500,00 tendo apenas R$ 200,00 de saldo, a classe <code>Carteira</code> deve disparar uma <code>Exception</code>.</li>
+    <li>Cadastrar uma <strong>Receita</strong> (ex: Salário) que aumenta o saldo da <code class="one-line-code">Carteira</code>.</li>
+    <li>Cadastrar uma <strong>Despesa</strong> (ex: Aluguel) que diminui o saldo da <code class="one-line-code">Carteira</code>.</li>
+    <li><strong>Impedir o Saldo Negativo:</strong> Caso o usuário tente cadastrar uma despesa de R$ 500,00 tendo apenas R$ 200,00 de saldo, a classe <code class="one-line-code">Carteira</code> deve disparar uma <code class="one-line-code">Exception</code>.</li>
     <li><strong>Exibir Extrato:</strong> Listar todas as transações realizadas, indicando com cores (verde para receitas, vermelho para despesas) a origem de cada valor.</li>
   </ol>
 </section>
@@ -52,7 +52,7 @@ description: "Desenvolvimento de um ecossistema de classes para controle de fina
   <h2>5. Desafios Bônus <span class="badge badge-warning" style="background-color: var(--color-warning); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; font-weight: bold; margin-left: 10px;">Opcional</span></h2>
   <p>Para os alunos que quiserem ir além, propomos as seguintes melhorias na aplicação:</p>
   <ul>
-    <li><strong>Exportar Extrato:</strong> Criar uma funcionalidade que permite baixar as transações no formato <code>.csv</code>.</li>
+    <li><strong>Exportar Extrato:</strong> Criar uma funcionalidade que permite baixar as transações no formato <code class="one-line-code">.csv</code>.</li>
     <li><strong>Filtro de Dados:</strong> Implementar filtros na interface para visualizar apenas "Despesas" ou transações de um mês específico.</li>
   </ul>
 </section>
@@ -60,9 +60,9 @@ description: "Desenvolvimento de um ecossistema de classes para controle de fina
 <div class="tip-box">
   <h4>Orientações de Entrega</h4>
   <ul>
-    <li><strong>Tipagem Estrita:</strong> Utilize <code>declare(strict_types=1);</code> em todos os arquivos de classe.</li>
-    <li><strong>Single Responsibility:</strong> Lembre-se que a classe <code>Transacao</code> cuida do dado, enquanto a <code>Carteira</code> cuida da lógica do dinheiro.</li>
+    <li><strong>Tipagem Estrita:</strong> Utilize <code class="one-line-code">declare(strict_types=1);</code> em todos os arquivos de classe.</li>
+    <li><strong>Single Responsibility:</strong> Lembre-se que a classe <code class="one-line-code">Transacao</code> cuida do dado, enquanto a <code class="one-line-code">Carteira</code> cuida da lógica do dinheiro.</li>
     <li><strong>Boas Práticas:</strong> Utilize nomes de métodos em <em>camelCase</em> e nomes de classes em <em>PascalCase</em>.</li>
-    <li><strong>Teste de Fogo:</strong> O projeto será validado tentando burlar o saldo via código e forçando erros de limite para testar o <code>try/catch</code>.</li>
+    <li><strong>Teste de Fogo:</strong> O projeto será validado tentando burlar o saldo via código e forçando erros de limite para testar o <code class="one-line-code">try/catch</code>.</li>
   </ul>
 </div>
