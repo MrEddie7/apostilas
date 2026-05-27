@@ -8,36 +8,249 @@ tags:
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 14 em desenvolvimento...</p>
+  <h2>Teoria & Conceitos: Estruturas de Repetição (while e do-while)</h2>
+  <p>As estruturas de repetição (laços ou loops) permitem que um conjunto de instruções seja executado várias vezes até que uma condição específica seja atingida. Elas são essenciais para processar grandes quantidades de dados ou automatizar tarefas repetitivas sem a necessidade de duplicar linhas de código manualmente.</p>
+  
+  <h3>1. O Comando while (Teste no Início)</h3>
+  <p>O <code>while</code> é a estrutura de repetição mais básica, funcionando como uma "decisão repetida". Ela é classificada como uma estrutura de <strong>pré-teste</strong>, o que significa que a condição de parada é verificada antes de qualquer instrução do corpo ser executada.</p>
+  <ul>
+    <li><strong>Funcionamento:</strong> Se a condição for falsa logo na primeira avaliação, o corpo do laço nunca será executado.</li>
+    <li><strong>Sintaxe em Java:</strong></li>
+  </ul>
+  <p><strong>Exemplo: Contagem Sequencial</strong></p>
+  <div class="code-container">
+    <pre><code class="language-java">int contador = 1; 
+while (contador <= 5) { 
+    System.out.println("Número: " + contador);
+    contador++; // Atualização obrigatória para evitar laço infinito
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>2. O Comando do-while (Teste no Fim)</h3>
+  <p>A estrutura <code>do-while</code> é muito semelhante ao <code>while</code>, mas com uma diferença crucial: ela é uma estrutura de <strong>pós-teste</strong>. O teste da condição de controle é realizado apenas após a execução do bloco de comandos.</p>
+  <ul>
+    <li><strong>Funcionamento:</strong> Devido ao teste ocorrer no final, o corpo do laço é obrigatoriamente executado <strong>pelo menos uma vez</strong>, mesmo que a condição seja falsa desde o início.</li>
+    <li><strong>Atenção à Sintaxe:</strong> Diferente do <code>while</code> simples, o <code>do-while</code> exige um ponto-e-vírgula (<code>;</code>) imediatamente após o fechamento dos parênteses da condição.</li>
+    <li><strong>Sintaxe em Java:</strong></li>
+  </ul>
+  <p><strong>Exemplo: Interação com o Usuário</strong><br>
+  Esta estrutura é ideal para menus ou situações onde você precisa que o usuário realize uma ação antes de perguntar se ele deseja repetir.</p>
+  <div class="code-container">
+    <pre><code class="language-java">boolean querContinuar;
+do {
+    System.out.println("Executando tarefa do sistema...");
+    System.out.print("Deseja rodar novamente? (true/false): ");
+    querContinuar = leitor.nextBoolean(); // Captura a decisão do usuário
+} while (querContinuar);</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Cenários Comuns de Aplicação</h3>
+  <ul>
+    <li><strong>Validação de Entrada de Dados:</strong> O <code>while</code> garante que o programa não prossiga enquanto o usuário não fornecer um dado válido (ex: um número positivo).</li>
+    <li><strong>Valores Sentinela:</strong> Utiliza-se um valor especial (como 0 ou -1) para marcar o fim de uma sequência de dados quando não se sabe previamente o número de repetições.</li>
+    <li><strong>Processamento de Menus:</strong> O <code>do-while</code> é frequentemente usado para exibir um menu ao menos uma vez e mantê-lo ativo até que a opção "Sair" seja escolhida.</li>
+  </ul>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
+  <h2>Exemplos de Código</h2>
+
+  <h3>1. Nível Básico: Contadores Simples (A Diferença Visual)</h3>
+  <p><strong>Objetivo:</strong> Mostrar a sintaxe limpa de ambos e como o <code>do-while</code> garante que o bloco rode pelo menos uma vez, mesmo que a condição seja falsa logo de cara.</p>
   <div class="code-container">
-    <pre><code class="language-java">// Em breve...</code></pre>
+    <pre><code class="language-java">public class ExemploBasico {
+    public static void main(String[] args) {
+        System.out.println("--- USANDO WHILE ---");
+        int contadorWhile = 5;
+        // Testará a condição ANTES de entrar. Como 5 não é menor que 5, NÃO RODA.
+        while (contadorWhile < 5) {
+            System.out.println("While: " + contadorWhile);
+            contadorWhile++;
+        }
+
+        System.out.println("\n--- USANDO DO-WHILE ---");
+        int contadorDo = 5;
+        // Executa o bloco primeiro, e SÓ DEPOIS testa a condição. RODA 1 VEZ.
+        do {
+            System.out.println("Do-While: " + contadorDo);
+            contadorDo++;
+        } while (contadorDo < 5);
+    }
+}</code></pre>
   </div>
+
+  <hr>
+
+  <h3>2. Nível Intermediário: Validação de Entrada de Dados</h3>
+  <p><strong>Objetivo:</strong> Demonstrar o uso do <code>do-while</code> para travar o programa até que o usuário digite uma informação válida. Este é o cenário mais clássico e elegante para o <code>do-while</code>.</p>
+  <div class="code-container">
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class ValidacaoDados {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int nota;
+
+        // O programa DEVE pedir a nota ao menos uma vez. 
+        // Se for inválida (menor que 0 ou maior que 10), ele repete o pedido.
+        do {
+            System.out.print("Digite uma nota válida (0 a 10): ");
+            nota = scanner.nextInt();
+            
+            if (nota < 0 || nota > 10) {
+                System.out.println("Nota inválida! Tente novamente.");
+            }
+        } while (nota < 0 || nota > 10);
+
+        System.out.println("Nota cadastrada com sucesso: " + nota);
+        scanner.close();
+    }
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Nível Avançado: Menu Iterativo (Menu de Opções)</h3>
+  <p><strong>Objetivo:</strong> Criar a estrutura padrão de menus para sistemas de console. O <code>do-while</code> mantém o programa rodando até que a opção de saída seja explicitamente escolhida.</p>
+  <div class="code-container">
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class MenuSistema {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("\n=== MENU PRINCIPAL ===");
+            System.out.println("1 - Consultar Saldo");
+            System.out.println("2 - Realizar Depósito");
+            System.out.println("3 - Sair do Sistema");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt();
+
+            // Processa a opção escolhida usando um switch/case
+            switch (opcao) {
+                case 1:
+                    System.out.println("-> Seu saldo é R$ 1.500,00");
+                    break;
+                case 2:
+                    System.out.println("-> Depósito realizado com sucesso.");
+                    break;
+                case 3:
+                    System.out.println("Encerrando o sistema... Até logo!");
+                    break;
+                default:
+                    System.out.println("Opção inválida! Escolha 1, 2 ou 3.");
+            }
+
+        } while (opcao != 3); // O loop continua enquanto a opção NÃO for 3
+
+        scanner.close();
+    }
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>4. Nível "Hero": Processamento Assíncrono / Leitura de Arquivo Simulada</h3>
+  <p><strong>Objetivo:</strong> Mostrar o <code>while</code> sendo usado no mundo real (como em conexões de banco de dados, leitura de arquivos ou servidores), onde não sabemos quantas linhas de dados existem (iteração indeterminada), simulando um sensor de dados.</p>
+  <div class="code-container">
+    <pre><code class="language-java">import java.util.Random;
+
+public class ProcessamentoSensores {
+    public static void main(String[] args) throws InterruptedException {
+        Random geradorAleatorio = new Random();
+        
+        System.out.println("Iniciando monitoramento de temperatura crítica...");
+        
+        // Loop infinito controlado (Sinalizador / Flag)
+        boolean monitorando = true;
+
+        while (monitorando) {
+            // Simula a leitura de um sensor de temperatura (entre 20°C e 45°C)
+            int temperaturaAtual = geradorAleatorio.nextInt(26) + 20;
+            System.out.println("Temperatura atual: " + temperaturaAtual + "C");
+
+            // Regra de parada (Break / Mudança de Flag)
+            if (temperaturaAtual > 40) {
+                System.out.println("ALERTA: Superaquecimento detectado (" + temperaturaAtual + "C)!");
+                System.out.println("Desligando o monitoramento para segurança do hardware.");
+                
+                monitorando = false; // Quebra a condição do while na próxima volta
+            }
+
+            // Pausa o código por 500 milissegundos para simular o tempo real
+            Thread.sleep(500);
+        }
+    }
+}</code></pre>
+  </div>
+
 </section>
 
 <section class="section-box">
   <h2>Representação Gráfica</h2>
+
+  <h3>Fluxograma do while (Pré-Teste)</h3>
+  <p>Observe que a condição é verificada <strong>antes</strong> de executar o bloco. Se falsa na primeira vez, o bloco é ignorado completamente.</p>
   <div class="mermaid">
-    graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
+    flowchart TD
+      A([Início]) --> B[Inicializa variável de controle]
+      B --> C{Condição verdadeira?}
+      C -- Não --> E([Fim])
+      C -- Sim --> D[Executa bloco de comandos]
+      D --> F[Atualiza variável de controle]
+      F --> C
+  </div>
+
+  <h3>Fluxograma do do-while (Pós-Teste)</h3>
+  <p>Aqui o bloco é executado <strong>antes</strong> da verificação. Isso garante ao menos uma execução, independente da condição.</p>
+  <div class="mermaid">
+    flowchart TD
+      A([Início]) --> B[Inicializa variável de controle]
+      B --> C[Executa bloco de comandos]
+      C --> D[Atualiza variável de controle]
+      D --> E{Condição verdadeira?}
+      E -- Sim --> C
+      E -- Não --> F([Fim])
   </div>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
+    <li><strong>Evite loops infinitos:</strong> Sempre garanta que a variável de controle seja modificada dentro do laço (ex.: <code>contador++</code>), caso contrário o programa travará.</li>
+    <li><strong>while vs. do-while:</strong> Use <code>while</code> quando o bloco pode não precisar executar nenhuma vez. Use <code>do-while</code> quando o bloco deve executar obrigatoriamente ao menos uma vez (ex.: menus, validações de input).</li>
+    <li><strong>Variável de flag:</strong> Em loops com condições complexas, uma variável booleana (<code>boolean rodando = true</code>) torna o código mais legível do que condições muito longas.</li>
+    <li><strong>Cuidado com o ponto e vírgula:</strong> O <code>do-while</code> exige <code>;</code> após o parêntese de fechamento da condição. Esquecer isso gera um erro de compilação.</li>
+    <li><strong>Prefira for quando souber o número de iterações:</strong> O <code>while</code> brilha em situações de iteração indeterminada. Quando o número de repetições é conhecido, o <code>for</code> é mais expressivo.</li>
   </ul>
 </div>
 
 <section class="section-box">
   <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
+  <p>As estruturas <code>while</code> e <code>do-while</code> estão presentes em praticamente todos os sistemas do mundo real. Veja onde você as encontrará:</p>
+  <ul>
+    <li>
+      <strong>Sistemas de Login:</strong> Um loop <code>do-while</code> exibe o formulário de login e repete enquanto as credenciais forem inválidas, garantindo que o usuário sempre veja o formulário ao menos uma vez.
+    </li>
+    <li>
+      <strong>Leitura de Arquivos:</strong> Um <code>while</code> lê linha a linha de um arquivo até que não haja mais conteúdo (<code>while (scanner.hasNextLine())</code>). Não sabemos quantas linhas o arquivo tem, por isso o <code>while</code> é ideal.
+    </li>
+    <li>
+      <strong>Conexão com Banco de Dados (ResultSet):</strong> Ao buscar registros no banco, iteramos com <code>while (resultSet.next())</code> até processar todas as linhas retornadas pela consulta SQL.
+    </li>
+    <li>
+      <strong>Servidores e Daemons:</strong> Servidores web rodam dentro de um <code>while (true)</code> aguardando novas requisições de clientes indefinidamente, encerrando apenas com uma flag de desligamento.
+    </li>
+    <li>
+      <strong>Jogos (Game Loop):</strong> Todo jogo possui um loop principal (<code>while (jogoRodando)</code>) que atualiza o estado do jogo e redesenha a tela a cada frame.
+    </li>
+  </ul>
 </section>
 
 <section class="section-box">

@@ -6,13 +6,106 @@ aula_numero: "14"
 description: "Primeira atividade prática para consolidar os conhecimentos da aula 14."
 ---
 
-<p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+<section class="section-box">
+  <h2>Enunciado</h2>
+  <p>Em sistemas de software do mundo real, muitas vezes precisamos que um conjunto de instruções seja executado repetidamente até que uma condição específica seja atingida. Estruturas de repetição como o <code>while</code> (pré-teste) e o <code>do-while</code> (pós-teste) eliminam a necessidade de duplicar linhas de código manualmente e são ideais para o tratamento de iterações indeterminadas, onde não sabemos previamente a quantidade exata de repetições.</p>
+  <p>Nesta atividade, você desenvolverá o esqueleto lógico de um <strong>Caixa Eletrônico (ATM)</strong> por meio do console. Você aplicará os conceitos de <strong>pós-teste</strong> para manter o menu principal ativo até que o usuário decida sair, e de <strong>pré-teste / valores sentinela</strong> para validar que operações críticas, como depósitos, não aceitem valores inconsistentes.</p>
+</section>
+
+<section class="section-box">
+  <h2>Preparação</h2>
+  <ol>
+    <li>Abra a sua IDE de preferência (Eclipse, IntelliJ ou VS Code).</li>
+    <li>Crie um novo projeto Java ou uma nova classe.</li>
+    <li>Crie um arquivo chamado <code>CaixaEletronico.java</code>.</li>
+    <li>Cole o <strong>Código Base</strong> fornecido abaixo dentro do arquivo.</li>
+  </ol>
+</section>
+
+<section class="section-box">
+  <h2>Código Base</h2>
+  <p>Este código contém a estrutura inicial do sistema. Note que as estruturas de repetição estão <strong>ausentes ou incompletas</strong>, fazendo com que o programa execute apenas uma vez e encerre abruptamente.</p>
+  <div class="code-container">
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class CaixaEletronico {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        double saldo = 500.00; // Saldo inicial
+        int opcao = 0;
+
+        System.out.println("--- BEM-VINDO AO BANCO JAVA ---");
+
+        // TODO: O menu abaixo deve rodar repetidamente usando do-while
+        System.out.println("\n=== MENU PRINCIPAL ===");
+        System.out.println("1 - Consultar Saldo");
+        System.out.println("2 - Realizar Depósito");
+        System.out.println("3 - Sair do Sistema");
+        System.out.print("Escolha uma opção: ");
+        opcao = scanner.nextInt();
+
+        // Processa a opção selecionada
+        switch (opcao) {
+            case 1:
+                System.out.println("-> Seu saldo atual é R$ " + saldo);
+                break;
+            case 2:
+                System.out.print("Digite o valor do depósito: R$ ");
+                double valorDeposito = scanner.nextDouble();
+                
+                // TODO: Validar usando um laço de repetição condicional
+                saldo += valorDeposito;
+                System.out.println("-> Depósito de R$ " + valorDeposito + " realizado com sucesso.");
+                break;
+            case 3:
+                System.out.println("Encerrando o sistema... Até logo!");
+                break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+
+        // TODO: O programa não deve fechar o scanner até que o loop termine por completo
+        scanner.close();
+    }
+}</code></pre>
+  </div>
+</section>
+
+<section class="section-box">
+  <h2>O Desafio</h2>
+  <p>Sua missão é <strong>refatorar o código base</strong> aplicando as estruturas de repetição adequadas para torná-lo um sistema funcional e resiliente a erros de entrada de dados:</p>
+
+  <h3>1. Implementação do Menu Iterativo (do-while)</h3>
+  <ul>
+    <li>Envolva a exibição do menu principal e a estrutura <code>switch/case</code> dentro de um laço <code>do-while</code>.</li>
+    <li>O programa deve obrigatoriamente exibir o menu <strong>pelo menos uma vez</strong>. Ele deve continuar rodando e reexibindo as opções enquanto o usuário não digitar a opção <strong>3</strong> (Sair do Sistema).</li>
+    <li>Lembre-se da regra de sintaxe do pós-teste: use o <strong>ponto e vírgula (<code>;</code>)</strong> imediatamente após o fechamento dos parênteses da condição do <code>while</code>.</li>
+  </ul>
+
+  <h3>2. Validação de Entrada de Dados (while)</h3>
+  <ul>
+    <li>No <code>case 2</code> (Realizar Depósito), implemente uma estrutura de pré-teste utilizando o comando <code>while</code> para garantir a integridade dos dados.</li>
+    <li>O caixa eletrônico <strong>não pode aceitar</strong> valores de depósito menores ou iguais a zero.</li>
+    <li>Se o usuário digitar um valor inválido (ex: <code>-50.00</code> ou <code>0</code>), o laço <code>while</code> deve travar o fluxo, exibir uma mensagem de erro (<em>"Valor inválido! Tente novamente."</em>) e solicitar que o usuário digite o valor novamente dentro do corpo do laço. O programa só deve prosseguir e atualizar a variável <code>saldo</code> quando o valor fornecido for estritamente positivo.</li>
+  </ul>
+
+  <h3>3. Garantia contra Loops Infinitos</h3>
+  <ul>
+    <li>Certifique-se de que a leitura do <code>scanner</code> para a nova tentativa de depósito aconteça <strong>dentro do corpo do <code>while</code></strong>, garantindo a atualização da variável de controle e evitando que o sistema trave em um laço infinito.</li>
+  </ul>
+</section>
 
 <div class="tip-box">
-  <h4>Orientações</h4>
+  <h4>Orientações Finais</h4>
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li><strong>O que será avaliado:</strong>
+      <ul>
+        <li>O uso correto do <code>do-while</code> para manter o menu ativo e sua respectiva terminação com <code>;</code>.</li>
+        <li>O uso correto do <code>while</code> como mecanismo de pré-teste para impedir depósitos negativos ou zerados.</li>
+        <li>A modificação correta das variáveis de controle dentro de cada laço para evitar comportamentos infinitos indesejados.</li>
+      </ul>
+    </li>
+    <li><strong>Dica de Ouro:</strong> Teste o seu programa digitando opções inválidas no menu e valores negativos no depósito. O sistema deve ser capaz de rejeitar todas as entradas incorretas e se manter rodando de forma limpa até que o número <code>3</code> seja digitado.</li>
+    <li><strong>Entrega:</strong> Envie o arquivo de código fonte <code>CaixaEletronico.java</code> devidamente identado, corrigido e testado.</li>
   </ul>
 </div>

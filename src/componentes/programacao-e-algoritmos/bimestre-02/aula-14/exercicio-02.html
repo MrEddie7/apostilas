@@ -1,18 +1,307 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Estruturas de Repetição I: While"
-exercicio_numero: "02"
+layout: questionario
+title: "Estruturas de Repetição: Comando While e Do-While"
+exercicio_numero: "03"
 aula_numero: "14"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 14."
+description: "Questionário de fixação focado nos fundamentos de algoritmos, sintaxe básica de console e fluxo de controle dos laços while e do-while em Java."
+perguntas:
+  - texto: "Para que serve uma estrutura de repetição (também chamada de laço ou loop) em um programa?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Para criar novas variáveis na memória do computador automaticamente."
+      - letra: "b"
+        texto: "Para executar um bloco de instruções várias vezes sem precisar copiar e colar as linhas de código."
+      - letra: "c"
+        texto: "Para testar se uma variável é do tipo inteira ou do tipo texto."
+      - letra: "d"
+        texto: "Para apagar o texto exibido no console após a leitura de dados."
+
+  - texto: "Qual a principal característica do laço 'while' em relação ao momento em que ele testa a sua condição?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Ele faz um pré-teste, ou seja, verifica a condição no início, antes de rodar os comandos internos."
+      - letra: "b"
+        texto: "Ele faz um pós-teste, verificando a condição apenas depois que o programa terminou por completo."
+      - letra: "c"
+        texto: "Ele não faz testes lógicos, dependendo apenas de números fixos de repetições."
+      - letra: "d"
+        texto: "Ele testa a condição de forma aleatória durante a execução."
+
+  - texto: "O que acontece se a condição de um comando 'while' for FALSA logo na primeira vez em que o programa chegar nele?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "O programa gera um erro de compilação e trava."
+      - letra: "b"
+        texto: "Os comandos dentro dele são executados apenas uma vez e depois o laço para."
+      - letra: "c"
+        texto: "Os comandos dentro dele são totalmente ignorados e o programa passa para a próxima linha."
+      - letra: "d"
+        texto: "O programa entra em um loop infinito automático."
+
+  - texto: "Qual a principal característica do laço 'do-while' em relação ao comando 'while' simples?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "O do-while faz o teste no início e o while faz o teste no fim."
+      - letra: "b"
+        texto: "O do-while faz um pós-teste, o que garante que os comandos internos rodem pelo menos uma vez antes da checagem."
+      - letra: "c"
+        texto: "O do-while só aceita variáveis do tipo texto (String) na sua condição."
+      - letra: "d"
+        texto: "O do-while impede que o usuário digite números negativos no teclado."
+
+  - texto: "Se a condição de parada de um 'do-while' for falsa desde o começo, quantas vezes o código dentro dele será executado?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Nenhuma vez."
+      - letra: "b"
+        texto: "Exatamente uma vez."
+      - letra: "c"
+        texto: "Infinitas vezes."
+      - letra: "d"
+        texto: "Duas vezes."
+
+  - texto: "Qual sinal gráfico é obrigatório no final da estrutura de um 'do-while' em Java e que costuma ser esquecido pelos iniciantes?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Um ponto-e-vírgula (;) logo após o fechamento dos parênteses da condição do while."
+      - letra: "b"
+        texto: "Dois pontos (:) após a palavra do."
+      - letra: "c"
+        texto: "Uma barra invertida (\\) no fechamento das chaves."
+      - letra: "d"
+        texto: "Uma vírgula (,) após a condição lida."
+
+  - texto: "O que significa dizer que um programa entrou em um 'loop infinito'?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Que o programa rodou exatamente 100 vezes e parou sozinho."
+      - letra: "b"
+        texto: "Que o computador ficou sem memória RAM para guardar os números."
+      - letra: "c"
+        texto: "Que o programa encontrou um comando System.out.println inválido."
+      - letra: "d"
+        texto: "Que a condição de parada do laço nunca se torna falsa, fazendo o código repetir para sempre."
+
+  - texto: "Para evitar um loop infinito em um laço 'while' baseado em um contador, o que o programador deve fazer dentro do bloco?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Criar uma nova variável com um nome diferente."
+      - letra: "b"
+        texto: "Mudar o valor do contador usando chaves vazias."
+      - letra: "c"
+        texto: "Alterar ou incrementar o valor da variável de controle (ex: contador++) para que a condição mude no futuro."
+      - letra: "d"
+        texto: "Usar a palavra-chave System.exit() na primeira linha."
+
+  - texto: "No contexto de algoritmos, o que é um 'valor sentinela'?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Um valor digitado pelo usuário (como digitar 0 para sair) usado para encerrar um laço quando não sabemos quantas vezes ele vai rodar."
+      - letra: "b"
+        texto: "Um tipo de erro que impede o programa de ler números quebrados (double)."
+      - letra: "c"
+        texto: "O maior número inteiro que o Java consegue calcular."
+      - letra: "d"
+        texto: "A primeira linha onde declaramos o método main."
+
+  - texto: "Qual o melhor cenário para usar o laço 'do-while' em um sistema simples de console (terminal)?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Para somar duas variáveis fixas que já estão declaradas no início do código."
+      - letra: "b"
+        texto: "Para exibir um menu de opções na tela, ler a escolha do usuário e repetir se a opção digitada for inválida."
+      - letra: "c"
+        texto: "Para calcular a raiz quadrada de um número sem usar a biblioteca Math."
+      - letra: "d"
+        texto: "Para fechar o programa de forma forçada caso falte energia."
+
+  - texto: "Observe o código:\nint x = 10;\nwhile (x < 10) {\n    x--;\n}\nQuantas vezes o comando 'x--;' será executado?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Nenhuma vez, pois 10 não é menor do que 10."
+      - letra: "b"
+        texto: "Uma vez, pois o Java corrige o teste na primeira tentativa."
+      - letra: "c"
+        texto: "Dez vezes antes de parar."
+      - letra: "d"
+        texto: "O código vai rodar infinitamente."
+
+  - texto: "Analise o trecho:\nint k = 1;\ndo {\n    k = k * 2;\n} while (k < 1);\nQual será o valor da variável 'k' após a execução desse bloco?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "1"
+      - letra: "b"
+        texto: "0"
+      - letra: "c"
+        texto: "2"
+      - letra: "d"
+        texto: "O programa não compila porque faltam chaves."
+
+  - texto: "Em um fluxograma, a linha que indica a repetição em um comando 'while' volta para qual etapa do algoritmo?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Para o fechamento da classe principal."
+      - letra: "b"
+        texto: "Para a linha onde o Scanner foi criado."
+      - letra: "c"
+        texto: "Para a última linha após o término de todo o programa."
+      - letra: "d"
+        texto: "Para o losango de teste da condição, para avaliar novamente se o laço deve continuar ou parar."
+
+  - texto: "No desenho do fluxograma de um laço 'do-while', o bloco de comandos fica posicionado:"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Depois do teste da condição de parada."
+      - letra: "b"
+        texto: "Em uma página separada do algoritmo."
+      - letra: "c"
+        texto: "Antes do teste da condição de parada."
+      - letra: "d"
+        texto: "Fora do método main."
+
+  - texto: "Quando é melhor usar o laço 'while' ao invés do laço 'for' na lógica de um algoritmo?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Quando sabemos o número exato de repetições (ex: repetir 10 vezes)."
+      - letra: "b"
+        texto: "Quando não sabemos quantas vezes o código vai repetir (ex: repetir enquanto o usuário não acertar a senha)."
+      - letra: "c"
+        texto: "Quando precisamos usar números com casas decimais (double)."
+      - letra: "d"
+        texto: "Quando o algoritmo tem menos de 10 linhas de tamanho."
+
+  - texto: "O que é uma 'variável de flag' (sinalizadora) em um laço condicional?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Uma variável do tipo boolean (ex: boolean continuar = true) que controla se o loop deve continuar rodando ou parar."
+      - letra: "b"
+        texto: "Um contador automático que soma de 1 em 1 sem precisar do operador ++."
+      - letra: "c"
+        texto: "Um comando usado para imprimir mensagens coloridas no terminal do Java."
+      - letra: "d"
+        texto: "A variável que guarda o nome do aluno em um sistema escolar."
+
+  - texto: "Ao usar um laço para validação de dados (ex: obrigar o usuário a digitar uma nota que não seja negativa), qual é a função do 'while'?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Apagar o valor incorreto e encerrar o programa na hora."
+      - letra: "b"
+        texto: "Prender o programa em um ciclo de perguntas até que o usuário digite um valor correto e aceitável."
+      - letra: "c"
+        texto: "Multiplicar a nota por dois para corrigir o erro automaticamente."
+      - letra: "d"
+        texto: "Transformar o número negativo em positivo de forma implícita."
+
+  - texto: "Se criarmos um laço com a condição 'while (true)' sem nenhum comando de interrupção (como break) dentro dele, o que acontecerá?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "O programa executa apenas uma vez porque 'true' significa verdadeiro."
+      - letra: "b"
+        texto: "O Java gera um erro de compilação dizendo que a condição é fixa demais."
+      - letra: "c"
+        texto: "O programa entra em loop infinito, pois a condição sempre será verdadeira."
+      - letra: "d"
+        texto: "O computador reinicia automaticamente para limpar a memória."
+
+  - texto: "Qual a principal vantagem de usar o laço 'for' ao invés de um 'while' quando já sabemos a quantidade exata de repetições?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "O for permite criar loops que rodam de trás para frente."
+      - letra: "b"
+        texto: "O for funciona sem precisar de uma condição lógica."
+      - letra: "c"
+        texto: "O for aceita comandos de leitura do teclado como o nextLine()."
+      - letra: "d"
+        texto: "O for deixa o código mais limpo e organizado porque junta a inicialização, o teste e o incremento na mesma linha."
+
+  - texto: "Considere a estrutura:\nint c = 1;\nwhile (c <= 3) {\n    System.out.print(c);\n}\nO que acontecerá se esse código for executado?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Imprime '123' na tela e encerra o programa normalmente."
+      - letra: "b"
+        texto: "Imprime o número '1' infinitamente, porque esqueceram de aumentar o valor de 'c' (c++) dentro do bloco."
+      - letra: "c"
+        texto: "Dá um erro de compilação porque a variável 'c' não pode começar valendo 1."
+      - letra: "d"
+        texto: "Imprime o número '3' apenas uma vez e para."
+
+  - texto: "Para ler dados do teclado repetidamente dentro de um laço 'while', onde deve ficar a linha 'scanner.nextInt()' para atualizar a variável?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Dentro do corpo do laço, geralmente no final do bloco de repetição, para capturar o novo dado antes do próximo teste."
+      - letra: "b"
+        texto: "Fora da classe, no topo do arquivo do código fonte."
+      - letra: "c"
+        texto: "Apenas dentro dos parênteses da condição do while."
+      - letra: "d"
+        texto: "Após o fechamento das chaves do laço."
+
+  - texto: "Qual o erro de sintaxe do trecho abaixo?\nwhile (x < 10);\n{\n    x++;\n}"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A variável x deveria ser obrigatoriamente do tipo boolean."
+      - letra: "b"
+        texto: "O ponto-e-vírgula (;) após os parênteses do while corta a estrutura e separa o laço do bloco de chaves."
+      - letra: "c"
+        texto: "Não se pode usar o operador de incremento (++) dentro de chaves."
+      - letra: "d"
+        texto: "As chaves deveriam estar na mesma linha da palavra while."
+
+  - texto: "Em qual das seguintes situações de lógica básica do console o uso do 'do-while' se encaixa perfeitamente?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Pedir para o usuário tentar adivinhar um número secreto e repetir o pedido enquanto ele errar."
+      - letra: "b"
+        texto: "Somar uma lista fixa de 5 números pré-definidos no código."
+      - letra: "c"
+        texto: "Exibir a mensagem 'Olá Mundo' apenas uma vez no início da tela."
+      - letra: "d"
+        texto: "Verificar se o nome do usuário tem mais de 10 letras usando um 'if'."
+
+  - texto: "O que acontece com o valor de um contador (ex: int i = 0) que foi criado DENTRO do bloco de chaves de um 'while' quando o laço termina?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "O valor fica guardado para ser usado em qualquer outro método do código."
+      - letra: "b"
+        texto: "O valor é zerado automaticamente pelo Java e pode ser lido no main."
+      - letra: "c"
+        texto: "A variável deixa de existir na memória, pois seu escopo estava limitado ao interior das chaves do laço."
+      - letra: "d"
+        texto: "Ela se transforma em uma constante imutável (final)."
+
+  - texto: "Se você deseja fazer um programa de contagem regressiva de 5 até 1 usando um 'while', qual deve ser a modificação do contador dentro do laço?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Usar o operador de soma (contador++)."
+      - letra: "b"
+        texto: "Manter o valor fixo sem nenhuma alteração."
+      - letra: "c"
+        texto: "Multiplicar o contador por zero a cada volta."
+      - letra: "d"
+        texto: "Usar o operador de subtração (contador--)."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
