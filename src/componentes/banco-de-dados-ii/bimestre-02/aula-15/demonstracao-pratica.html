@@ -1,0 +1,301 @@
+---
+layout: exercicio
+title: "Funções de Agregação e Agrupamento - Demonstração Prática"
+exercicio_numero: "01"
+aula_numero: "14"
+description: "Demonstração prática de extração de indicadores gerenciais utilizando funções agregadoras e agrupamento."
+---
+
+<section class="section-box">
+  <h2>Estrutura de Tabelas (Modelo Físico ArenaStream)</h2>
+  <p>
+    Para explorarmos o conceito de subqueries (consultas aninhadas),
+    utilizaremos o banco de dados da plataforma <strong>ArenaStream</strong>. A
+    arquitetura foi projetada para conectar streamers, seus jogos transmitidos e
+    as métricas de audiência dos espectadores.
+  </p>
+
+  <hr />
+
+  <h3>1. Diagrama de Entidade e Relacionamento</h3>
+  <p>
+    O modelo abaixo detalha a conectividade do banco. Note a tabela de
+    associação <code class="one-line-code">visualizacoes_live</code>, que
+    gerencia a audiência combinando chaves primárias e estrangeiras:
+  </p>
+
+  <div class="mermaid">
+    erDiagram
+        JOGOS {
+            int id PK
+            varchar nome
+            varchar categoria
+        }
+        STREAMERS {
+            int id PK
+            varchar nickname
+            decimal repatria_patrocinio
+            date data_cadastro
+        }
+        LIVES {
+            int id PK
+            int id_streamer FK
+            int id_jogo FK
+            int duracao_minutos
+            varchar titulo_live
+        }
+        VISUALIZACOES_LIVE {
+            int id_live FK "PK, FK"
+            int id_usuario_espectador PK
+            int minutos_assistidos
+            varchar dispositivo
+        }
+
+        STREAMERS ||--o{ LIVES : "transmite"
+        JOGOS ||--o{ LIVES : "id_jogo"
+        LIVES ||--o{ VISUALIZACOES_LIVE : "recebe_audiencia"
+  </div>
+
+  <hr />
+
+  <h3>2. Script de Criação das Tabelas em SQL</h3>
+  <p>
+    Execute o código abaixo no seu ambiente MySQL para construir a estrutura
+    física do laboratório prático. O script limpa resquícios de execuções
+    anteriores para evitar conflitos de chaves estrangeiras:
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">-- Limpeza de tabelas antigas para garantir um ambiente limpo
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS visualizacoes_live;
+DROP TABLE IF EXISTS lives;
+DROP TABLE IF EXISTS streamers;
+DROP TABLE IF EXISTS jogos;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- Tabela 1: Catálogo de Jogos da Plataforma
+CREATE TABLE jogos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50) NOT NULL
+);
+
+-- Tabela 2: Cadastro de Criadores de Conteúdo (Streamers)
+CREATE TABLE streamers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nickname VARCHAR(50) NOT NULL,
+    repatria_patrocinio DECIMAL(10,2) NULL,
+    data_cadastro DATE NOT NULL
+);
+
+-- Tabela 3: Registro de Transmissões Realizadas (Lives)
+CREATE TABLE lives (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_streamer INT,
+    id_jogo INT,
+    duracao_minutos INT NOT NULL,
+    titulo_live VARCHAR(150),
+    FOREIGN KEY (id_streamer) REFERENCES streamers(id),
+    FOREIGN KEY (id_jogo) REFERENCES jogos(id)
+);
+
+-- Tabela 4: Histórico de Audiência por Espectador
+CREATE TABLE visualizacoes_live (
+    id_live INT,
+    id_usuario_espectador INT,
+    minutos_assistidos INT NOT NULL,
+    dispositivo VARCHAR(30),
+    PRIMARY KEY (id_live, id_usuario_espectador),
+    FOREIGN KEY (id_live) REFERENCES lives(id)
+);</code></pre>
+  </div>
+</section>
+
+<section class="section-box">
+  <h2>Carga de Dados Estratégica (Massa de Teste)</h2>
+  <p>Para que os testes de subqueries tragam resultados perceptíveis e simulem perfeitamente os desafios de um ambiente de produção, insira a massa de dados abaixo. Ela contém cenários propositais de assimetria, como streamers sem transmissões e usuários com padrões específicos de consumo de mídia.</p>
+
+  <hr>
+
+  <h3>1. Script de População do Banco</h3>
+  <p>Copie e execute o bloco SQL abaixo no seu terminal ou console do MySQL Workbench:</p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">-- 1. Inserção de Jogos (Catálogo base da plataforma)
+INSERT INTO jogos (id, nome, categoria) VALUES 
+(1, 'League of Legends', 'MOBA'),
+(2, 'Counter-Strike 2', 'FPS'),
+(3, 'Valorant', 'FPS'),
+(4, 'Minecraft', 'Sandbox'),
+(5, 'Elden Ring', 'RPG');
+
+-- 2. Inserção de Streamers (Inclui cenários com patrocínio nulo e cadastros recentes)
+INSERT INTO streamers (id, nickname, repatria_patrocinio, data_cadastro) VALUES 
+(10, 'Gaules', 15000.00, '2024-01-15'),
+(20, 'Alanzoka', 22500.50, '2024-02-20'),
+(30, 'Nobru', 12000.00, '2024-03-05'),
+(40, 'Coringa', NULL, '2024-04-12'),      -- Caso de teste: Streamer ativo sem patrocínio
+(50, 'StreamerNovato', NULL, '2026-01-01'); -- Caso de teste: Cadastrado, mas nunca abriu live
+
+-- 3. Inserção de Lives (Durações variadas para cálculos de médias internas e globais)
+INSERT INTO lives (id, id_streamer, id_jogo, duracao_minutos, titulo_live) VALUES 
+(101, 10, 2, 360, 'Major de CS2 - Grande Final'),
+(102, 10, 2, 180, 'Gameplay de CS2 com a Tribo'),
+(103, 20, 5, 240, 'Explorando a DLC de Elden Ring'),
+(104, 20, 4, 120, 'Construindo nossa vila pixelada'),
+(105, 30, 1, 150, 'Ranqueada solo até o Desafiante'),
+(106, 40, 1, 300, 'Torneio da Comunidade LoL'),
+(107, 40, 3, 180, 'Valorant com amigos');
+
+-- 4. Histórico de Visualizações (Métricas de engajamento dos espectadores)
+-- ATENÇÃO: O usuário 500 assistiu às lives 101, 102 (CS2) e 107 (Valorant). Ele assistiu a TODOS os jogos de FPS!
+INSERT INTO visualizacoes_live (id_live, id_usuario_espectador, minutos_assistidos, dispositivo) VALUES 
+(101, 500, 120, 'PC'), 
+(101, 501, 360, 'SmartTV'), 
+(101, 502, 45, 'Mobile'),
+(102, 500, 30, 'PC'), 
+(102, 503, 180, 'Mobile'),
+(103, 504, 240, 'PC'), 
+(103, 505, 150, 'Console'),
+(104, 504, 10, 'PC'),
+(105, 506, 90, 'Mobile'), 
+(105, 507, 120, 'SmartTV'),
+(106, 500, 300, 'PC'), 
+(106, 501, 200, 'PC'), 
+(106, 508, 150, 'Mobile'),
+(107, 500, 45, 'Console'); -- Amarração do usuário 500 consumindo o segundo jogo de FPS (Valorant)</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>2. Cenários de Auditoria para Validação Visual</h3>
+  <p>Oriente os alunos a realizarem consultas simples de contagem antes de avançarem para as subqueries estruturadas. Isso ajuda a fixar o que o banco de dados possui armazenado fisicamente:</p>
+  <ul>
+    <li>Temos <strong>5 streamers</strong> cadastrados, mas apenas <strong>4</strong> possuem registros associados na tabela de lives (<code class="one-line-code">StreamerNovato</code> está sem histórico).</li>
+    <li>A categoria <strong>FPS</strong> possui dois jogos no catálogo (ID 2: <i>Counter-Strike 2</i> e ID 3: <i>Valorant</i>).</li>
+    <li>O usuário espectador de <strong>ID 500</strong> é o perfil mais ativo da plataforma, acumulando histórico de visualização em 4 transmissões diferentes utilizando múltiplos dispositivos (PC e Console).</li>
+  </ul>
+</section>
+
+<section class="section-box">
+  <h2>Caderno de Consultas: Do Básico ao Avançado</h2>
+  <p>Abaixo está a coleção de desafios práticos para o laboratório. Cada consulta foi projetada para explorar um comportamento específico do otimizador do MySQL, demonstrando o poder das subconsultas em cenários reais de análise de dados.</p>
+
+  <hr>
+
+  <h3>1. Cenário Global: Subquery Independente no WHERE (Operador Escalar)</h3>
+  <p>Utilizada quando precisamos filtrar registros com base em uma estatística que precisa ser calculada previamente na tabela inteira. A consulta interna retorna um único valor (um escalar).</p>
+  
+  <h4>Problema de Negócio</h4>
+  <p>A equipe de marketing precisa listar os dados de todas as lives que tiveram uma duração estritamente maior do que a média de duração de todas as transmissões já realizadas na plataforma.</p>
+  
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT id, titulo_live, duracao_minutos
+FROM lives
+WHERE duracao_minutos > (
+    -- Subquery Independente: Executa apenas uma vez
+    SELECT AVG(duracao_minutos) 
+    FROM lives
+);</code></pre>
+  </div>
+
+  <h4>Mecânica de Execução nos Bastidores</h4>
+  <p>O MySQL isola a subquery e calcula a média aritmética global da tabela de lives (que resulta em <strong>232.85 minutos</strong>). Ele substitui o bloco interno por esse número, reduzindo a query principal para uma busca linear simples: <code class="one-line-code">WHERE duracao_minutos > 232.85</code>. O resultado final trará as transmissões de 360, 240 e 300 minutos.</p>
+
+  <hr>
+
+  <h3>2. Cenário por Categoria: Subquery Correlacionada no WHERE</h3>
+  <p>Utilizada quando o critério de filtragem não é global, mas depende de uma característica específica de cada linha que está sendo processada pela consulta externa. Cria um loop lógico.</p>
+  
+  <h4>Problema de Negócio</h4>
+  <p>A diretoria precisa refinar o relatório anterior: queremos listar as lives que duraram mais tempo do que a média de minutos específica do jogo ao qual ela pertence (comparando lives de FPS com a média de FPS, e RPG com a média de RPG).</p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT l_externa.id, l_externa.titulo_live, l_externa.duracao_minutos, l_externa.id_jogo
+FROM lives l_externa
+WHERE l_externa.duracao_minutos > (
+    -- Subquery Correlacionada: Depende do "id_jogo" da linha de fora
+    SELECT AVG(l_interna.duracao_minutos)
+    FROM lives l_interna
+    WHERE l_interna.id_jogo = l_externa.id_jogo
+);</code></pre>
+  </div>
+
+  <h4>Mecânica de Execução nos Bastidores</h4>
+  <p>O motor do MySQL lê a primeira linha de <code class="one-line-code">l_externa</code> (ID 101, jogo de CS2, que é ID 2). Ele captura o valor <code class="one-line-code">2</code>, joga para dentro da subquery e calcula a média apenas das lives de CS2 (360 + 180 = 540 / 2 = 270 minutos). Como a live 101 dura 360 minutos, ela passa no teste. O banco avança para a linha 102 (também CS2), roda a subquery de novo, mas como ela dura 180 minutos (menor que 270), ela é descartada. Esse loop se repete para cada uma das 7 linhas da tabela.</p>
+
+  <hr>
+
+  <h3>3. Cenário de Relacionamento Silencioso: Operador EXISTS</h3>
+  <p>O operador EXISTS avalia apenas se a subquery retorna linhas (True) ou não (False). É ideal para testar a existência de vínculos entre tabelas sem a necessidade de duplicar dados na tela, usando a lógica de curto-circuito.</p>
+  
+  <h4>Problema de Negócio</h4>
+  <p>Listar o ID e o nickname de todos os streamers que possuem pelo menos uma transmissão gravada no sistema, omitindo os que nunca transmitiram.</p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT s.id, s.nickname
+FROM streamers s
+WHERE EXISTS (
+    -- O SELECT 1 é um padrão estritamente técnico, o banco ignora o retorno e foca na existência
+    SELECT 1 
+    FROM lives l 
+    WHERE l.id_streamer = s.id
+);</code></pre>
+  </div>
+
+  <h4>Mecânica de Execução nos Bastidores</h4>
+  <p>O MySQL analisa o streamer <code class="one-line-code">Gaules</code> (ID 10). Ele entra na tabela de lives procurando por <code class="one-line-code">id_streamer = 10</code>. Ele acha a linha 101. No mesmo instante, o EXISTS recebe "True", encerra a busca interna para o Gaules e passa para o próximo streamer. Ele não perde tempo escaneando a tabela inteira. O streamer <code class="one-line-code">StreamerNovato</code> (ID 50) não encontrará nenhuma linha, fazendo o EXISTS retornar False, ocultando-o da listagem.</p>
+
+  <hr>
+
+  <h3>4. Cenário de Auditoria e Inatividade: Operador NOT EXISTS</h3>
+  <p>Inverte completamente a lógica booleana do teste anterior. Só permite a exibição do registro principal se a subquery interna retornar um conjunto completamente vazio.</p>
+  
+  <h4>Problema de Negócio</h4>
+  <p>Extrair uma lista de streamers que realizaram o cadastro na plataforma, mas estão totalmente inativos (nunca abriram nenhuma live).</p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT s.id, s.nickname, s.data_cadastro
+FROM streamers s
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM lives l 
+    WHERE l.id_streamer = s.id
+);</code></pre>
+  </div>
+
+  <h4>Mecânica de Execução nos Bastidores</h4>
+  <p>O MySQL faz o batimento de chaves. Para os streamers 10, 20, 30 e 40, a subquery localiza registros de lives, fazendo o NOT EXISTS resultar em Falso (barrando-os). Quando chega no streamer 50 (<code class="one-line-code">StreamerNovato</code>), a subquery retorna zero linhas. O NOT EXISTS transforma essa ausência em Verdadeiro, imprimindo o novato na tela.</p>
+
+  <hr>
+
+  <h3>5. Nível Elite: Divisão Relacional com Duplo NOT EXISTS</h3>
+  <p>O ápice da lógica SQL. É a estrutura utilizada para responder à pergunta clássica de engenharia de dados: "Quais registros da tabela A se relacionaram com TODOS os registros específicos da tabela B?".</p>
+  
+  <h4>Problema de Negócio</h4>
+  <p>Identificar o ID do usuário espectador "Ultra-Fiel": aquele que possui histórico de visualização em **todos** os jogos cadastrados na categoria 'FPS'.</p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT DISTINCT v_externa.id_usuario_espectador
+FROM visualizacoes_live v_externa
+WHERE NOT EXISTS (
+    -- Subquery 1: Mapeia o catálogo alvo (Todos os jogos de FPS)
+    SELECT j.id 
+    FROM jogos j 
+    WHERE j.categoria = 'FPS'
+      AND NOT EXISTS (
+          -- Subquery 2: Testa o cruzamento do usuário com o jogo alvo
+          SELECT 1 
+          FROM visualizacoes_live v_interna
+          INNER JOIN lives l ON v_interna.id_live = l.id
+          WHERE v_interna.id_usuario_espectador = v_externa.id_usuario_espectador
+            AND l.id_jogo = j.id
+      )
+);</code></pre>
+  </div>
+
+  <h4>Mecânica de Execução nos Bastidores</h4>
+  <p>No nosso catálogo, existem dois jogos FPS: ID 2 (CS2) e ID 3 (Valorant). O MySQL analisa o usuário 501. A Subquery 2 descobre que ele assistiu CS2, mas nunca assistiu Valorant. O jogo ID 3 fica "sozinho" na Subquery 1, fazendo a Subquery 1 retornar uma linha. O NOT EXISTS externo vê essa linha e descarta o usuário 501. 
+  Quando o banco analisa o **usuário 500**, a Subquery 2 confirma que ele assistiu lives de CS2 (101 e 102) e também a live de Valorant (107). Portanto, não sobra nenhum jogo de FPS na Subquery 1. O conjunto interno fica vazio. O NOT EXISTS externo recebe "True" e aprova o usuário 500 como o único espectador ultra-fiel da plataforma.</p>
+</section>

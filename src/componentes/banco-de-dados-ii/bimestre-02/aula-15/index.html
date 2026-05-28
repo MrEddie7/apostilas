@@ -1,23 +1,40 @@
 ---
 title: "Subqueries"
+componente: "Banco de Dados II"
 aula_numero: "15"
 description: "Consultas aninhadas e otimização."
 tags:
-- aula
-- bimestre-02
+  - aula
+  - bimestre-02
 ---
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
   <h3>1. Definição e Propriedade de Fechamento</h3>
-  <p>Uma subquery é um comando SELECT aninhado dentro de outra instrução SQL (como outro SELECT, INSERT, UPDATE ou DELETE). Essa capacidade deriva da propriedade de fechamento da álgebra relacional: como o resultado de qualquer operação relacional é sempre uma nova relação (tabela), podemos usar uma expressão de tabela em qualquer lugar onde o nome de uma tabela física seria aceito.</p>
-  
+  <p>
+    Uma subquery é um comando SELECT aninhado dentro de outra instrução SQL
+    (como outro SELECT, INSERT, UPDATE ou DELETE). Essa capacidade deriva da
+    propriedade de fechamento da álgebra relacional: como o resultado de
+    qualquer operação relacional é sempre uma nova relação (tabela), podemos
+    usar uma expressão de tabela em qualquer lugar onde o nome de uma tabela
+    física seria aceito.
+  </p>
+
   <h3>2. Subqueries na Cláusula WHERE</h3>
-  <p>Este é o uso mais comum, servindo para filtrar resultados com base em um conjunto de dados dinâmico.</p>
-  
+  <p>
+    Este é o uso mais comum, servindo para filtrar resultados com base em um
+    conjunto de dados dinâmico.
+  </p>
+
   <h4>A. Operador IN e NOT IN</h4>
-  <p>O operador IN verifica se um valor pertence ao conjunto retornado pela subconsulta.</p>
-  <p>Exemplo: Listar produtos que participam de qualquer pedido com quantidade igual a 10.</p>
+  <p>
+    O operador IN verifica se um valor pertence ao conjunto retornado pela
+    subconsulta.
+  </p>
+  <p>
+    Exemplo: Listar produtos que participam de qualquer pedido com quantidade
+    igual a 10.
+  </p>
   <div class="code-container">
     <pre><code class="language-sql">SELECT descricao_produto 
 FROM produto 
@@ -27,10 +44,18 @@ WHERE codigo_produto IN (
     WHERE quantidade = 10
 );</code></pre>
   </div>
-  <p>O NOT IN identifica o que não está presente no conjunto, sendo útil para encontrar "buracos" ou registros sem correspondência.</p>
-  
+  <p>
+    O NOT IN identifica o que não está presente no conjunto, sendo útil para
+    encontrar "buracos" ou registros sem correspondência.
+  </p>
+
   <h4>B. Operador EXISTS e NOT EXISTS</h4>
-  <p>Diferente do IN, o EXISTS não retorna valores, mas um valor booleano (verdadeiro/falso) se a subconsulta retornar ao menos uma linha. Ele é frequentemente mais performático para checar a existência de relacionamentos.</p>
+  <p>
+    Diferente do IN, o EXISTS não retorna valores, mas um valor booleano
+    (verdadeiro/falso) se a subconsulta retornar ao menos uma linha. Ele é
+    frequentemente mais performático para checar a existência de
+    relacionamentos.
+  </p>
   <p>Exemplo: Listar clientes que possuem ao menos um pedido cadastrado.</p>
   <div class="code-container">
     <pre><code class="language-sql">SELECT nome_cliente 
@@ -41,9 +66,13 @@ WHERE EXISTS (
     WHERE P.codigo_cliente = C.codigo_cliente
 );</code></pre>
   </div>
-  
+
   <h3>3. Subqueries na Cláusula FROM (Tabelas Derivadas)</h3>
-  <p>Também chamadas de Inline Views, essas subqueries permitem tratar o resultado de um SELECT como se fosse uma tabela física, o que é ideal para realizar agregações antes de uma junção.</p>
+  <p>
+    Também chamadas de Inline Views, essas subqueries permitem tratar o
+    resultado de um SELECT como se fosse uma tabela física, o que é ideal para
+    realizar agregações antes de uma junção.
+  </p>
   <p>Exemplo: Comparar o preço de pinturas com o valor máximo por artista.</p>
   <div class="code-container">
     <pre><code class="language-sql">SELECT A.name, P.title, P.price
@@ -55,22 +84,219 @@ INNER JOIN (
     GROUP BY a_id
 ) AS tmp ON P.a_id = tmp.a_id AND P.price = tmp.max_price;</code></pre>
   </div>
-  
+
   <h3>4. Subqueries Correlacionadas vs. Independentes</h3>
+  <h4>A. Subqueries Independentes (Não-Correlacionadas)</h4>
+  <p>
+    Uma subquery é classificada como independente quando ela é totalmente
+    autônoma, ou seja, ela não faz nenhuma referência aos campos da consulta
+    externa principal. O algoritmo de execução do SGBD resolve a consulta
+    interna uma única vez, armazena o resultado estático na memória temporária e
+    o entrega para a consulta externa processar o restante do filtro.
+  </p>
+
+  <h4>Exemplo Prático</h4>
+  <p>
+    Imagine que a diretoria da plataforma precisa listar todas as transmissões
+    que duraram mais tempo do que a média de minutos geral de todas as lives já
+    realizadas no sistema.
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT id, titulo_live, duracao_minutos
+FROM lives
+WHERE duracao_minutos > (
+    -- Subquery Independente: O MySQL executa esta linha uma única vez
+    SELECT AVG(duracao_minutos) 
+    FROM lives
+);</code></pre>
+  </div>
+
+  <h4>Como o MySQL executa isso nos bastidores?</h4>
+
+  <h5>Mecânica de Execução da Subquery Independente</h5>
+  <p>
+    O algoritmo de execução do SGBD para a consulta independente segue uma
+    esteira linear e otimizada. Os passos ocorrem na seguinte sequência de
+    eventos:
+  </p>
   <ul>
-    <li><strong>Independentes:</strong> A subquery interna é executada apenas uma vez, e seu resultado é usado pela consulta externa.</li>
-    <li><strong>Correlacionadas:</strong> A subquery interna faz referência a colunas da consulta externa. Ela é executada repetidamente, uma vez para cada linha processada pela consulta principal, o que pode impactar o desempenho se não houver indexação adequada.</li>
+    <li>
+      <strong>Passo 1:</strong> O banco de dados isola completamente a consulta
+      interna:
+      <code class="one-line-code">SELECT AVG(duracao_minutos) FROM lives;</code
+      >.
+    </li>
+    <li>
+      <strong>Passo 2:</strong> O motor do banco calcula a média global de todas
+      as linhas da tabela (vamos supor que o resultado seja
+      <strong>218</strong>).
+    </li>
+    <li>
+      <strong>Passo 3:</strong> O MySQL substitui todo o bloco de código da
+      subquery por esse valor estático numérico guardado em cache.
+    </li>
+    <li>
+      <strong>Passo 4:</strong> A consulta externa principal é reescrita
+      internamente pelo otimizador do SGBD da seguinte forma:
+      <code class="one-line-code"
+        >SELECT id, titulo_live, duracao_minutos FROM lives WHERE
+        duracao_minutos > 218;</code
+      >.
+    </li>
+    <li>
+      <strong>Passo 5:</strong> O banco realiza uma única varredura linear na
+      tabela para trazer os registros que passaram no filtro, tornando o
+      processo extremamente rápido e leve.
+    </li>
   </ul>
-  
+
+  <hr />
+
+  <h4>B. Subqueries Correlacionadas</h4>
+  <p>
+    Uma subquery é considerada correlacionada quando existe um vínculo de
+    dependência direta entre a consulta interna e a tabela da consulta externa.
+    A subquery interna faz referência explícita a uma ou mais colunas da query
+    principal. Por causa dessa dependência, o SGBD é incapaz de resolver a
+    consulta de dentro de forma isolada.
+  </p>
+
+  <h4>Exemplo Prático</h4>
+  <p>
+    Agora, a necessidade de negócio mudou: a diretoria precisa listar as lives
+    que duraram mais tempo do que a média de minutos específica do jogo daquela
+    transmissão (comparando lives de FPS apenas com a média de FPS, e RPG apenas
+    com a média de RPG).
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT l_externa.id, l_externa.titulo_live, l_externa.duracao_minutos, l_externa.id_jogo
+FROM lives l_externa
+WHERE l_externa.duracao_minutos > (
+    -- Subquery Correlacionada: Dependência direta do apelido "l_externa"
+    SELECT AVG(l_interna.duracao_minutos)
+    FROM lives l_interna
+    WHERE l_interna.id_jogo = l_externa.id_jogo
+);</code></pre>
+  </div>
+
+  <h4>Como o MySQL executa isso nos bastidores?</h4>
+
+  <h5>Mecânica de Execução da Subquery Correlacionada (O Loop)</h5>
+  <p>
+    Ao contrário da estrutura anterior, a consulta correlacionada força o motor
+    do MySQL a trabalhar através de um laço de repetição (loop) aninhado linha a
+    linha. Se a tabela principal possuir 1.000 registros, a subquery rodará
+    exatamente 1.000 vezes:
+  </p>
+  <ul>
+    <li>
+      <strong>Passo 1:</strong> O banco de dados lê a
+      <strong>Linha 1</strong> da tabela da consulta externa (uma transmissão de
+      <i>Counter-Strike 2</i>, onde o
+      <code class="one-line-code">id_jogo = 2</code>).
+    </li>
+    <li>
+      <strong>Passo 2:</strong> O valor <code class="one-line-code">2</code> é
+      injetado fisicamente dentro da subquery interna. O comando interno é
+      executado para calcular a duração média <i>apenas</i> dos vídeos
+      pertencentes ao jogo de ID 2. Se a duração da Linha 1 for maior que essa
+      média específica de CS2, a linha é separada para o resultado.
+    </li>
+    <li>
+      <strong>Passo 3:</strong> O banco avança para a
+      <strong>Linha 2</strong> da tabela externa (uma transmissão de
+      <i>Minecraft</i>, onde o <code class="one-line-code">id_jogo = 4</code>).
+    </li>
+    <li>
+      <strong>Passo 4:</strong> O motor do SGBD reinicia a subquery interna do
+      zero, injetando agora o valor <code class="one-line-code">4</code> para
+      recalcular a média de minutos consumidos <i>apenas</i> nos vídeos de
+      Minecraft.
+    </li>
+    <li>
+      <strong>Passo 5:</strong> Esse ciclo repetitivo de "ler fora, injetar e
+      recalcular dentro" se repete exaustivamente até que a última linha da
+      tabela externa seja processada.
+    </li>
+  </ul>
+
+  <hr />
+
+  <h4>C. Quadro Comparativo de Performance</h4>
+  <p>
+    A diferença de comportamento do SGBD em arquiteturas de dados de
+    grande porte, analise o resumo operacional de cada estrutura:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Critério</th>
+        <th>Subquery Independente</th>
+        <th>Subquery Correlacionada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Dependência</strong></td>
+        <td>Autônoma (Não usa campos de fora).</td>
+        <td>Dependente (Usa apelidos da tabela externa).</td>
+      </tr>
+      <tr>
+        <td><strong>Execuções</strong></td>
+        <td><strong>Apenas 1 vez</strong> antes da query principal.</td>
+        <td><strong>N vezes</strong> (Uma vez para cada linha encontrada).</td>
+      </tr>
+      <tr>
+        <td><strong>Performance</strong></td>
+        <td>Geralmente rápida e leve.</td>
+        <td>
+          Pode virar um gargalo pesado se a tabela for gigante e não tiver
+          índices.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Analogia</strong></td>
+        <td>Olhar a previsão do tempo na TV uma vez antes de sair de casa.</td>
+        <td>
+          Olhar pela janela a cada minuto para ver se o tempo mudou antes de dar
+          cada passo.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
   <h3>5. Otimização e Performance</h3>
-  <p>O uso indiscriminado de subqueries pode degradar o tempo de resposta do banco de dados.</p>
+  <p>
+    O uso indiscriminado de subqueries pode degradar o tempo de resposta do
+    banco de dados.
+  </p>
   <ul>
-    <li><strong>Evite Subqueries no SELECT:</strong> Um erro comum é colocar subqueries na lista de campos do SELECT para buscar descrições individuais, o que força o banco a executar milhares de mini-consultas. Prefira usar JOIN sempre que possível.</li>
-    <li><strong>Restrições Precoces:</strong> Filtrar os dados (WHERE) dentro da subquery antes de passá-los para a consulta externa é uma técnica de otimização que reduz a massa de dados processada.</li>
-    <li><strong>Indexação:</strong> Chaves estrangeiras envolvidas em subqueries correlacionadas devem ser indexadas para que a busca interna seja instantânea.</li>
-    <li><strong>Cashing:</strong> SGBDs modernos como o PostgreSQL podem aumentar a velocidade em até 10% ou mais ao colocar em buffer os resultados de subqueries repetitivas.</li>
+    <li>
+      <strong>Evite Subqueries no SELECT:</strong> Um erro comum é colocar
+      subqueries na lista de campos do SELECT para buscar descrições
+      individuais, o que força o banco a executar milhares de mini-consultas.
+      Prefira usar JOIN sempre que possível.
+    </li>
+    <li>
+      <strong>Restrições Precoces:</strong> Filtrar os dados (WHERE) dentro da
+      subquery antes de passá-los para a consulta externa é uma técnica de
+      otimização que reduz a massa de dados processada.
+    </li>
+    <li>
+      <strong>Indexação:</strong> Chaves estrangeiras envolvidas em subqueries
+      correlacionadas devem ser indexadas para que a busca interna seja
+      instantânea.
+    </li>
+    <li>
+      <strong>Cashing:</strong> SGBDs modernos como o PostgreSQL podem aumentar
+      a velocidade em até 10% ou mais ao colocar em buffer os resultados de
+      subqueries repetitivas.
+    </li>
   </ul>
-  
+
   <h3>Resumo de Operadores de Comparação em Subqueries</h3>
   <table>
     <thead>
@@ -111,51 +337,347 @@ INNER JOIN (
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
-  <p>Abaixo, apresentamos exemplos práticos comparando as sintaxes entre os dois ambientes.</p>
-  <div class="code-container">
-    <pre><code class="language-sql">-- [ MySQL ]
--- Código em desenvolvimento...
+  <h2>Laboratório Prático: Progressão com o Operador EXISTS</h2>
+  <p>
+    O operador <code class="one-line-code">EXISTS</code> é uma das ferramentas
+    mais eficientes do SQL para validar a existência de relacionamentos entre
+    tabelas. Abaixo, explore a lista de exemplos práticos comentados,
+    progredindo do uso mais simples até arquiteturas de consultas complexas de
+    nível avançado.
+  </p>
 
--- [ PostgreSQL ]
--- Código em desenvolvimento...</code></pre>
+  <hr />
+
+  <h3>1. Nível Básico: Validação Direta de Relacionamento</h3>
+  <p>
+    O uso mais tradicional do <code class="one-line-code">EXISTS</code> serve
+    para filtrar registros da tabela principal que possuem, pelo menos, um
+    histórico correspondente na tabela secundária, sem a necessidade de duplicar
+    linhas na tela (comportamento comum do INNER JOIN quando há múltiplos
+    registros filhos).
+  </p>
+
+  <h4>Problema de Negócio</h4>
+  <p>
+    Listar o nickname de todos os streamers que já realizaram pelo menos uma
+    transmissão (live) na plataforma.
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT s.nickname 
+FROM streamers s
+WHERE EXISTS (
+    SELECT 1 
+    FROM lives l 
+    WHERE l.id_streamer = s.id
+);</code></pre>
   </div>
+  <p>
+    <strong>Explicação:</strong> O MySQL lê o primeiro streamer. Ele
+    entra na tabela de lives e procura o ID desse streamer. Assim que ele
+    encontra a primeira live, o <code class="one-line-code">EXISTS</code> recebe
+    o sinal de verdadeiro, interrompe a busca interna para esse streamer e exibe
+    o seu nickname. É um processo cirúrgico e rápido.
+  </p>
+
+  <hr />
+
+  <h3>2. Nível Intermediário: Identificação de Inatividade com NOT EXISTS</h3>
+  <p>
+    O operador <code class="one-line-code">NOT EXISTS</code> inverte o teste
+    lógico. Ele só deixa passar para o resultado final os registros da tabela
+    principal que **não** encontrarem absolutamente nenhuma correspondência na
+    subquery interna.
+  </p>
+
+  <h4>Problema de Negócio</h4>
+  <p>
+    Identificar quais streamers criaram uma conta na plataforma, mas estão
+    inativos, ou seja, nunca abriram nenhuma transmissão (live).
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT s.nickname, s.data_cadastro
+FROM streamers s
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM lives l 
+    WHERE l.id_streamer = s.id
+);</code></pre>
+  </div>
+  <p>
+    <strong>Explicação:</strong> Esta consulta é ideal para o setor de
+    marketing disparar e-mails de engajamento. O
+    <code class="one-line-code">NOT EXISTS</code> varre a tabela secundária e só
+    valida o streamer se a subquery retornar um conjunto completamente vazio.
+  </p>
+
+  <hr />
+
+  <h3>
+    3. Nível Avançado: Filtros Multi-Tabelas e Subqueries Correlacionadas
+    Encadeadas
+  </h3>
+  <p>
+    Em cenários complexos de Business Intelligence (BI), o
+    <code class="one-line-code">EXISTS</code> pode conter junções (<code
+      class="one-line-code"
+      >JOIN</code
+    >) dentro da sua própria subquery, permitindo filtrar uma tabela com base em
+    critérios de uma terceira ou quarta tabela oculta.
+  </p>
+
+  <h4>Problema de Negócio</h4>
+  <p>
+    A diretoria precisa de uma lista de streamers veteranos (com patrocínio
+    acima de 15.000,00) que já transmitiram jogos especificamente da categoria
+    'FPS' para espectadores que assistiram utilizando o dispositivo 'SmartTV'.
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT s.nickname, s.repatria_patrocinio
+FROM streamers s
+WHERE s.repatria_patrocinio > 15000.00
+  AND EXISTS (
+      -- Subquery avançada cruzando lives, jogos e visualizações
+      SELECT 1 
+      FROM lives l
+      INNER JOIN jogos j ON l.id_jogo = j.id
+      INNER JOIN visualizacoes_live v ON l.id = v.id_live
+      WHERE l.id_streamer = s.id 
+        AND j.categoria = 'FPS'
+        AND v.dispositivo = 'SmartTV'
+  );</code></pre>
+  </div>
+  <p>
+    <strong>Explicação:</strong> Repare como a query principal
+    permanece limpa, sem nenhum <code class="one-line-code">JOIN</code> exposto.
+    O MySQL primeiro filtra os streamers pelo valor do patrocínio (uma operação
+    rápida). Para os sobreviventes, ele executa a subquery correlacionada
+    complexa, verificando a existência do combo perfeito: transmissão do
+    streamer + jogo FPS + audiência na SmartTV.
+  </p>
+
+  <hr />
+
+  <h3>4. Nível Elite: Duplo NOT EXISTS (O Conceito de Divisão Relacional)</h3>
+  <p>
+    Este é o ápice do uso do operador. O uso de dois operadores
+    <code class="one-line-code">NOT EXISTS</code> aninhados simula a operação de
+    **Divisão** da Álgebra Relacional. Ele serve para responder à pergunta
+    clássica de "Quem consumiu TODOS os elementos de uma lista?".
+  </p>
+
+  <h4>Problema de Negócio</h4>
+  <p>
+    Achar o usuário espectador ultra-fiel: aquele que assistiu a transmissões de
+    **todos** os jogos cadastrados na categoria 'FPS' da nossa plataforma.
+  </p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">SELECT v_externa.id_usuario_espectador
+FROM visualizacoes_live v_externa
+WHERE NOT EXISTS (
+    -- Subquery 1: Seleciona todos os jogos de FPS existentes
+    SELECT j.id 
+    FROM jogos j 
+    WHERE j.categoria = 'FPS'
+      AND NOT EXISTS (
+          -- Subquery 2: Verifica se o usuário assistiu a ESSE jogo específico
+          SELECT 1 
+          FROM visualizacoes_live v_interna
+          INNER JOIN lives l ON v_interna.id_live = l.id
+          WHERE v_interna.id_usuario_espectador = v_externa.id_usuario_espectador
+            AND l.id_jogo = j.id
+      )
+);</code></pre>
+  </div>
+  <p>
+    <strong>Explicação:</strong> Traduzindo a lógica do duplo
+    <code class="one-line-code">NOT EXISTS</code> para o português, o banco lê o
+    seguinte:
+    <i
+      >"Selecione o espectador para o qual NÃO EXISTA nenhum jogo de FPS que ele
+      NÃO TENHA assistido"</i
+    >. Se não há nenhum jogo de FPS que ele deixou de assistir, significa
+    matematicamente que ele assistiu a todos!
+  </p>
 </section>
 
 <section class="section-box">
-  <h2>Diagramação</h2>
-  <p>Representação visual dos conceitos abordados:</p>
+  <h2>Material de Apoio: Diagramas de Arquitetura e Fluxo Lógico</h2>
+  <p>Para facilitar a visualização mental de como o motor do banco de dados organiza os relacionamentos, as tabelas e os ciclos de repetição internos das consultas complexas, utilize os diagramas lógicos abaixo como referência visual durante o laboratório.</p>
+
+  <hr>
+
+  <h3>1. Diagrama de Entidade e Relacionamento (Modelo Físico ArenaStream)</h3>
+  <p>O diagrama abaixo mapeia a estrutura das tabelas do nosso laboratório prático, destacando as chaves primárias (PK), chaves estrangeiras (FK) e a cardinalidade dos relacionamentos.</p>
+  
+  <div class="mermaid">
+    erDiagram
+        JOGOS {
+            int id PK
+            varchar nome
+            varchar categoria
+        }
+        STREAMERS {
+            int id PK
+            varchar nickname
+            decimal repatria_patrocinio
+            date data_cadastro
+        }
+        LIVES {
+            int id PK
+            int id_streamer FK
+            int id_jogo FK
+            int duracao_minutos
+            varchar titulo_live
+        }
+        VISUALIZACOES_LIVE {
+            int id_live FK "PK, FK"
+            int id_usuario_espectador PK
+            int minutos_assistidos
+            varchar dispositivo
+        }
+
+        STREAMERS ||--o{ LIVES : "transmite"
+        JOGOS ||--o{ LIVES : "id_jogo"
+        LIVES ||--o{ VISUALIZACOES_LIVE : "recebe_audiencia"
+  </div>
+
+  <hr>
+
+  <h3>2. A Esteira de Processamento do Agrupamento (WHERE vs. HAVING)</h3>
+  <p>Este fluxo sequencial demonstra por que a cláusula <code class="one-line-code">WHERE</code> é executada antes da separação dos dados em grupos, enquanto o <code class="one-line-code">HAVING</code> atua estritamente como um filtro final pós-agregação.</p>
+
   <div class="mermaid">
     graph TD
-    A[Início] --> B{Processo}
-    B --> C[Fim]
+    A[(Tabela: visualizacoes_live)] --> B[1. Passo: FROM]
+    B --> C{"2. Passo: WHERE <br> Filtra linhas individuais <br> ex: dispositivo = 'PC'"}
+    C -->|Linhas que passaram| D["3. Passo: GROUP BY <br> Separa os dados em Baldes/Pastas <br> ex: por id_live"]
+    C -->|Linhas rejeitadas| X[Descartado da Memória]
+    D --> E["4. Passo: Funções de Agregação <br> Prensa Hidráulica realiza cálculos <br> ex: SUM(minutos_assistidos)"]
+    E --> F{"5. Passo: HAVING <br> O Fiscal analisa o resultado da soma <br> ex: SUM > 200"}
+    F -->|Grupos que passaram| G["6. Passo: SELECT <br> Exibe o relatório final na tela"]
+    F -->|Grupos rejeitados| Y[Descartado do Relatório]
+
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+  </div>
+
+  <hr>
+
+  <h3>3. Sequência de Execução de uma Subquery Independente</h3>
+  <p>Observe como o otimizador do SGBD isola e liquida a consulta interna no início do processo, eliminando a necessidade
+    de recalcular o filtro para cada registro da tabela pai.</p>
+
+  <div class="mermaid">
+    sequenceDiagram
+    autonumber
+    participant QE as Query Externa (lives)
+    participant SGBD as Motor do MySQL
+    participant QI as Subquery Interna
+
+    QE->>SGBD: Envia a consulta completa
+    SGBD->>QI: Isola e executa a Subquery: SELECT AVG(duracao)
+    QI-->>SGBD: Retorna o valor fixo calculado: 218
+    Note over SGBD: Otimizador substitui o código da<br/>subquery pelo número estático (218)
+    SGBD->>QE: Executa varredura linear: WHERE duracao > 218
+    SGBD-->>QE: Retorna o grid de dados final para a tela
+  </div>
+
+  <hr>
+
+  <h3>4. O Laço de Repetição Oculto de uma Subquery Correlacionada</h3>
+  <p>Este diagrama ilustra o impacto de performance de uma subconsulta dependente, evidenciando o comportamento cíclico
+    linha a linha que ocorre nos bastidores do servidor.</p>
+
+  <div class="mermaid">
+    graph TD
+    A[Início da Query Principal] --> B[Ler a primeira linha da Tabela Externa]
+    B --> C["Capturar valor da coluna: l_externa.id_jogo"]
+    C --> D["Injetar valor na Subquery Interna <br> (SELECT AVG onde id_jogo = valor)"]
+    D --> E{Duração da linha atual <br> é maior que a média calculada?}
+    E -->|Sim| F[Adicionar linha ao resultado]
+    E -->|Não| G[Ignorar linha]
+    F --> H{Existem mais linhas <br> na tabela externa?}
+    G --> H
+    H -->|Sim| I[Avançar para a próxima linha]
+    I --> C
+    H -->|Não| J[Montar e exibir o resultado final]
+
+    style D fill:#ffcccb,stroke:#f00,stroke-width:2px
+  </div>
+
+  <hr>
+
+  <h3>5. Lógica de Atalho (Short-Circuit) do Operador EXISTS</h3>
+  <p>O fluxo de decisão abaixo detalha visualmente como o operador de existência otimiza as buscas, cancelando o
+    processamento interno assim que a primeira correspondência física é encontrada.</p>
+
+  <div class="mermaid">
+    graph LR
+    A[SGBD analisa Registro] --> B["Executa Subquery Interna para o ID atual"]
+    B --> C{Encontrou pelo menos <br> 1 linha no WHERE?}
+    C -->|Sim| D["Retorna VERDADEIRO (True) <br> Interrompe a busca imediatamente"]
+    C -->|Não| E["Retorna FALSO (False) <br> Varre até o fim e zera"]
+    D --> F[Streamer vai para a tela]
+    E --> G[Streamer é occultado]
+
+    style C fill:#dfd,stroke:#333,stroke-width:2px
   </div>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
-  <ul>
-    <li>Dica importante sobre Subqueries aparecerá aqui.</li>
-    <li>Sempre verifique a sintaxe específica do seu SGBD.</li>
-  </ul>
-</div>
+  
+  <h5>1. Independente vs. Correlacionada (Custo de Performance)</h5>
+  <p>A subquery independente calcula a média geral de minutos das lives uma única vez e entrega o resultado. A correlacionada cria um loop oculto: ela reexecuta a busca interna para cada linha da tabela externa para cruzar os IDs dos jogos, o que pode travar o servidor se a tabela crescer.</p>
 
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <ul>
-    <li>Passo 1: Analise os requisitos.</li>
-    <li>Passo 2: Desenvolva o script SQL.</li>
-    <li>Passo 3: Valide os resultados.</li>
-  </ul>
-</section>
+  <h5>2. O Fantasma do N+1 no SELECT</h5>
+  <p>Evite colocar subqueries na lista de campos do SELECT para buscar o nickname do streamer. Isso força o MySQL a abrir milhares de mini-consultas em loop. Para amarrar descrições de outras tabelas, a boa prática de mercado é usar sempre o INNER JOIN.</p>
+
+  <h5>3. Curto-Circuito Otimizado no EXISTS</h5>
+  <p>O operador EXISTS trabalha com lógica de atalho (short-circuit). Assim que ele encontra a primeira live correspondente na tabela filha, ele interrompe a busca interna e valida o registro. Por isso, usar SELECT 1, SELECT * ou SELECT NULL dentro dele consome exatamente o mesmo desempenho.</p>
+
+  <h5>4. Sintaxe Rígida do EXISTS</h5>
+  <p>O EXISTS exige obrigatoriamente o nascimento de uma subquery entre os parênteses. Ao contrário do operador IN, que aceita uma lista de valores estáticos textuais ou numéricos, o EXISTS só sabe avaliar o resultado vindo de um comando SELECT.</p>
+
+  <h5>5. O Segredo do Espectador Fiel (Divisão Relacional)</h5>
+  <p>Para resolver a lógica de divisão e encontrar o usuário que assistiu a 100% dos jogos de FPS cadastrados, utilize a estrutura de duplo NOT EXISTS. Traduzido para a lógica humana, o banco lê: "Selecione o espectador para o qual NÃO EXISTA nenhum jogo de FPS que ele NÃO TENHA assistido".</p>
+</div>
 
 <section class="section-box">
   <h2>Referências</h2>
   <ul>
-    <li>MACHADO, Felipe Nery Rodrigues. Projeto e implementação de banco de dados. 3. ed. São Paulo: Érica, 2014.
+    <li>
+      MACHADO, Felipe Nery Rodrigues. Projeto e implementação de banco de dados.
+      3. ed. São Paulo: Érica, 2014.
     </li>
-    <li>TAKAI, Osvaldo Kotaro; ITALIANO, Isabel Cristina; FERREIRA, João Eduardo. Introdução a Banco de Dados. São
-      Paulo: DCC-IME-USP, 2005.</li>
+    <li>
+      TAKAI, Osvaldo Kotaro; ITALIANO, Isabel Cristina; FERREIRA, João Eduardo.
+      Introdução a Banco de Dados. São Paulo: DCC-IME-USP, 2005.
+    </li>
+    <li>
+      <a href="https://www.mysqltutorial.org/mysql-basics/mysql-subquery/">
+        MySQL Tutorial: MySQL Subquery
+      </a>
+    </li>
+    <li>
+      <a href="https://dev.mysql.com/doc/refman/8.4/en/subqueries.html">
+        Documentação Oficial: 15.2.15 Subqueries
+      </a>
+    </li>
+    <li>
+      <a href="https://www.postgresql.org/docs/current/functions-subquery.html">
+        Documentação Oficial: 9.24. Subquery Expressions
+      </a>
+    </li>
+    <li>
+      <a href="https://www.pgtutorial.com/postgresql-tutorial/postgresql-subquery/">
+        PGTutorial: PostgreSQL Subquery
+      </a>
+    </li>
   </ul>
 </section>
 
@@ -165,4 +687,7 @@ INNER JOIN (
     <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
     <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
   </ul>
+
+  <hr>
+  <a class="btn" href="./demonstracao-pratica" target="_blank">Para Demonstração</a>
 </section>
