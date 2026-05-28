@@ -1,0 +1,270 @@
+---
+title: "Psicologia e Estratégias de Teste"
+componente: "Qualidade e Teste de Software"
+aula_numero: "11"
+subject: "qualidade-e-teste-de-software"
+description: "Psicologia do teste, objetivos e estratégias de caixa preta, branca e cinzenta."
+tags:
+- aula
+- bimestre-02
+---
+
+<section class="section-box">
+  <h2>Teoria & Conceitos</h2>
+
+  <h3>1. Introdução à Qualidade e Expectativas do Usuário</h3>
+  <p>
+    Sob a ótica da Engenharia de Qualidade de Software, o teste não é meramente uma fase final de "caça a bugs", mas uma
+    atividade de engenharia disciplinada para garantir a satisfação das necessidades e a confiança do usuário. Conforme
+    a área de prática <em>Ensuring Quality</em> (ENQ) do CMMI 3.0, a qualidade é assegurada através da convergência
+    entre a Verificação e a Validação (V&V).
+  </p>
+  <p>
+    A dualidade da qualidade exige que o Arquiteto de Processos equilibre dois eixos fundamentais: a
+    <strong>Validação</strong>, que assegura que estamos construindo a "coisa certa" (alinhamento com as necessidades do
+    negócio), e a <strong>Verificação</strong>, que garante que estamos construindo a "coisa do jeito certo"
+    (conformidade com a especificação técnica).
+  </p>
+  <p>
+    Dessa forma, o processo produtivo deve atender às duas expectativas fundamentais de qualidade:
+  </p>
+  <ul>
+    <li>O sistema de software deve fazer o que se supõe que ele faça (fazer a coisa certa — <em>Validação</em>).</li>
+    <li>O sistema deve realizar essas tarefas específicas de forma correta ou satisfatória (fazer a coisa do jeito certo
+      — <em>Verificação</em>).</li>
+  </ul>
+
+  <h3>2. Psicologia do Teste: Visões de Sucesso e Falha</h3>
+  <p>
+    A eficácia de um processo de teste depende diretamente da mentalidade (<em>mindset</em>) da equipe. Existe um
+    conflito psicológico intrínseco: enquanto o desenvolvimento é uma atividade criativa e "orientada ao sucesso", o
+    teste deve ser uma atividade crítica e "orientada à falha". Para o especialista em qualidade, um teste é considerado
+    bem-sucedido quando ele encontra um erro, não quando o software passa ileso.
+  </p>
+  <p>
+    Essa mentalidade evolui conforme o nível de maturidade da organização:
+  </p>
+
+  <h4>A. Atitude Reativa (Nível 1 de Maturidade CMMI)</h4>
+  <p>
+    O teste é visto como um obstáculo ou uma formalidade para confirmar que o código "funciona". A descoberta de
+    defeitos é acidental, baseada no "heroísmo" individual em processos <em>ad-hoc</em>, com foco exclusivo em
+    demonstração de conformidade básica.
+  </p>
+
+  <h4>B. Atitude Proativa e Destrutiva (Nível 3 de Maturidade CMMI)</h4>
+  <p>
+    O testador adota uma postura crítica e propositalmente destrutiva para identificar fragilidades antes do
+    <em>deploy</em>. A qualidade é institucionalizada através de <em>Peer Reviews</em> (PR) e processos definidos que
+    buscam a prevenção e a detecção precoce. O sucesso é medido pela capacidade de remover defeitos e reduzir o risco
+    residual de forma sistemática.
+  </p>
+
+  <h3>3. A Limitação de Dijkstra e a Natureza do Teste</h3>
+  <p>
+    A fundamentação teórica do teste baseia-se na famosa premissa do cientista da computação Edsger Dijkstra: <strong>o
+      teste pode demonstrar a presença de erros, mas nunca a sua ausência</strong>. Do ponto de vista de engenharia,
+    isso transforma o teste em uma atividade de redução de incerteza. Dado que o domínio de entrada de sistemas modernos
+    é virtualmente infinito, o teste funciona como uma técnica de amostragem estatística.
+  </p>
+  <p>
+    Ao selecionar casos de teste, o engenheiro de qualidade está, na verdade, gerenciando riscos. A execução de funções
+    sem falhas aparentes não se caracteriza como uma prova matemática de correção, mas sim como a acumulação de
+    evidências que diminuem a probabilidade de falhas catastróficas em produção.
+  </p>
+  <p>
+    <strong>Conclusão central:</strong> Devido à complexidade exponencial dos sistemas, a prova absoluta de correção é
+    tecnicamente inviável; o teste atua como um filtro de engenharia essencial para reduzir o risco residual a níveis
+    perfeitamente aceitáveis pelo negócio.
+  </p>
+
+  <h3>4. Estratégia de Caixa Preta (Teste Funcional)</h3>
+  <p>
+    A abordagem de Caixa Preta, também chamada de teste funcional, foca no comportamento externo
+    do sistema. O testador visualiza o software como um bloco opaco, onde o conteúdo interno
+    é desconhecido.
+  </p>
+  <ul>
+    <li><strong>Base de Projeto:</strong> Os casos de teste são derivados diretamente dos requisitos e especificações
+      funcionais.</li>
+    <li><strong>Foco:</strong> Verifica-se se, para uma determinada entrada (<em>input</em>), o sistema produz a saída
+      (<em>output</em>) esperada, conforme as expectativas do usuário.</li>
+    <li><strong>Vantagens:</strong> É eficaz para detectar problemas de interface e interações de sistema em larga
+      escala.</li>
+  </ul>
+  <p>
+    <strong>Exemplo Prático:</strong> Ao testar um programa de calculadora, o testador insere
+    dois números e solicita a operação de divisão. Ele não conhece o algoritmo interno, mas verifica
+    se o resultado numérico está correto ou se uma mensagem de erro adequada aparece ao tentar dividir por zero.
+  </p>
+
+  <h3>5. Estratégia de Caixa Branca (Teste Estrutural)</h3>
+  <p>
+    A abordagem de Caixa Branca, ou teste estrutural, foca na implementação interna, permitindo que
+    o testador "enxergue através" do software como se ele fosse transparente (<em>glass-box</em>).
+  </p>
+  <ul>
+    <li><strong>Base de Projeto:</strong> Os casos de teste são derivados da análise do código-fonte e do design
+      detalhado.</li>
+    <li><strong>Foco:</strong> Testa-se a lógica interna, fluxos de execução, caminhos condicionais (if/else), loops e
+      estruturas de dados.</li>
+    <li><strong>Responsabilidade:</strong> Geralmente executado pelos próprios programadores durante a fase de teste de
+      unidade, dada a necessidade de conhecimento íntimo do código.</li>
+  </ul>
+  <p>
+    <strong>Exemplo Prático:</strong> Em um método de busca binária, o testador cria casos de teste
+    especificamente para garantir que o fluxo de controle passe por todos os ramos (if, else if, else)
+    e que o loop de busca termine corretamente mesmo quando o item não é encontrado.
+  </p>
+
+  <h3>6. Estratégia de Caixa Cinzenta (Grey-box)</h3>
+  <p>
+    A estratégia de Caixa Cinzenta é reconhecida como uma combinação das duas anteriores, unindo
+    aspectos funcionais e estruturais.
+  </p>
+  <ul>
+    <li><strong>Conceito:</strong> O testador possui um conhecimento parcial do funcionamento interno, como o esquema do
+      banco de dados ou a estrutura de tabelas, mas interage com o sistema através da interface funcional.</li>
+    <li><strong>Objetivo:</strong> Utilizar o conhecimento da estrutura para desenhar testes de caixa preta mais
+      eficazes, especialmente para verificar a integridade dos dados e integrações.</li>
+  </ul>
+  <p>
+    <strong>Exemplo Prático:</strong> Um testador que conhece as regras de integridade referencial
+    do banco de dados de um sistema de RH realiza um teste funcional de exclusão de funcionário pela
+    interface. Em seguida, ele verifica diretamente no banco de dados se os registros dependentes foram
+    corretamente tratados (excluídos ou anonimizados) de acordo com a lógica interna do banco.
+  </p>
+
+  <h3>7. Tabela Comparativa das Estratégias de Teste</h3>
+  <p>
+    Para facilitar a diferenciação entre as abordagens estudadas, a tabela abaixo sintetiza os principais
+    critérios de escolha, focos técnicos e a responsabilidade de execução de cada estratégia no ciclo de
+    desenvolvimento:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Critério de Comparação</th>
+        <th>Caixa Preta (Funcional)</th>
+        <th>Caixa Branca (Estrutural)</th>
+        <th>Caixa Cinzenta (Grey-box)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Foco Principal</strong></td>
+        <td>Requisitos funcionais e comportamento externo do sistema.</td>
+        <td>Lógica interna, fluxos de controle, caminhos e código-fonte.</td>
+        <td>Funcionalidades externas guiadas pelo conhecimento da estrutura interna.</td>
+      </tr>
+      <tr>
+        <td><strong>Base para Casos de Teste</strong></td>
+        <td>Especificações, casos de uso e documentação de requisitos.</td>
+        <td>Arquitetura de software, diagramas de fluxo e código-fonte detalhado.</td>
+        <td>Documentação de requisitos combinada com esquemas de banco de dados ou arquiteturas de subsistemas.</td>
+      </tr>
+      <tr>
+        <td><strong>Conhecimento do Código</strong></td>
+        <td>Nenhum (o sistema é tratado como um bloco opaco).</td>
+        <td>Total (o sistema é tratado como uma estrutura transparente).</td>
+        <td>Parcial (conhecimento de estruturas de dados ou tabelas, mas interação via interface).</td>
+      </tr>
+      <tr>
+        <td><strong>Quem Geralmente Executa</strong></td>
+        <td>Analistas de Teste (QA), usuários finais e clientes.</td>
+        <td>Desenvolvedores e Engenheiros de Software durante o teste de unidade.</td>
+        <td>Analistas de Teste com perfil técnico ou desenvolvedores em testes de integração.</td>
+      </tr>
+      <tr>
+        <td><strong>Principais Vantagens</strong></td>
+        <td>Eficaz para grandes volumes de integração e focado na real experiência do usuário.</td>
+        <td>Garante a cobertura total de caminhos lógicos, ramos condicionais e loops.</td>
+        <td>Permite cenários mais inteligentes e detalhados para validar a integridade dos dados e APIs.</td>
+      </tr>
+      <tr>
+        <td><strong>Exemplo de Aplicação</strong></td>
+        <td>Validar se o cálculo de uma calculadora exibe o resultado correto na tela.</td>
+        <td>Garantir que um loop <code>while</code> de busca binária encerra corretamente em condições de erro.</td>
+        <td>Excluir um registro pela interface e verificar diretamente na tabela do banco de dados se houve a remoção
+          física.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="section-box">
+  <h2>Infográfico</h2>
+  <img src="{{ '/imagens/infograficos/guia-qts-caixas.png' | url }}"
+    alt="Relacionamentos de um Diagrama de Caso de Uso">
+</section>
+
+<section class="section-box">
+  <h3>4. Representação Visual das Estratégias (Diagramas Mermaid)</h3>
+  <p>
+    Para complementar o entendimento teórico das abordagens de teste, os diagramas abaixo mapeiam o fluxo de
+    visibilidade e o escopo de atuação do engenheiro de qualidade em cada estratégia:
+  </p>
+
+  <h4>A. Diagrama de Caixa Preta (Teste Funcional)</h4>
+  <p>
+    Mostra visualmente que o código interno está completamente oculto (opaco) e que o desenho dos cenários se baseia
+    estritamente na relação entre as Entradas (<em>Inputs</em>), os Requisitos e as Saídas (<em>Outputs</em>) esperadas.
+  </p>
+  <pre class="mermaid">
+graph LR
+    Input([Entrada de Dados]) --> BlocoOpcaco[Caixa Preta: Comportamento Externo]
+    Requisitos[(Requisitos / Especificações)] -.-> BlocoOpcaco
+    BlocoOpcaco --> Output([Saída Esperada])
+
+    style BlocoOpcaco fill:#111,stroke:#333,stroke-width:2px,color:#fff
+    </pre>
+
+  <h4>B. Diagrama de Caixa Branca (Teste Estrutural)</h4>
+  <p>
+    Ilustra a total transparência do bloco (<em>glass-box</em>), onde o foco do teste está mapeado diretamente nos
+    desvios condicionais, caminhos lógicos, <em>loops</em> e sub-rotinas do próprio código-fonte.
+  </p>
+  <pre class="mermaid">
+graph TD
+    Input([Início do Método]) --> Condicao{if / else}
+    Condicao -->|Caminho A| ramoA[Executa Fluxo 1]
+    Condicao -->|Caminho B| ramoB[Executa Fluxo 2]
+    ramoA --> Loop[Loop / Iteração]
+    ramoB --> Loop
+    Loop --> Fim([Fim da Execução])
+
+    subgraph Caixa Branca: Código Estrutural Transparente
+        Condicao
+        ramoA
+        ramoB
+        Loop
+    end
+
+    style Condicao fill:#fff,stroke:#333,stroke-width:1px
+    style ramoA fill:#fff,stroke:#333,stroke-width:1px
+    style ramoB fill:#fff,stroke:#333,stroke-width:1px
+    style Loop fill:#fff,stroke:#333,stroke-width:1px
+    </pre>
+
+  <h4>C. Diagrama de Caixa Cinzenta (Grey-box)</h4>
+  <p>
+    Representa a técnica híbrida. O testador interage com o sistema por meio da interface funcional (Caixa Preta), mas
+    utiliza um conhecimento parcial e prévio da arquitetura de <em>backend</em> (como esquemas de tabelas ou APIs) para
+    validar a integridade estrutural interna.
+  </p>
+  <pre class="mermaid">
+graph LR
+    Testador((Testador)) -->|Interação via UI| CaixaPreta[Interface Funcional]
+    CaixaPreta -->|Operação Interna| Backend[Lógica / Banco de Dados]
+    Testador -.->|Conhecimento Parcial| Backend
+
+    subgraph Visão de Caixa Cinzenta
+        CaixaPreta
+        Backend
+    end
+
+    style CaixaPreta fill:#111,stroke:#333,stroke-width:2px,color:#fff
+    style Backend fill:#fff,stroke:#333,stroke-width:1px
+    </pre>
+</section>
