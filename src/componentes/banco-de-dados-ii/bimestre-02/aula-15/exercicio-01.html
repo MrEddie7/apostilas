@@ -1,18 +1,165 @@
 ---
 layout: exercicio
-title: "Exercício 01 - Subqueries"
+title: "Atividade Prática: Auditoria de Dados e Métricas de Engajamento"
 exercicio_numero: "01"
 aula_numero: "15"
-description: "Primeira atividade prática para consolidar os conhecimentos da aula 15."
+description: "Desafio prático de construção de consultas SQL utilizando subqueries para extrair insights estratégicos de
+um banco de dados de e-sports."
 ---
 
-<p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+<section class="section-box">
+  <h2>1. Enunciado</h2>
+  <p>O departamento de Business Intelligence (BI) da plataforma <strong>ArenaStream</strong> solicitou uma série de
+    relatórios estratégicos de auditoria para identificar falhas operacionais e comportamentos de engajamento na
+    plataforma. Como engenheiro de dados, sua missão é construir consultas SQL otimizadas utilizando exclusivamente o
+    conceito de <strong>Subqueries</strong> para extrair essas informações com o menor custo de processamento possível
+    no servidor.</p>
 
-<div class="tip-box">
-  <h4>Orientações</h4>
+</section>
+<section class="section-box">
+  <h2>2. Preparação do Ambiente</h2>
+  <p>Antes de iniciar o desenvolvimento dos scripts de auditoria, certifique-se de que a sua estação de trabalho atende
+    a todos os requisitos técnicos listados abaixo:</p>
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li><strong>SGBD Instalado:</strong> É necessário possuir o servidor MySQL (versão 8.0 ou superior) instalado,
+      configurado e em plena execução local (localhost).</li>
+    <li><strong>Ferramenta Visual (Interface Gráfica):</strong> Tenha à disposição um cliente ou ferramenta de
+      manipulação visual de banco de dados, como o MySQL Workbench, DBeaver, Beekeeper Studio ou VS Code com extensões
+      SQL, para facilitar a escrita das queries e a visualização das tabelas de resultados.</li>
+    <li><strong>Base de Dados Dedicada:</strong> Para evitar conflitos de chaves estrangeiras com laboratórios
+      anteriores, crie e selecione um esquema limpo executando os comandos: <code
+        class="one-line-code">CREATE DATABASE IF NOT EXISTS arenastream_auditoria;</code> seguido de <code
+        class="one-line-code">USE arenastream_auditoria;</code>.</li>
+    <li><strong>Conhecimento Prévio Requerido:</strong> O aluno deve dominar a sintaxe básica de projeção (<code
+        class="one-line-code">SELECT</code>), filtragem simples (<code class="one-line-code">WHERE</code>), chaves
+      primárias e estrangeiras, além de compreender o conceito teórico de consultas aninhadas (subconsultas) e
+      operadores booleanos de conjunto.</li>
   </ul>
-</div>
+</section>
+<section class="section-box">
+  <h2>3. Código Base (Estrutura e Dados)</h2>
+  <p>Para isolar esta atividade prática dos laboratórios anteriores, utilizaremos um banco de dados dedicado chamado
+    <code class="one-line-code">arenastream_auditoria</code>. Certifique-se de executar o bloco abaixo para garantir
+    que
+    o esquema de tabelas esteja limpo e pronto para os testes:
+  </p>
+  <h3>Preparação Inicial</h3>
+  <div class="code-container">
+    <pre><code class="language-sql">CREATE DATABASE IF NOT EXISTS arenastream_auditoria;
+USE arenastream_auditoria;
+
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS patrocinadores;
+DROP TABLE IF EXISTS equipes;
+DROP TABLE IF EXISTS pro_players;
+SET FOREIGN_KEY_CHECKS = 1;</code></pre>
+  </div>
+
+  <hr>
+  <h3>Criação E Inserção</h3>
+
+  <p>Execute o script abaixo para criar as tabelas de infraestrutura de e-sports da plataforma e carregar a massa de
+    dados de teste:</p>
+
+  <div class="code-container">
+    <pre><code class="language-sql">-- Tabela A: Equipes de E-sports cadastradas na liga
+CREATE TABLE equipes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome_equipe VARCHAR(50) NOT NULL,
+    divisao VARCHAR(20) NOT NULL
+);
+
+-- Tabela B: Pro-players e seus respectivos salários e vínculos
+CREATE TABLE pro_players (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_equipe INT,
+    nickname VARCHAR(50) NOT NULL,
+    salario DECIMAL(10,2) NOT NULL,
+    posicao VARCHAR(30) NOT NULL,
+    FOREIGN KEY (id_equipe) REFERENCES equipes(id)
+);
+
+-- Tabela C: Patrocinadores e o investimento injetado diretamente nas equipes
+CREATE TABLE patrocinadores (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_equipe INT,
+    nome_empresa VARCHAR(50) NOT NULL,
+    valor_patrocinio DECIMAL(12,2) NOT NULL,
+    FOREIGN KEY (id_equipe) REFERENCES equipes(id)
+);
+
+-- Carga de Dados Estratégica
+INSERT INTO equipes (id, nome_equipe, divisao) VALUES 
+(1, 'Loud Esports', 'Elite'),
+(2, 'Pain Gaming', 'Elite'),
+(3, 'Furia', 'Elite'),
+(4, 'Fluxo', 'Acesso'),
+(5, 'Los Grandes', 'Acesso'),
+(6, 'EquipeSemPlayer', 'Acesso'); -- Caso de teste: Sem jogadores contratados
+
+INSERT INTO pro_players (id, id_equipe, nickname, salario, posicao) VALUES 
+(10, 1, 'Less', 18000.00, 'Controlador'),
+(20, 1, 'Saadhak', 22000.00, 'Iniciador'),
+(30, 2, 'w7m', 15000.00, 'Duelista'),
+(40, 2, 'dyan', 14500.00, 'Suporte'),
+(50, 3, 'Fallen', 35000.00, 'Capitão'),
+(60, 4, 'Nobru', 40000.00, 'Iniciador'),
+(70, 5, 'PlayerX', 8000.00, 'Duelista'),
+(80, NULL, 'PlayerSolitario', 5000.00, 'Reserva'); -- Caso de teste: Sem equipe
+
+INSERT INTO patrocinadores (id, id_equipe, nome_empresa, valor_patrocinio) VALUES 
+(100, 1, 'Banco Itaú', 500000.00),
+(201, 1, 'Logitech', 150000.00),
+(302, 2, 'BMW Brasil', 600000.00),
+(403, 3, 'Betano', 450000.00),
+(504, 4, 'Razer', 200000.00); -- Nota: Los Grandes (ID 5) e EquipeSemPlayer (ID 6) não possuem patrocinadores</code></pre>
+  </div>
+
+</section>
+<section class="section-box">
+
+  <h2>4. O Desafio (Questões Práticas)</h2>
+  <p>Com o banco de dados devidamente povoado, você deve construir os scripts SQL para extrair as respostas das 4
+    demandas de auditoria abaixo. <strong>Regra Obrigatória:</strong> É proibido o uso de INNER JOIN ou LEFT JOIN
+    globais nas cláusulas principais; resolva as amarrações utilizando subqueries.</p>
+
+  <h4>Questão 1: Média Salarial de Elite (Subquery Independente)</h4>
+  <p>A diretoria financeira quer uma lista com o nickname e o salário de todos os pro-players que ganham um salário
+    estritamente <strong>acima da média salarial geral</strong> de todos os jogadores cadastrados no banco de dados.
+  </p>
+
+  <h4>Questão 2: Disparidade por Divisão (Subquery Correlacionada)</h4>
+  <p>Para identificar anomalias na folha de pagamento, liste o nickname, o salário e o ID da equipe dos pro-players
+    que
+    recebem um salário maior do que a <strong>média salarial específica da equipe</strong> à qual eles pertencem.
+  </p>
+
+  <h4>Questão 3: Auditoria de Marketing (Operador EXISTS)</h4>
+  <p>O setor de parcerias comerciais precisa listar o nome de todas as <strong>equipes</strong> da liga que possuem
+    <strong>pelo menos um patrocinador</strong> ativo injetando capital, ocultando as marcas que correm o campeonato
+    sem
+    apoio financeiro.
+  </p>
+
+  <h4>Questão 4: Alerta de Inatividade Operacional (Operador NOT EXISTS)</h4>
+  <p>O comitê organizador do torneio precisa aplicar uma penalidade para as organizações que se inscreveram mas não
+    montaram time. Liste o nome de todas as <strong>equipes</strong> que <strong>não possuem nenhum jogador</strong>
+    vinculado a elas.</p>
+
+</section>
+<section class="tip-box">
+
+  <h3>5. Orientações Finais</h3>
+  <ul>
+    <li>Fique atento aos apelidos das tabelas (<code class="one-line-code">C</code>, <code
+        class="one-line-code">P</code>, <code class="one-line-code">E</code>) para não misturar os escopos nas
+      subqueries correlacionadas.</li>
+    <li>Lembre-se de que o operador <code class="one-line-code">EXISTS</code> não se importa com as colunas do
+      SELECT
+      interno; utilize o padrão técnico <code class="one-line-code">SELECT 1</code> para garantir legibilidade de
+      código.</li>
+    <li>Valide os resultados visualmente com base na tabela física: na Questão 4, por exemplo, a única equipe
+      impressa
+      na tela deve ser a <code class="one-line-code">EquipeSemPlayer</code>.</li>
+  </ul>
+</section>

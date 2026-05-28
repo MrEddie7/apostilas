@@ -1,18 +1,307 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Subqueries"
+layout: questionario
+title: "Exercício 02 - Subqueries e Otimização"
 exercicio_numero: "02"
 aula_numero: "15"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 15."
+description: "Questionário técnico sobre consultas aninhadas independentes, correlacionadas, operadores booleanos de conjunto e técnicas de otimização de performance."
+perguntas:
+  - texto: "Qual propriedade da álgebra relacional garante que o resultado de uma subquery possa ser utilizado em qualquer cláusula onde uma tabela física seria aceita?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Propriedade de Projeção Linear."
+      - letra: "b"
+        texto: "Propriedade de Fechamento (Closure)."
+      - letra: "c"
+        texto: "Propriedade de Cardinalidade Composta."
+      - letra: "d"
+        texto: "Propriedade de Herança Estrutural."
+
+  - texto: "Como o motor do banco de dados gerencia a execução de uma subquery classificada como Independente na cláusula WHERE?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Ele executa a subquery uma única vez, armazena o valor em cache e reescreve a consulta externa de forma linear."
+      - letra: "b"
+        texto: "Ele cria um laço de repetição (loop) para reexecutar a consulta de dentro a cada linha processada por fora."
+      - letra: "c"
+        texto: "Ele funde fisicamente as duas tabelas no disco rígido antes de iniciar a projeção do SELECT."
+      - letra: "d"
+        texto: "Ele exige que a consulta interna retorne obrigatoriamente uma lista de strings de texto mutáveis."
+
+  - texto: "Qual é a principal característica estrutural de uma subquery correlacionada?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Ela é totalmente autônoma e nunca faz menção aos apelidos (aliases) da consulta principal."
+      - letra: "b"
+        texto: "Ela deve ser declarada exclusivamente dentro da cláusula FROM para construir inline views."
+      - letra: "c"
+        texto: "Ela possui uma dependência direta de escopo, fazendo referência explícita a colunas da tabela externa."
+      - letra: "d"
+        texto: "Ela converte automaticamente todos os valores nulos em chaves primárias virtuais."
+
+  - texto: "Por que as subqueries correlacionadas podem se tornar grandes vilãs de performance em tabelas com milhões de registros?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Porque elas bloqueiam o banco de dados para novas inserções de dados em lote."
+      - letra: "b"
+        texto: "Porque elas corrompem os índices binários se o resultado contiver dados do tipo decimal."
+      - letra: "c"
+        texto: "Porque elas impedem o uso de funções de agregação globais como SUM e COUNT na mesma query."
+      - letra: "d"
+        texto: "Porque elas agem como um laço de repetição oculto, sendo recalculadas uma vez para cada linha da consulta externa."
+
+  - texto: "O operador EXISTS baseia-se em qual lógica de processamento para otimizar o tempo de resposta do servidor?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Lógica de Varredura Completa (Full Table Scan)."
+      - letra: "b"
+        texto: "Lógica de Curto-Circuito (Short-Circuit), interrompendo a busca assim que acha a primeira correspondência."
+      - letra: "c"
+        texto: "Lógica de Divisão Ponderada por Bytes."
+      - letra: "d"
+        texto: "Lógica de Ordenação Alfabética Reversa em Cache."
+
+  - texto: "O que o operador booleano EXISTS valida de forma estrita na subquery interna?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "A presença ou ausência física de linhas que atendam aos critérios de filtragem, retornando True ou False."
+      - letra: "b"
+        texto: "A correspondência exata do valor da chave primária com um elemento do tipo string."
+      - letra: "c"
+        texto: "A quantidade exata de colunas projetadas na lista de exibição do SELECT de dentro."
+      - letra: "d"
+        texto: "O somatório ponderado dos índices secundários configurados como nulos."
+
+  - texto: "Qual o impacto na performance se alterarmos a sintaxe interna de um EXISTS substituindo 'SELECT 1' por 'SELECT *' ou 'SELECT NULL'?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "O SELECT * causará lentidão drástica por varrer fisicamente todas as colunas no dicionário de dados."
+      - letra: "b"
+        texto: "O SELECT NULL gerará um erro de sintaxe impeditivo por tentar avaliar valores nulos no compilador."
+      - letra: "c"
+        texto: "Nenhum impacto, pois o EXISTS ignora completamente a lista de projeção e avalia apenas a existência de registros."
+      - letra: "d"
+        texto: "O SELECT 1 otimizará a query em exatamente 50% por ler apenas chaves primárias."
+
+  - texto: "Para qual finalidade de negócio o operador NOT EXISTS é considerado a ferramenta mais performática e adequada?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Para somar o total de investimentos de patrocinadores em tempo de execução."
+      - letra: "b"
+        texto: "Para auditar o banco e encontrar cenários de inatividade, ausência de relacionamentos ou registros órfãos."
+      - letra: "c"
+        texto: "Sempre que precisarmos arredondar valores decimais vindos de uma junção à esquerda."
+      - letra: "d"
+        texto: "Para forçar a ordenação decrescente de relatórios sem usar a cláusula ORDER BY."
+
+  - texto: "Como são chamadas as subqueries inseridas diretamente na cláusula FROM, atuando como se fossem tabelas físicas na memória temporária?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Tabelas Derivadas (Derived Tables) ou Inline Views."
+      - letra: "b"
+        texto: "Subqueries Escalares Correlacionadas."
+      - letra: "c"
+        texto: "Procedimentos Armazenados Avançados."
+      - letra: "d"
+        texto: "Índices Compostos Virtuais."
+
+  - texto: "Por que colocar subqueries na lista de campos do SELECT (para buscar descrições isoladas) é classificado como uma má prática de arquitetura?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Porque o SQL impede a renomeação de colunas geradas por subconsultas usando aliases."
+      - letra: "b"
+        texto: "Porque induz ao problema de performance do N+1, disparando loops de mini-consultas para cada linha na tela."
+      - letra: "c"
+        texto: "Porque altera fisicamente as propriedades originais das chaves estrangeiras no disco rígido."
+      - letra: "d"
+        texto: "Porque exige que a tabela externa esteja completamente limpa e sem chaves compostas."
+
+  - texto: "Qual técnica de otimização precoce melhora a performance de uma query baseada em tabelas derivadas?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Efetuar restrições rígidas via WHERE dentro da subquery para transferir menos dados para a consulta externa."
+      - letra: "b"
+        texto: "Remover todos os apelidos (aliases) obrigatórios da cláusula FROM."
+      - letra: "c"
+        texto: "Substituir filtros numéricos por loops baseados em strings e caracteres coringa."
+      - letra: "d"
+        texto: "Agrupar as tabelas filhas por colunas que possuam exclusivamente valores nulos."
+
+  - texto: "Para garantir que a busca interna de uma subquery correlacionada seja veloz e não trave o SGBD, qual estrutura de indexação é vital?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Índice XML ativo em todas as colunas do tipo VARCHAR."
+      - letra: "b"
+        texto: "Trigger de atualização concorrente de cache na memória primária."
+      - letra: "c"
+        texto: "Restrição de verificação CHECK configurada na tabela temporária."
+      - letra: "d"
+        texto: "Indexação adequada nas colunas utilizadas como chaves estrangeiras no relacionamento."
+
+  - texto: "De acordo com os conceitos de otimização de motores modernos (como PostgreSQL), o caching de subqueries estáticas pode acelerar buscas repetitivas em até:"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "10% ou mais na velocidade global de processamento de dados."
+      - letra: "b"
+        texto: "Exatamente 50% reduzindo o consumo de armazenamento lógico pela metade."
+      - letra: "c"
+        texto: "0%, já que consultas aninhadas nunca utilizam buffers do sistema."
+      - letra: "d"
+        texto: "5% alterando a ordenação das páginas de chaves físicas no hardware."
+
+  - texto: "Qual é a principal diferença de sintaxe entre o operador EXISTS e o operador IN?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "O IN exige que a subquery projete uma tabela contendo múltiplas colunas e tipos mesclados."
+      - letra: "b"
+        texto: "O EXISTS aceita receber listas estáticas de valores textuais separados por vírgulas."
+      - letra: "c"
+        texto: "O IN avalia apenas se a linha física existe sem comparar valores elemento a elemento."
+      - letra: "d"
+        texto: "O EXISTS exige obrigatoriamente a abertura de uma subquery baseada num comando SELECT."
+
+  - texto: "Na álgebra relacional, a operação de 'Divisão Relacional' (ex: buscar o espectador que assistiu a TODOS os jogos de uma lista) é traduzida no SQL usando:"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Um operador escalar de comparação associado à função de agregação MAX."
+      - letra: "b"
+        texto: "Uma estrutura lógica sofisticada composta por dois operadores NOT EXISTS aninhados."
+      - letra: "c"
+        texto: "Um INNER JOIN acoplado a uma instrução SUM diretamente na cláusula WHERE."
+      - letra: "d"
+        texto: "Uma tabela derivada linear baseada estritamente no operador booleano ANY."
+
+  - texto: "Qual é o formato de resultado obrigatório gerado por uma subquery classificada como Escalar?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Uma lista contendo múltiplas linhas e múltiplas colunas."
+      - letra: "b"
+        texto: "Um vetor contendo exclusivamente registros binários verdadeiros ou falsos."
+      - letra: "c"
+        texto: "Uma única linha e uma única coluna, representando um valor atômico."
+      - letra: "d"
+        texto: "Uma inline view indexada por chaves primárias mistas."
+
+  - texto: "Os operadores de conjunto ALL e ANY/SOME exigem que a subquery interna retorne qual tipo de estrutura?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Uma lista ou conjunto contendo múltiplos valores de uma única coluna."
+      - letra: "b"
+        texto: "Um único registro mapeado por strings mutáveis de tamanho fixo."
+      - letra: "c"
+        texto: "Uma tabela derivada contendo apenas funções agregadoras globais."
+      - letra: "d"
+        texto: "Um valor booleano puro calculado a partir de chaves compostas."
+
+  - texto: "Analise a analogia: 'Olhar pela janela a cada minuto para ver se o tempo mudou antes de dar cada passo'. Ela ilustra perfeitamente o comportamento de qual estrutura?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Subquery Independente (Não-Correlacionada)."
+      - letra: "b"
+        texto: "Tabela Derivada (Inline View)."
+      - letra: "c"
+        texto: "Subquery Correlacionada."
+      - letra: "d"
+        texto: "Subquery Escalar na cláusula SELECT."
+
+  - texto: "O que o motor do MySQL realiza nos bastidores durante o Passo 3 da execução de uma subquery independente?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Ele limpa o cache de disco e força uma varredura completa na tabela pai."
+      - letra: "b"
+        texto: "Ele substitui fisicamente o bloco de código da subquery pelo valor constante calculado."
+      - letra: "c"
+        texto: "Ele converte a instrução num laço de repetição (loop) aninhado linha a linha."
+      - letra: "d"
+        texto: "Ele reconstrói as chaves estrangeiras para evitar redundância de dados."
+
+  - texto: "Ao converter a lógica matemática do duplo NOT EXISTS para a linguagem humana (português), qual é a interpretação correta do filtro?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Selecione o registro externo para o qual NÃO EXISTA nenhum elemento alvo interno que ele NÃO TENHA consumido/vinculado."
+      - letra: "b"
+        texto: "Busque os registros cuja média ponderada seja maior que o somatório geral."
+      - letra: "c"
+        texto: "Selecione as marcas que possuem histórico de faturamento estritamente nulo."
+      - letra: "d"
+        texto: "Liste os dados daqueles que participam de todas as exclusões mútuas de chaves."
+
+  - texto: "Como opera o operador quantificador ALL quando aplicado a uma subquery no WHERE?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Ele valida o filtro se a condição for verdadeira para pelo menos um elemento do conjunto."
+      - letra: "b"
+        texto: "Ele soma todos os valores retornados pela subconsulta e extrai a média geométrica."
+      - letra: "c"
+        texto: "Ele ignora chaves estrangeiras e executa uma busca linear em tabelas órfãs."
+      - letra: "d"
+        texto: "Ele exige que a condição de comparação seja verdadeira para TODOS os elementos retornados pela subquery."
+
+  - texto: "A instrução 'WHERE duracao_minutos > ANY (SELECT duracao_minutos FROM lives)' retornará quais registros da tabela externa?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Apenas a transmissão que registrou o maior tempo absoluto em toda a plataforma."
+      - letra: "b"
+        texto: "As transmissões cuja duração superou a soma total de minutos de todos os canais."
+      - letra: "c"
+        texto: "As transmissões cuja duração seja maior do que pelo menos uma (qualquer uma) das durações da subconsulta."
+      - letra: "d"
+        texto: "Nenhum registro, pois o operador ANY aceita apenas strings textuais de filtro."
+
+  - texto: "Toda subquery declarada na cláusula FROM (tabela derivada) exige obrigatoriamente o cumprimento de qual regra de sintaxe SQL?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Conter uma cláusula GROUP BY indexada por chaves compostas primárias."
+      - letra: "b"
+        texto: "Possuir a definição de um apelido (alias/nome de tabela temporária), como 'AS tmp'."
+      - letra: "c"
+        texto: "Utilizar obrigatoriamente o operador booleano EXISTS na lista do SELECT."
+      - letra: "d"
+        texto: "Excluir qualquer tipo de filtro ou amarração baseada na cláusula WHERE."
+
+  - texto: "Qual é a alternativa arquitetural mais performática para substituir subqueries no SELECT voltadas a trazer descrições e nomes de tabelas estrangeiras?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Reescrever a query utilizando a junção de tabelas através do comando JOIN (INNER ou LEFT)."
+      - letra: "b"
+        texto: "Substituir o comando por um operador NOT IN povoado com dados fixos em cache."
+      - letra: "c"
+        texto: "Aplicar múltiplos filtros redundantes baseados no operador quantificador ALL."
+      - letra: "d"
+        texto: "Mudar o tipo de dado da chave primária na tabela temporária para economizar memória."
+
+  - texto: "Se inserirmos uma subquery independente dentro da cláusula WHERE de uma instrução DELETE, quantas vezes ela será executada pelo SGBD?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "N vezes, variando conforme o volume de linhas deletadas fisicamente das tabelas."
+      - letra: "b"
+        texto: "Apenas uma única vez, antes do início da operação de remoção dos registros."
+      - letra: "c"
+        texto: "Duas vezes, uma para limpar chaves estrangeiras e outra para apagar a tupla."
+      - letra: "d"
+        texto: "Nenhuma, pois subqueries são comandos exclusivos de projeções e relatórios via SELECT."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
