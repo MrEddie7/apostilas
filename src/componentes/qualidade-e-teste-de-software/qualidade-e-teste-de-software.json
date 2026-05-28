@@ -1,0 +1,17 @@
+{
+  "subject": "qualidade-e-teste-de-software",
+  "subject_title": "Qualidade e Teste de Software",
+  "subject_description": "Esta disciplina aborda os fundamentos e práticas de qualidade de software, desde modelos de maturidade e normas ISO até técnicas avançadas de teste, automação e metodologias ágeis, preparando o aluno para garantir a excelência no ciclo de vida do software.",
+  "subject_status": "40 Aulas • 4 Bimestres",
+
+  "layout": "aula",
+
+  "tags": ["aula"],
+  "nav_text": "⮜ VOLTAR",
+  "bimester_titles": {
+    "bimestre-01": "Fundamentos e Modelos de Maturidade",
+    "bimestre-02": "Estratégias e Planejamento de Testes",
+    "bimestre-03": "Técnicas de Teste e Qualidade de Código",
+    "bimestre-04": "Agilidade e Projeto Prático"
+  }
+}
