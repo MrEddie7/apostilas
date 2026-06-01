@@ -6,13 +6,60 @@ aula_numero: "18"
 description: "Primeira atividade prática para consolidar os conhecimentos da aula 18."
 ---
 
-<p>Enunciado do exercício 01 em desenvolvimento para a disciplina...</p>
+<section class="section-box">
+  <h2>Projeto MyPocket</h2>
+  <p>Nesta aula, consolidaremos os conhecimentos de Programação Orientada a Objetos (POO) com o desenvolvimento do
+    <strong>Projeto MyPocket</strong>.</p>
 
-<div class="tip-box">
-  <h4>Orientações</h4>
+  <h3>1. Requisitos de Negócio (RN)</h3>
+  <p>As regras macro e objetivos que definem o valor do software para o cliente ou usuário final.</p>
   <ul>
-    <li>Leia atentamente o enunciado.</li>
-    <li>Consulte o conteúdo da aula caso tenha dúvidas.</li>
-    <li>Tente resolver de forma independente antes de buscar ajuda.</li>
+    <li><strong>RN01 - Controle de Endividamento:</strong> O sistema deve atuar como uma ferramenta preventiva de saúde
+      financeira. Portanto, o saldo acumulado do usuário nunca poderá ficar negativo, forçando a consciência sobre os
+      limites de gastos.</li>
+    <li><strong>RN02 - Classificação de Fluxo:</strong> Toda e qualquer movimentação financeira na plataforma deve ser
+      categorizada estritamente como uma entrada (ganho) ou uma saída (gasto) para fins de relatórios analíticos limpos.
+    </li>
+    <li><strong>RN03 - Histórico Inalterável:</strong> Por questões de auditoria e consistência financeira doméstica,
+      uma transação realizada não pode ser editada diretamente; se um lançamento foi feito errado, o usuário deve lançar
+      uma transação de estorno (uma receita para anular uma despesa, ou vice-versa).</li>
   </ul>
-</div>
+
+  <h3>2. Requisitos Funcionais (RF)</h3>
+  <p>O que o sistema deve fazer (as funcionalidades que os alunos programarão no front e back-end).</p>
+  <ul>
+    <li><strong>RF01 - Cadastro de Receitas:</strong> O sistema deve apresentar um formulário para entrada de valores
+      positivos (Salário, Freelance, Pix recebido). O lançamento deve exigir valor, descrição e data.</li>
+    <li><strong>RF02 - Cadastro de Despesas:</strong> O sistema deve apresentar um formulário para entrada de valores de
+      débito (Aluguel, Mercado, Luz). O lançamento deve exigir valor, descrição e data.</li>
+    <li><strong>RF03 - Exibição de Saldo Atual:</strong> O sistema deve calcular dinamicamente e exibir em destaque na
+      tela o saldo líquido disponível na carteira do usuário.</li>
+    <li><strong>RF04 - Extrato Consolidado (Histórico):</strong> O sistema deve listar todas as transações enviadas em
+      ordem cronológica, exibindo de forma clara a descrição, a data, o valor e o tipo (Entrada/Saída).</li>
+    <li><strong>RF05 - Diferenciação Visual por Tipo:</strong> O extrato deve aplicar estilos visuais diferentes com
+      base no tipo da transação (ex: badge verde para receitas e badge vermelho para despesas).</li>
+  </ul>
+
+  <h3>3. Requisitos Não Funcionais (RNF)</h3>
+  <p>Como o sistema deve fazer (as premissas técnicas, restrições de arquitetura, segurança e performance).</p>
+  <ul>
+    <li><strong>RNF01 - Paradigma de Desenvolvimento:</strong> O motor interno do sistema deve ser construído utilizando
+      estritamente a Programação Orientada a Objetos (POO). Entidades de dados e comportamentos devem estar contidos em
+      suas respectivas classes.</li>
+    <li><strong>RNF02 - Encapsulamento de Estado:</strong> Atributos críticos (como o valor do saldo e o array do
+      histórico) devem ser protegidos com visibilidade private, impedindo alterações diretas de scripts externos sem
+      passar por métodos validadores.</li>
+    <li><strong>RNF03 - Integridade de Tipos (PHP 8.1+):</strong> O código deve utilizar tipagem estrita de dados
+      ativada via <code class="one-line-code">declare(strict_types=1);</code> no topo de todos os arquivos de lógica
+      para evitar comportamentos inesperados do interpretador (Type Juggling).</li>
+    <li><strong>RNF04 - Tratamento Robusto de Erros:</strong> Tentativas de quebra de regras de negócio (como tentar
+      gastar mais do que o saldo possui) devem disparar exceções (Exception), que precisam ser capturadas por blocos
+      try/catch para exibir mensagens amigáveis na tela ao invés de travar a aplicação.</li>
+    <li><strong>RNF05 - Proteção contra Reenvio de Dados (UX/HTTP):</strong> O script de processamento do formulário
+      deve implementar o padrão PRG (Post-Redirect-Get), redirecionando o usuário de volta para a página principal após
+      o cadastro bem-sucedido para evitar lançamentos duplicados ao atualizar a página (F5).</li>
+    <li><strong>RNF06 - Interface Responsiva:</strong> A camada de visualização deve utilizar o framework Bootstrap 5
+      para garantir que o gerenciador financeiro funcione e seja legível tanto em navegadores de desktop quanto em
+      dispositivos móveis.</li>
+  </ul>
+</section>
