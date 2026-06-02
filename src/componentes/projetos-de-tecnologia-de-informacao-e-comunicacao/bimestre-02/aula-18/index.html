@@ -1,56 +1,92 @@
 ---
-title: "Entrega do Projeto do Bimestre (Solução Automatizada via Planilha)"
+title: "Projeto Final de Bimestre: Meu Primeiro Planejador Financeiro Inteligente"
 aula_numero: "18"
 description: "Finalização e entrega do projeto prático do segundo bimestre."
 tags:
-  - aula
-  - bimestre-02
+- aula
+- bimestre-02
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 18 em desenvolvimento...</p>
+  <h2>Enunciado</h2>
+  <p><strong>Objetivo:</strong> Criar uma pasta de trabalho (arquivo) no Google Sheets contendo duas planilhas (abas)
+    interligadas para registrar ganhos, gastos e projetar a conquista de um objetivo financeiro. O projeto deve aplicar
+    formatação profissional, fórmulas matemáticas/lógicas, formatação condicional automática e gráficos explicativos.
+  </p>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
-  <div class="code-container">
-    <pre><code class="language-plaintext">// Em breve...</code></pre>
-  </div>
+  <h2>Requisitos Gerais (Estrutura do Arquivo)</h2>
+  <p>O arquivo deve conter exatamente duas abas nomeadas da seguinte forma:</p>
+  <ul>
+    <li>1. Lançamentos Mensais</li>
+    <li>2. Painel (Dashboard)</li>
+  </ul>
+  <p><strong>Identidade Visual:</strong> Escolha uma paleta de cores (ex: tons de azul, verde ou cinza) e aplique de
+    forma harmônica. Evite cores muito vibrantes que dificultem a leitura.</p>
+  <p><strong>Formatação de Dados:</strong> Todas as células que guardam valores em dinheiro devem ser formatadas
+    obrigatoriamente como Moeda (R$).</p>
 </section>
 
 <section class="section-box">
-  <h2>Representação Gráfica</h2>
-  <div class="mermaid">
-    graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
-  </div>
+  <h2>Especificações por Aba</h2>
+
+  <h3>Aba 1: Lançamentos Mensais</h3>
+  <p>Esta aba será o "banco de dados" do projeto. O aluno deve simular a movimentação financeira de pelo menos 3 meses
+    (ex: Janeiro, Fevereiro e Março).</p>
+  <ul>
+    <li><strong>Colunas Obrigatórias:</strong> Data, Descrição, Categoria (Ex: Alimentação, Lazer, Transporte,
+      Salário/Mesada), Tipo (Receita ou Despesa) e Valor (R$).</li>
+    <li><strong>Quantidade de dados:</strong> Inserir no mínimo 15 linhas de lançamentos misturando receitas (entradas
+      de dinheiro) e despesas (saídas).</li>
+    <li><strong>Uso de Fórmulas na Aba 1:</strong> Ao final da tabela, criar uma linha de resumo utilizando a função
+      SOMA para calcular o total de receitas e o total de despesas do período.</li>
+    <li><strong>Formatação Condicional Obrigatória na Aba 1:</strong> Aplicar uma regra na coluna Tipo. Se o texto for
+      igual a "Receita", a célula deve ficar com o fundo verde claro. Se o texto for igual a "Despesa", a célula deve
+      ficar com o fundo vermelho claro.</li>
+  </ul>
+
+  <h3>Aba 2: Painel (Dashboard)</h3>
+  <p>Esta aba buscará as informações resumidas da Aba 1 para apresentar os resultados de forma visual e analítica para o
+    "usuário".</p>
+
+  <h4>1. Bloco de Métricas (Fórmulas Matemáticas e Estatísticas)</h4>
+  <p>O aluno deve criar uma tabela resumo que calcule automaticamente:</p>
+  <ul>
+    <li><strong>Total de Receitas Acumuladas:</strong> Utilizando referências da Aba 1.</li>
+    <li><strong>Total de Despesas Acumuladas:</strong> Utilizando referências da Aba 1.</li>
+    <li><strong>Saldo Atual:</strong> Utilizando uma fórmula com o operador de subtração (=Receitas - Despesas).</li>
+    <li><strong>Média de Gastos:</strong> Utilizando a função MÉDIA baseada nas despesas da Aba 1.</li>
+    <li><strong>Maior Gasto Registrado:</strong> Utilizando a função MÁXIMO.</li>
+    <li><strong>Formatação Condicional Obrigatória na Aba 2:</strong> Aplicar uma regra na célula do Saldo Atual. Se o
+      valor for maior ou igual a 0, o texto/fundo deve ficar verde (saldo positivo). Se o valor for menor que 0, o
+      texto/fundo deve ficar vermelho (saldo negativo/devedor).</li>
+  </ul>
+
+  <h4>2. Bloco de Decisão (Função Lógica SE)</h4>
+  <p>O aluno definirá uma Meta Financeira (ex: Comprar um celular de R$ 1.500,00 ou fazer uma viagem de R$ 2.000,00) e
+    digitará esse valor em uma célula. Em outra célula, deverá usar a função SE para avaliar se o Saldo Atual é
+    suficiente para cobrir a Meta.</p>
+  <p>Sintaxe esperada: <code>=SE(Saldo_Atual >= Meta; "Meta Atingida"; "Continue Poupando...")</code></p>
+
+  <h4>3. Proteção contra Erros (Função SEERRO)</h4>
+  <p>Criar um indicador de "Porcentagem Comprometida do Orçamento" (dividir o Total de Despesas pelo Total de Receitas).
+    Essa fórmula deve obrigatoriamente vir envelopada na função SEERRO para prevenir falhas caso não existam receitas
+    lançadas (evitando o erro #DIV/0!).</p>
+
+  <h4>4. Representação Gráfica (Gráficos)</h4>
+  <p>O aluno deve inserir pelo menos um gráfico nesta aba, escolhendo uma das opções abaixo:</p>
+  <ul>
+    <li><strong>Gráfico de Pizza/Rosca:</strong> Mostrando a distribuição dos gastos por Categoria.</li>
+    <li><strong>Gráfico de Colunas/Barras:</strong> Comparando o Total de Receitas contra o Total de Despesas.</li>
+  </ul>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
+    <li>Certifique-se de que todas as fórmulas utilizam o ponto e vírgula como separador de argumentos.</li>
+    <li>A integração entre as abas deve ser dinâmica, garantindo que qualquer alteração na primeira aba atualize o
+      painel automaticamente.</li>
   </ul>
 </div>
-
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
-</section>
-
-<section class="section-box">
-  <h2>Referências</h2>
-  <ul>
-    <li>Material de apoio em breve.</li>
-  </ul>
-</section>
-
-<section class="section-box">
-  <h2>Para Praticar</h2>
-  <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
-  </ul>
-</section>
