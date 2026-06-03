@@ -1,57 +1,104 @@
 ---
-title: "Projeto 2: Mini-Calculadora em Java"
+title: "Projeto do Bimestre: Jokenpô em Java"
 aula_numero: "18"
-description: "Criação de um sistema de cálculo interativo."
+description: "Criação de um jogo interativo utilizando o Java como linguagem."
 tags:
-  - aula
-  - "bimestre-02"
+- aula
+- "bimestre-02"
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 18 em desenvolvimento...</p>
+  <h2>Enunciado</h2>
+  <p>Para consolidar o aprendizado sobre <strong>Estruturas de Controle</strong> em Java, seu desafio neste final de
+    bimestre será desenvolver um jogo de <strong>Jokenpô (Pedra, Papel e Tesoura)</strong> baseado em linhas de comando
+    no terminal.</p>
+  <p>O software deve conter flexibilidade para dois modos de jogo: contra o computador ou em modo cooperativo local
+    contra um amigo. Além disso, a partida não deve terminar em uma jogada isolada. O sistema precisa gerenciar um
+    modelo de <strong>Melhor de 3 rodadas</strong>, onde o primeiro participante a atingir duas vitórias consolidadas é
+    declarado o vencedor do confronto.</p>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
+  <h2>Preparação</h2>
+  <ol>
+    <li>Abra o seu ambiente de desenvolvimento integrado (IDE).</li>
+    <li>Crie um novo arquivo ou classe Java com o nome de <code class="one-line-code">JokenpoMelhorDeTres.java</code>.
+    </li>
+    <li>Utilize a estrutura do <strong>Código Base</strong> fornecido abaixo para iniciar o projeto.</li>
+  </ol>
+</section>
+
+<section class="section-box">
+  <h2>Código Base</h2>
+  <p>O esqueleto inicial abaixo fornece o ponto de partida com a importação necessária e o método principal configurado.
+    Você será responsável por construir toda a árvore lógica dentro dele.</p>
   <div class="code-container">
-    <pre><code class="language-java">// Em breve...</code></pre>
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class JokenpoMelhorDeTres {
+    public static void main(String[] args) {
+        Scanner leitor = new Scanner(System.in);
+        
+        System.out.println("=== JOKENPO REGRAS DO SEGUNDO BIMESTRE ===");
+        
+        // Desenvolva a logica do seu jogo a partir deste ponto
+
+        leitor.close();
+    }
+}</code></pre>
   </div>
 </section>
 
 <section class="section-box">
-  <h2>Representação Gráfica</h2>
-  <div class="mermaid">
-    graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
-  </div>
-</section>
-
-<div class="tip-box">
-  <h4>Dicas & Lembretes</h4>
+  <h2>O Desafio (Atividade em questão)</h2>
+  <p>Construa a lógica completa do jogo respeitando os requisitos técnicos acumulados ao longo das aulas:</p>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
-  </ul>
-</div>
-
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
-</section>
-
-<section class="section-box">
-  <h2>Referências</h2>
-  <ul>
-    <li>Material de apoio em breve.</li>
-  </ul>
-</section>
-
-<section class="section-box">
-  <h2>Para Praticar</h2>
-  <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
+    <li><strong>Laço Geral de Repetição (Jogar Novamente):</strong> Envolva toda a execução do jogo em uma estrutura de
+      repetição que, ao final da declaração de um campeão, pergunte se o usuário deseja iniciar uma nova partida (Opção
+      1 - Sim, Opção 2 - Não). O programa só deve fechar se o usuário escolher sair.</li>
+    <li><strong>Tratamento de Entradas Inválidas (Validação Estrita):</strong> Você deve impedir que o programa quebre
+      ou continue com dados incorretos. Utilize laços condicionais para verificar as entradas do usuário:
+      <ul>
+        <li>No menu inicial e no menu de repetição, o programa deve travar e pedir o dado novamente se for digitado um
+          valor diferente de 1 ou 2.</li>
+        <li>Durante a escolha de jogadas (Pedra, Papel ou Tesoura), o laço deve obrigar o usuário a redigitar caso o
+          número fornecido não esteja estritamente entre 1 e 3.</li>
+      </ul>
+    </li>
+    <li><strong>Gerenciamento do Placar (Melhor de 3):</strong> Crie variáveis contadoras para monitorar as vitórias do
+      Jogador 1 e do Inimigo (seja ele o computador ou o Jogador 2). O laço de rodadas deve persistir ativo enquanto
+      nenhum dos dois alcançar a meta de 2 vitórias. Empates não somam pontos para nenhum lado e mantêm o placar
+      estável.</li>
+    <li><strong>IA do Computador (Modo 1):</strong> Caso a opção escolhida seja Single Player, configure o oponente para
+      gerar um valor inteiro aleatório entre 1 e 3 usando as funções matemáticas de sorteio da linguagem Java.</li>
+    <li><strong>Esconder Jogadas (Modo 2 - Multiplayer):</strong> No modo de dois jogadores no mesmo teclado, para
+      manter o sigilo estratégico da escolha, aplique uma estrutura de repetição do tipo <code
+        class="one-line-code">for</code> para saltar múltiplas linhas em branco (cerca de 30 linhas) no terminal
+      imediatamente após a entrada do Jogador 1. Isso empurrará o texto anterior para cima, impedindo que o Jogador 2
+      veja a opção escolhida.</li>
+    <li><strong>Tabela-Verdade de Resultados:</strong> Utilize condicionais compostas com conectivos lógicos (E / OU)
+      para agrupar todas as condições possíveis de vitória do Jogador 1 de forma limpa, tratando de forma genérica os
+      cenários de empate e derrotas.</li>
   </ul>
 </section>
 
+<section class="section-box">
+  <h2>Orientações Finais</h2>
+  <ul>
+    <li><strong>Critérios de Avaliação:</strong>
+      <ul>
+        <li>Presença obrigatória de validação de dados em todas as entradas capturadas do teclado para conter falhas do
+          usuário.</li>
+        <li>Aplicação correta de contadores de rodada e acumuladores de pontuação para as vitórias.</li>
+        <li>Uso adequado e limpo dos conectivos lógicos na tomada de decisão sobre quem pontua a cada volta do laço.
+        </li>
+        <li>Identidade visual estruturada do placar parcial exibida no console a cada final de turno.</li>
+      </ul>
+    </li>
+    <li><strong>Recomendação de Testes:</strong> Durante o desenvolvimento, force erros de digitação intencionais.
+      Digite números negativos, opções inexistentes ou letras nos menus para garantir que suas estruturas de validação
+      estão segurando o fluxo do console perfeitamente.</li>
+    <li><strong>Entrega:</strong> Submeta o arquivo com a extensão <code class="one-line-code">.java</code> limpo,
+      devidamente indentado e livre de erros de compilação.</li>
+  </ul>
+</section>
