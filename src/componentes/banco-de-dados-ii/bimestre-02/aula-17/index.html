@@ -1,7 +1,10 @@
 ---
 title: "Visões (Views)"
 aula_numero: "17"
-description: "Tabelas virtuais e segurança."
+componente: "Banco de Dados II"
+description: "Esta aula aborda as Visões (Views), um recurso essencial no modelo físico de bancos de dados que permite a
+criação de tabelas virtuais para simplificar o acesso a dados complexos e reforçar as políticas de segurança da
+informação."
 tags:
 - aula
 - bimestre-02
@@ -9,47 +12,221 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo em desenvolvimento...</p>
+
+  <h3>1. O que é uma Visão (View)?</h3>
+  <p>
+    Uma visão (<em>View</em>) é uma tabela virtual baseada no conjunto de resultados de uma consulta SQL. Diferente das
+    tabelas base, uma visão não possui existência física própria nem armazena dados em disco (exceto em casos
+    específicos de visões materializadas); ela é uma "janela" ou "fotocópia" lógica que exibe dados de uma ou mais
+    tabelas subjacentes no momento em que é consultada.
+  </p>
+  <p><strong>Principais Características:</strong></p>
+  <ul>
+    <li><strong>Abstração:</strong> Oculta a complexidade de junções (<code class="one-line-code">JOIN</code>s) e
+      cálculos pesados.</li>
+    <li><strong>Volatilidade:</strong> O resultado da visão é recomputado sempre que ela é acessada, refletindo
+      instantaneamente mudanças nas tabelas base.</li>
+    <li><strong>Interoperabilidade:</strong> Pode ser tratada pela aplicação como se fosse uma tabela comum (<code
+        class="one-line-code">SELECT</code>, <code class="one-line-code">INSERT</code>, <code
+        class="one-line-code">UPDATE</code>, <code class="one-line-code">DELETE</code>).</li>
+  </ul>
+
+  <h3>2. Finalidades: Por que utilizar Views?</h3>
+  <ul>
+    <li><strong>A. Segurança e Restrição de Acesso:</strong> As visões são ferramentas poderosas para implementar
+      segurança no nível de coluna e linha. Você pode criar uma visão que oculte colunas sensíveis (como salários ou
+      senhas) e conceder permissão ao usuário apenas para a visão, e não para a tabela original.</li>
+    <li><strong>B. Simplificação de Consultas:</strong> Evita que o desenvolvedor tenha que reescrever expressões
+      matemáticas ou filtros complexos repetidamente.</li>
+  </ul>
+
+  <h3>3. Manipulação de Dados (DML) através de Views</h3>
+  <p>
+    É possível realizar operações de <code class="one-line-code">INSERT</code>, <code
+      class="one-line-code">UPDATE</code> e <code class="one-line-code">DELETE</code> através de uma visão, mas existem
+    restrições importantes:
+  </p>
+  <ul>
+    <li><strong>Simplicidade:</strong> A visão geralmente deve ser baseada em uma única tabela para ser atualizável
+      nativamente.</li>
+    <li><strong>Chaves:</strong> Deve incluir a chave primária da tabela base se for realizar inserções.</li>
+    <li><strong>Cálculos:</strong> Colunas que resultam de funções (<code class="one-line-code">SUM</code>, <code
+        class="one-line-code">AVG</code>) ou cálculos não podem ser alvos de <code class="one-line-code">UPDATE</code>.
+    </li>
+  </ul>
+  <p><strong>Diferença Técnica:</strong></p>
+  <ul>
+    <li><strong>MySQL:</strong> Permite atualizações automáticas em visões simples que mapeiam diretamente para uma
+      tabela base.</li>
+    <li><strong>PostgreSQL:</strong> Tradicionalmente exige a criação de Rules (regras) ou <code
+        class="one-line-code">INSTEAD OF</code> Triggers para tornar visões complexas (com <code
+        class="one-line-code">JOIN</code>s) atualizáveis.</li>
+  </ul>
+
+  <h3>4. Segurança com GRANT e REVOKE</h3>
+  <p>
+    Para garantir que a visão cumpra seu papel de segurança, o administrador do banco de dados (DBA) deve gerenciar os
+    privilégios com precisão, aplicando o princípio do menor privilégio.
+  </p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- MySQL e PostgreSQL (Sintaxe ANSI)
+-- 1. Garante privilégio de leitura na visão para todos os usuários
+GRANT SELECT ON resumo_emails TO PUBLIC;
+
+-- 2. Retira privilégio de deletar dados através da visão
+REVOKE DELETE ON resumo_emails FROM usuario_limitado;</code></pre>
+  </div>
+
+  <h3>5. Resumo de Diferenças e Comandos</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Recurso</th>
+        <th>MySQL</th>
+        <th>PostgreSQL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Atualização automática</strong></td>
+        <td>Sim (em visões simples).</td>
+        <td>Limitada (prefere Triggers).</td>
+      </tr>
+      <tr>
+        <td><strong>Views Materializadas</strong></td>
+        <td>Não nativo (exige simulação).</td>
+        <td>Sim (<code class="one-line-code">CREATE MATERIALIZED VIEW</code>).</td>
+      </tr>
+      <tr>
+        <td><strong>Eliminação</strong></td>
+        <td colspan="2"><code class="one-line-code">DROP VIEW nome;</code></td>
+      </tr>
+      <tr>
+        <td><strong>Check Option</strong></td>
+        <td><code class="one-line-code">WITH CHECK OPTION</code> (garante que dados inseridos apareçam na visão).</td>
+        <td><code class="one-line-code">WITH CHECK OPTION</code> (suporte completo).</td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="section-box">
   <h2>Exemplo de Código</h2>
   <p>Abaixo, apresentamos exemplos práticos comparando as sintaxes entre os dois ambientes.</p>
-  <div class="code-container">
-    <pre><code class="language-sql">-- [ MySQL ]
--- Código em desenvolvimento...
 
--- [ PostgreSQL ]
--- Código em desenvolvimento...</code></pre>
+  <h3>Sintaxe Básica (ANSI SQL)</h3>
+  <div class="code-container">
+    <pre><code class="language-sql">CREATE VIEW nome_da_view AS
+SELECT colunas FROM tabelas WHERE condicao;</code></pre>
+  </div>
+
+  <h3>Exemplo no MySQL</h3>
+  <p>O MySQL utiliza as views para simplificar cálculos e formatação de datas.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando uma visão para resumo de envios de e-mail
+CREATE VIEW vw_resumo_emails AS
+SELECT 
+    DATE_FORMAT(data_envio, '%d/%m/%Y') AS data_formatada,
+    CONCAT(usuario, '@', host) AS remetente,
+    tamanho_kb
+FROM logs_email;
+
+-- Consultando a visão como se fosse uma tabela
+SELECT * FROM vw_resumo_emails WHERE tamanho_kb > 1000;</code></pre>
+  </div>
+
+  <h3>Exemplo no PostgreSQL</h3>
+  <p>O PostgreSQL é frequentemente usado para encapsular junções entre múltiplas tabelas.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando uma visão que une dados de fatos com descrições (Lookup)
+CREATE OR REPLACE VIEW vw_vendas_detalhadas AS
+SELECT 
+    p.nome_produto,
+    c.categoria,
+    f.quantidade,
+    f.data_venda
+FROM fatos_vendas f
+INNER JOIN produtos p ON f.id_produto = p.id_produto
+INNER JOIN categorias c ON p.id_categoria = c.id_categoria;
+
+-- Uso da visão
+SELECT nome_produto, quantidade FROM vw_vendas_detalhadas;</code></pre>
   </div>
 </section>
 
 <section class="section-box">
   <h2>Diagramação</h2>
   <p>Representação visual dos conceitos abordados:</p>
+
+  <h3>1. Abstração e Junção de Dados</h3>
+  <p>A View atua como uma camada lógica que simplifica consultas complexas de múltiplos relacionamentos em uma única
+    interface virtual.</p>
   <div class="mermaid">
     graph TD
-    A[Início] --> B{Processo}
-    B --> C[Fim]
+    subgraph Aplicacao ["Aplicação / Usuário"]
+    User["SELECT nome_produto, quantidade FROM vw_vendas_detalhadas;"]
+    end
+
+    subgraph BancoDados ["Banco de Dados (Lógico)"]
+    View["VIEW: vw_vendas_detalhadas"]
+    end
+
+    subgraph TabelasFisicas ["Tabelas Físicas (Disco)"]
+    Tab1["produtos"]
+    Tab2["categorias"]
+    Tab3["fatos_vendas"]
+    end
+
+    User -->|"Consulta Simples"| View
+    View -.->|"Executa a Query Subjacente (INNER JOIN)"| Tab1
+    View -.->|"Executa a Query Subjacente (INNER JOIN)"| Tab2
+    View -.->|"Executa a Query Subjacente (INNER JOIN)"| Tab3
+
+    style View fill:#d1e7dd,stroke:#0f5132,stroke-width:2px
+    style Tab1 fill:#fff3cd,stroke:#664d03,stroke-width:1px
+    style Tab2 fill:#fff3cd,stroke:#664d03,stroke-width:1px
+    style Tab3 fill:#fff3cd,stroke:#664d03,stroke-width:1px
+  </div>
+
+  <h3>2. Segurança e Restrição de Acesso</h3>
+  <p>Utilização da View para ocultar colunas ou registros sensíveis da tabela base.</p>
+  <div class="mermaid">
+    graph TD
+    subgraph UsuarioLimitado ["Usuário Limitado (Sem acesso direto)"]
+    U["Usuário"]
+    end
+
+    subgraph VisaoSegura ["Camada de Segurança"]
+    V["View: resumo_emails<br />(Exibe apenas remetente e tamanho_kb)"]
+    end
+
+    subgraph TabelaPrivada ["Tabela Base (Oculta)"]
+    T["Tabela: logs_email<br />(Contém dados sensíveis e senhas)"]
+    end
+
+    U -->|"1. SELECT (Permitido)"| V
+    V -.->|"2. Lê dados autorizados"| T
+    U -->|"3. SELECT (Acesso Negado)"| T
+
+    style V fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style T fill:#f8d7da,stroke:#721c24,stroke-width:2px
+    style U fill:#ffffff,stroke:#333333,stroke-width:1px
   </div>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Dica importante sobre Visões (Views) aparecerá aqui.</li>
-    <li>Sempre verifique a sintaxe específica do seu SGBD.</li>
+    <li><strong>Dica de Performance:</strong> Evite utilizar <code class="one-line-code">SELECT *</code> dentro de
+      definições de visões para não sobrecarregar o processamento com colunas desnecessárias das tabelas base. Use
+      visões para expor apenas o que é estritamente necessário para o processo de negócio.</li>
+    <li><strong>Ocultando Complexidade:</strong> Utilize as Views para criar uma camada de API lógica sobre seu banco de
+      dados. Isso protege as aplicações cliente de mudanças estruturais nas tabelas base (refatoração).</li>
+    <li><strong>Diferença de Persistência:</strong> Lembre-se de que Views normais são resolvidas em tempo de execução.
+      Se precisar de alta performance em agregações complexas no PostgreSQL, estude as <em>Materialized Views</em>, que
+      salvam o resultado físico no disco.</li>
   </ul>
 </div>
-
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <ul>
-    <li>Passo 1: Analise os requisitos.</li>
-    <li>Passo 2: Desenvolva o script SQL.</li>
-    <li>Passo 3: Valide os resultados.</li>
-  </ul>
-</section>
 
 <section class="section-box">
   <h2>Referências</h2>
@@ -64,7 +241,7 @@ tags:
 <section class="section-box">
   <h2>Para Praticar</h2>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
+    <!-- <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li> -->
+    <li><a href="./exercicio-02/">Exercício 02: Questionário</a></li>
   </ul>
 </section>

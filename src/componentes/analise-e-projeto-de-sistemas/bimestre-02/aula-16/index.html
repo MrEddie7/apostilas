@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Diagrama de Classes - Atributos e Métodos"
 aula_numero: "16"
-description: "Conteúdo da aula 16 : Diagrama de Classes - Atributos e Métodos"
+description: "O Diagrama de Classes é um modelo estrutural da UML que mapeia a estrutura estática de um sistema, descrevendo as suas classes, atributos, métodos e relacionamentos."
 tags:
   - aula
   - bimestre-02
@@ -9,37 +9,512 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo teórico da aula 16 em desenvolvimento...</p>
+  <p>Esta seção de Teoria & Conceitos para a Aula 16 foca no detalhamento dos componentes internos do <strong>Diagrama de Classes</strong>, o diagrama estrutural mais utilizado da UML. Ele descreve os tipos de objetos no sistema e seus relacionamentos estáticos, sendo capaz de explicitar detalhes de implementação essenciais para a codificação.</p>
+
+  <h3>1. A Estrutura da Classe</h3>
+  <p>Graficamente, uma classe é representada por um retângulo dividido em três compartimentos:</p>
+  <ul>
+    <li><strong>Superior:</strong> Contém o nome da classe (em negrito e centralizado).</li>
+    <li><strong>Intermediário:</strong> Lista os atributos (características estruturais).</li>
+    <li><strong>Inferior:</strong> Lista as operações ou métodos (comportamentos).</li>
+  </ul>
+  <p><em><strong>Nota:</strong> Compartimentos podem ser suprimidos para aumentar a legibilidade, mas isso não significa que estejam vazios.</em></p>
+
+  <h3>2. Atributos (Estado)</h3>
+  <p>Os atributos representam os dados que uma classe é capaz de armazenar, definindo o estado de cada objeto instanciado.</p>
+  
+  <h5>Sintaxe do Atributo</h5>
+  <p>A forma completa de um atributo segue o padrão:</p>
+  <div class="code-container">
+    <pre><code>visibilidade /nome : tipo [multiplicidade] = valor_padrão {propriedades}</code></pre>
+    <pre><code>- /historicoTaxas : double [1..*] = 0.01 {ordered, unique}</code></pre>
+  </div>
+  <ul>
+    <li><strong>Visibilidade (+, -, #, ~):</strong> Definida como protegida (protected), o que significa que o atributo é visível para a própria classe e suas subclasses (como Gerente ou Diretor).</li>
+    <li><strong>Derivação (/):</strong> Um atributo marcado com uma barra (/) indica que ele é calculado a partir de outros dados e não precisa ser armazenado fisicamente (ex: /idade calculada a partir da dataNascimento).</li>
+    <li><strong>Nome:</strong> Deve ser um substantivo ou frase curta, geralmente iniciando com letra minúscula (ex: dataNascimento).</li>
+    <li><strong>Tipos de Dados:</strong> Podem ser tipos primitivos (<code class="one-line-code">int</code>, <code class="one-line-code">double</code>, <code class="one-line-code">boolean</code>, <code class="one-line-code">String</code>) ou outras classes definidas no sistema.</li>
+    <li><strong>Multiplicidade:</strong> Entre colchetes [ ], indica quantos valores o atributo pode conter (ex: telefone: String [1..3]). O padrão é .</li>
+    <li><strong>Valor Padrão:</strong> O valor inicial sugerido para a primeira entrada. 0.01 (1%) no exemplo acima.</li>
+    <li><strong>Propriedades:</strong> Características adicionais, como <code class="one-line-code">{ordered}</code> (os valores são mantidos em ordem) ou <code class="one-line-code">{unique}</code> (os valores devem ser únicos).</li>
+  </ul>
+
+  <h3>3. Operações e Métodos (Comportamento)</h3>
+  <p>Uma <strong>Operação</strong> é a especificação de uma tarefa que pode ser solicitada a um objeto; o <strong>Método</strong> é a implementação real (o código) dessa operação.</p>
+
+  <h5>Sintaxe da Operação</h5>
+  <p>A notação completa é:</p>
+  <div class="code-container">
+    <pre><code>visibilidade nome (lista_de_parâmetros) : tipo_de_retorno {propriedades}</code></pre>
+    <pre><code>+ transferirRecursos (in valor : double = 0.0, inout contaDestino : Conta, out protocolo : String) : boolean {leaf}</code></pre>
+  </div>
+  <ul>
+    <li><strong>Parâmetros:</strong> São informações necessárias para a execução. A sintaxe interna é <code class="one-line-code">direção nome : tipo = valor_padrão</code>. As direções podem ser <code class="one-line-code">in</code> (entrada), <code class="one-line-code">out</code> (saída) ou <code class="one-line-code">inout</code> (ambos).</li>
+    <li><strong>Tipo de Retorno:</strong> Indica o dado que a operação devolve após a execução (ex: <code class="one-line-code">double</code>, <code class="one-line-code">void</code>, <code class="one-line-code">List</code>).</li>
+  </ul>
+
+  <h5>Tipos de Operações</h5>
+  <ul>
+    <li><strong>Construtor:</strong> Cria uma nova instância da classe (ex: <code class="one-line-code">create()</code> ou <code class="one-line-code">insert()</code>).</li>
+    <li><strong>Consulta (Query):</strong> Obtém informações do estado do objeto sem alterá-lo (sem efeitos colaterais). É marcada com <code class="one-line-code">{query}</code>.</li>
+    <li><strong>Atualização (Modifier/Command):</strong> Altera os valores dos atributos e o estado do objeto.</li>
+  </ul>
+
+  <h3>4. Definição de Visibilidade</h3>
+  <p>A visibilidade define de onde um recurso (atributo ou método) pode ser acessado dentro da arquitetura do sistema:</p>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Símbolo</th>
+        <th style="width: 25%;">Tipo</th>
+        <th>Descrição</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>+</strong></td>
+        <td>Pública</td>
+        <td>O recurso pode ser acessado por qualquer outra classe no sistema.</td>
+      </tr>
+      <tr>
+        <td><strong>-</strong></td>
+        <td>Privada</td>
+        <td>Acesso permitido apenas dentro da própria classe que o define. É o padrão recomendado para atributos para garantir o encapsulamento.</td>
+      </tr>
+      <tr>
+        <td><strong>#</strong></td>
+        <td>Protegida</td>
+        <td>Visível apenas para a própria classe e suas subclasses (herança).</td>
+      </tr>
+      <tr>
+        <td><strong>~</strong></td>
+        <td>Pacote</td>
+        <td>Visível por qualquer classe que pertença ao mesmo pacote (namespace).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>5. Membros Estáticos e Abstratos</h3>
+  <ul>
+    <li><strong>Membros Estáticos (Escopo de Classe):</strong> São atributos ou operações que pertencem à classe como um todo, e não a um objeto específico. Todas as instâncias compartilham o mesmo valor. Na UML, são representados com o texto <u>sublinhado</u>.</li>
+    <li><strong>Membros Abstratos:</strong> Uma operação abstrata possui apenas a assinatura, sem implementação, obrigando as subclasses a implementarem o comportamento. Representados em <em>itálico</em>.</li>
+  </ul>
 </section>
 
 <section class="section-box">
   <h2>Exemplo Prático</h2>
-  <p>Exemplos e demonstrações da aula 16 em desenvolvimento...</p>
-</section>
+  
+  <h3>Exemplo 1: O Clássico Sistema de Cadastro (Nível Básico)</h3>
+  <p>Este exemplo introduz a anatomia de uma classe: o nome, os atributos (com tipos de dados) e os métodos (funções).</p>
+  
+  <div class="mermaid">
+    classDiagram
+        class Usuario {
+            +int id
+            +String nome
+            +String email
+            -String senha
+            +cadastrar() bool
+            +alterarSenha(novaSenha) void
+        }
+  </div>
 
-<section class="section-box">
-  <h2>Representação Gráfica</h2>
-  <p>Diagramas e esquemas visuais em construção...</p>
+  <h5>Código de Implementação (PHP):</h5>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+
+class Usuario {
+    // Atributos Públicos (+) e Privados (-)
+    public int $id;
+    public string $nome;
+    public string $email;
+    private string $senha;
+
+    public function __construct(int $id, string $nome, string $email, string $senha) {
+        $this->id = $id;
+        $this->nome = $nome;
+        $this->email = $email;
+        $this->senha = $senha; // Encapsulado internamente
+    }
+
+    // Métodos Públicos (+)
+    public function cadastrar(): bool {
+        // Lógica para salvar no banco de dados
+        echo "Usuário {$this->nome} cadastrado com sucesso!\n";
+        return true;
+    }
+
+    public function alterarSenha(string $novaSenha): void {
+        $this->senha = password_hash($novaSenha, PASSWORD_BCRYPT);
+        echo "Senha alterada com segurança.\n";
+    }
+}</code></pre>
+  </div>
+
+  <h5>Explicação Didática:</h5>
+  <ul>
+    <li><strong>Visibilidade:</strong> O símbolo <code class="one-line-code">+</code> indica que o atributo/método é público (qualquer um acessa). O símbolo <code class="one-line-code">-</code> indica que é privado (apenas a própria classe lê ou altera, aplicando o conceito de <strong>Encapsulamento</strong>).</li>
+    <li><strong>Tipos e Retornos:</strong> Mostra claramente o tipo da variável (<code class="one-line-code">String</code>, <code class="one-line-code">int</code>) e o que o método devolve após ser executado (<code class="one-line-code">bool</code>, <code class="one-line-code">void</code>).</li>
+  </ul>
+
+  <hr>
+
+  <h3>Exemplo 2: Herança em um Sistema de E-commerce (Nível Intermediário)</h3>
+  <p>Aqui demonstramos o conceito de especialização/generalização ("é um").</p>
+  
+  <div class="mermaid">
+    classDiagram
+        class Produto {
+            +int codigo
+            +String nome
+            +float preco
+            +exibirDetalhes()
+        }
+        class Livro {
+            +String autor
+            +String isbn
+        }
+        class Eletronico {
+            +int voltagem
+            +String marca
+        }
+        Produto <|-- Livro : é um tipo de
+        Produto <|-- Eletronico : é um tipo de
+  </div>
+
+  <h5>Código de Implementação (PHP):</h5>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+
+class Produto {
+    public int $codigo;
+    public string $nome;
+    public float $preco;
+
+    public function __construct(int $codigo, string $nome, float $preco) {
+        $this->codigo = $codigo;
+        $this->nome = $nome;
+        $this->preco = $preco;
+    }
+
+    public function exibirDetalhes(): void {
+        echo "Produto: {$this->nome} - R$ {$this->preco}\n";
+    }
+}
+
+// Livro herda (&lt;|--) de Produto
+class Livro extends Produto {
+    public string $autor;
+    public string $isbn;
+
+    public function __construct(int $codigo, string $nome, float $preco, string $autor, string $isbn) {
+        parent::__construct($codigo, $nome, $preco); // Reaproveita o construtor pai
+        $this->autor = $autor;
+        $this->isbn = $isbn;
+    }
+}
+
+// Eletronico herda (&lt;|--) de Produto
+class Eletronico extends Produto {
+    public int $voltagem;
+    public string $marca;
+
+    public function __construct(int $codigo, string $nome, float $preco, int $voltagem, string $marca) {
+        parent::__construct($codigo, $nome, $preco);
+        $this->voltagem = $voltagem;
+        $this->marca = $marca;
+    }
+}</code></pre>
+  </div>
+
+  <h5>Explicação Didática:</h5>
+  <ul>
+    <li><strong>Seta <code class="one-line-code">&lt;|--</code>:</strong> Representa a herança. A seta aponta sempre da subclasse (filho) para a superclasse (pai).</li>
+    <li><strong>Reutilização:</strong> <code class="one-line-code">Livro</code> e <code class="one-line-code">Eletronico</code> herdam automaticamente os atributos <code class="one-line-code">codigo</code>, <code class="one-line-code">nome</code> e <code class="one-line-code">preco</code>, sem precisar reescrevê-los.</li>
+  </ul>
+
+  <hr>
+
+  <h3>Exemplo 3: Associação com Multiplicidade (Sistema de Clínica Médica)</h3>
+  <p>Este exemplo mostra como duas classes independentes se relacionam e quantas instâncias participam dessa relação.</p>
+  
+  <div class="mermaid">
+    classDiagram
+        class Medico {
+            +String crm
+            +String nome
+        }
+        class Paciente {
+            +String cpf
+            +String nome
+        }
+        Medico "1" --> "0..*" Paciente : atende
+  </div>
+
+  <h5>Código de Implementação (PHP):</h5>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+
+class Paciente {
+    public string $cpf;
+    public string $nome;
+
+    public function __construct(string $cpf, string $nome) {
+        $this->cpf = $cpf;
+        $this->nome = $nome;
+    }
+}
+
+class Medico {
+    public string $crm;
+    public string $nome;
+    public array $pacientes = []; // Guarda a coleção de 0..* pacientes
+
+    public function __construct(string $crm, string $nome) {
+        $this->crm = $crm;
+        $this->nome = $nome;
+    }
+
+    // Método que materializa a associação "atende"
+    public function atenderPaciente(Paciente $paciente): void {
+        $this->pacientes[] = $paciente;
+        echo "Médico {$this->nome} está atendendo o paciente {$paciente->nome}.\n";
+    }
+}</code></pre>
+  </div>
+
+  <h5>Explicação Didática:</h5>
+  <ul>
+    <li><strong>Multiplicidade (<code class="one-line-code">"1"</code> e <code class="one-line-code">"0..*"</code>):</strong> Indica as regras de negócio. Neste cenário, um (1) médico específico pode atender de zero a vários (0..*) pacientes.</li>
+    <li><strong>Navegabilidade (<code class="one-line-code">--&gt;</code>):</strong> A seta indica o sentido da associação (o médico possui uma lista de pacientes ou sabe quem está atendendo).</li>
+  </ul>
+
+  <hr>
+
+  <h3>Exemplo 4: Agregação vs. Composição (Sistema de Computador)</h3>
+  <p>Colocá-los lado a lado no mesmo diagrama ajuda a fixar a diferença de dependência de ciclo de vida.</p>
+  
+  <div class="mermaid">
+    classDiagram
+        class Computador {
+            +String marca
+        }
+        class Processador {
+            +String modelo
+            +float frequencia
+        }
+        class Mouse {
+            +String tipo
+        }
+        Computador "1" *-- "1" Processador : composição (obrigatório)
+        Computador "1" o-- "0..1" Mouse : agregação (opcional)
+  </div>
+
+  <h5>Código de Implementação (PHP):</h5>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+
+class Processador {
+    public string $modelo;
+    public function __construct(string $modelo) { $this->modelo = $modelo; }
+}
+
+class Mouse {
+    public string $tipo;
+    public function __construct(string $tipo) { $this->tipo = $tipo; }
+}
+
+class Computador {
+    public string $marca;
+    public Processador $processador; // Parte da Composição
+    public ?Mouse $mouse = null;     // Parte da Agregação (Pode ser nulo)
+
+    public function __construct(string $marca, string $modeloProcessador) {
+        $this->marca = $marca;
+        // COMPOSIÇÃO: O Processador nasce obrigatoriamente JUNTO com o Computador.
+        // Se o objeto Computador for destruído, este Processador morre junto.
+        $this->processador = new Processador($modeloProcessador);
+    }
+
+    // AGREGAÇÃO: O Mouse é criado FORA e apenas acoplado ao computador.
+    // Se o Computador for destruído, o objeto Mouse continua existindo na memória.
+    public function conectarMouse(Mouse $mouse): void {
+        $this->mouse = $mouse;
+    }
+}</code></pre>
+  </div>
+
+  <h5>Explicação Didática:</h5>
+  <ul>
+    <li><strong>Composição (Losango Preenchido <code class="one-line-code">*--</code>):</strong> O <code class="one-line-code">Processador</code> é parte essencial do <code class="one-line-code">Computador</code>. Se o computador for destruído, o processador deixa de existir no contexto do sistema. A relação é de dependência existencial.</li>
+    <li><strong>Agregação (Losango Vazio <code class="one-line-code">o--</code>):</strong> O <code class="one-line-code">Mouse</code> é apenas conectado ao <code class="one-line-code">Computador</code>. Se o computador quebrar ou for excluído, o mouse continua existindo de forma independente e pode ser associado a outro computador.</li>
+  </ul>
+
+  <hr>
+
+  <h3>Exemplo 5: O Cenário Completo (Padrão Apostila)</h3>
+  <p>Para fechar o conteúdo, um diagrama que une a maioria dos conceitos em um ecossistema escolar (ideal para bater com os exemplos de Casos de Uso).</p>
+  
+  <div class="mermaid">
+    classDiagram
+        class Pessoa {
+            &lt;&lt;abstract&gt;&gt;
+            +String nome
+            +String email
+        }
+        class Professor {
+            +String siape
+            +postarMaterial()
+        }
+        class Aluno {
+            +String matricula
+            +entregarTarefa()
+        }
+        class Disciplina {
+            +String nome
+            +int cargaHoraria
+        }
+        class Turma {
+            +String codigo
+            +gerarDiario()
+        }
+
+        Pessoa <|-- Professor
+        Pessoa <|-- Aluno
+        Professor "1" --> "*" Disciplina : leciona
+        Turma "1" *-- "*" Aluno : composta por
+        Turma "*" o-- "1" Disciplina : pertence a
+  </div>
+
+  <h5>Código de Implementação (PHP):</h5>
+  <div class="code-container">
+    <pre><code class="language-php">&lt;?php
+
+// Classe Abstrata base
+abstract class Pessoa {
+    public string $nome;
+    public string $email;
+
+    public function __construct(string $nome, string $email) {
+        $this->nome = $nome;
+        $this->email = $email;
+    }
+}
+
+class Disciplina {
+    public string $nome;
+    public function __construct(string $nome) { $this->nome = $nome; }
+}
+
+// Professor herda de Pessoa e se associa a Disciplinas
+class Professor extends Pessoa {
+    public string $siape;
+    public array $disciplinas = [];
+
+    public function __construct(string $nome, string $email, string $siape) {
+        parent::__construct($nome, $email);
+        $this->siape = $siape;
+    }
+
+    public function lecionarDisciplina(Disciplina $disciplina): void {
+        $this->disciplinas[] = $disciplina;
+    }
+
+    public function postarMaterial(): void {
+        echo "{$this->nome} postou um novo PDF de aula.\n";
+    }
+}
+
+class Aluno extends Pessoa {
+    public string $matricula;
+
+    public function __construct(string $nome, string $email, string $matricula) {
+        parent::__construct($nome, $email);
+        $this->matricula = $matricula;
+    }
+
+    public function entregarTarefa(): void {
+        echo "{$this->nome} enviou o arquivo da tarefa.\n";
+    }
+}
+
+// Turma compõe Alunos e agrega uma Disciplina
+class Turma {
+    public string $codigo;
+    public Disciplina $disciplina; // Agregação (A disciplina existe fora da turma)
+    public array $alunos = [];      // Composição conceitual dos alunos nesta grade
+
+    public function __construct(string $codigo, Disciplina $disciplina) {
+        $this->codigo = $codigo;
+        $this->disciplina = $disciplina;
+    }
+
+    public function matricularAluno(Aluno $aluno): void {
+        $this->alunos[] = $aluno;
+    }
+}</code></pre>
+  </div>
+
+  <h5>Explicação Didática:</h5>
+  <ul>
+    <li><strong><code class="one-line-code">&lt;&lt;abstract&gt;&gt;</code>:</strong> Indica que <code class="one-line-code">Pessoa</code> é uma classe abstrata (um conceito, uma interface) e não pode ser instanciada diretamente, apenas herdada por <code class="one-line-code">Professor</code> e <code class="one-line-code">Aluno</code>.</li>
+    <li><strong>Leitura de Fluxo:</strong> Mostra como o sistema mapeia a escola: Uma <code class="one-line-code">Turma</code> é composta obrigatoriamente por vários <code class="one-line-code">Alunos</code> (se a turma sumir, o agrupamento de alunos some), mas a <code class="one-line-code">Disciplina</code> vinculada à turma é uma agregação (a disciplina Matemática continua existindo na grade curricular mesmo se aquela turma fechar).</li>
+  </ul>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
+
+  <h5>Anatomia de uma Classe</h5>
+  <p>Uma classe é representada graficamente por um retângulo dividido em três secções principais: o nome da classe, os seus atributos e os seus métodos.</p>
   <ul>
-    <li>Conteúdo em breve.</li>
+    <li><strong>Sinais de Visibilidade:</strong>
+      <ul>
+        <li><code class="one-line-code">+</code> (Público): Permite que qualquer outra classe do sistema aceda e altere o elemento.</li>
+        <li><code class="one-line-code">-</code> (Privado): Restringe o acesso e a modificação exclusivamente à própria classe. Este sinal fundamenta a aplicação do conceito de <strong>Encapsulamento</strong>.</li>
+      </ul>
+    </li>
+    <li><strong>Sintaxe de Notação:</strong> A ordem padrão de declaração define primeiro o identificador do elemento e, em seguida, o seu tipo de dado ou retorno.
+      <ul>
+        <li>Exemplo de atributo: <code class="one-line-code">nome: String</code></li>
+        <li>Exemplo de método: <code class="one-line-code">calcularTotal(): float</code></li>
+      </ul>
+    </li>
   </ul>
+
+  <h5>Orientação e Sentido dos Relacionamentos</h5>
+  <p>A convenção gráfica da UML determina uma regra fixa para o desenho das ligações: <strong>A ponta da seta aponta sempre na direção do elemento mais forte, mais genérico ou da classe base (superclasse).</strong></p>
+  <ul>
+    <li><strong>Herança (Generalização):</strong> Indica uma relação estrutural de "é um". É representada por uma linha contínua com uma seta de ponta triangular vazia na extremidade (<code class="one-line-code">&lt;|--</code>). No código fonte em PHP, este relacionamento traduz-se pelo uso da palavra-chave <code class="one-line-code">extends</code>.</li>
+    <li><strong>Dependência:</strong> Indica uma relação de utilização temporária ("usa um"). É representada por uma linha tracejada com uma seta simples na ponta. Significa que uma classe utiliza instâncias de outra classe apenas como parâmetros locais dentro de um método, sem armazená-las como propriedades fixas.</li>
+  </ul>
+
+  <h5>Distinção entre Agregação e Composição</h5>
+  <p>Ambos os relacionamentos especificam uma associação do tipo "tem um", contudo possuem regras distintas no que diz respeito ao ciclo de vida dos objetos envolvidos.</p>
+  <ul>
+    <li><strong>Agregação (Linha com losango vazio na ponta <code class="one-line-code">o--</code>):</strong> Caracteriza um vínculo onde o "Todo" possui a "Parte", mas a "Parte" pode existir de maneira autónoma. Caso o objeto principal ("Todo") seja excluído ou destruído no sistema, o objeto secundário ("Parte") permanece preservado na memória.
+      <ul>
+        <li><em>Exemplo:</em> Um Computador possui um Mouse. A destruição do objeto computador não extingue o objeto mouse, que pode ser associado a outra máquina.</li>
+      </ul>
+    </li>
+    <li><strong>Composição (Linha com losango preenchido na ponta <code class="one-line-code">*--</code>):</strong> Caracteriza um vínculo de forte dependência existencial. A "Parte" não possui autonomia. Se o objeto principal ("Todo") for eliminado do sistema, todos os objetos dependentes ("Partes") que o constituem são destruídos em simultâneo.
+      <ul>
+        <li><em>Exemplo:</em> Um Computador possui um Processador. Se o computador deixar de existir no sistema, o processador integrado perde o sentido contextual e é destruído conjuntamente.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h5>Multiplicidade</h5>
+  <p>A multiplicidade define as regras de negócio em relação ao número de instâncias que podem participar ativamente numa associação. A leitura da multiplicidade deve ser feita sempre direcionando o olhar para a <strong>extremidade oposta</strong> da linha de relacionamento.</p>
+  <ul>
+    <li><code class="one-line-code">1</code>: Exatamente uma instância.</li>
+    <li><code class="one-line-code">0..*</code> ou <code class="one-line-code">*</code>: Zero ou várias instâncias.</li>
+    <li><code class="one-line-code">1..*</code>: No mínimo uma instância, sem limite superior.</li>
+  </ul>
+
+  <h5>Equivalência no Código Fonte</h5>
+  <p>Sempre que o diagrama de classes indicar uma Associação, Agregação ou Composição entre uma Classe A e uma Classe B, a implementação prática exige que a Classe A possua um atributo interno estruturado para armazenar o objeto (ou um vetor/array de objetos) pertencente à Classe B.</p>
 </div>
-
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <p>Cenários de aplicação profissional em breve...</p>
-</section>
-
-<section class="section-box">
-  <h2>Referências</h2>
-  <ul>
-    <li>Documentação oficial e bibliografia recomendada.</li>
-  </ul>
-</section>
 
 <section class="section-box">
   <h2>Para Praticar</h2>

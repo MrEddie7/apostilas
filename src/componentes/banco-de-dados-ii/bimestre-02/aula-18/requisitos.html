@@ -1,23 +1,25 @@
 ---
 title: "Engenharia de Requisitos do Sistema"
 aula_numero: "18"
-description: "Requisitos de Negócio, Funcionais e Não Funcionais"
-tags:
-- aula
-- bimestre-02
+subject: "bando-de-dados-ii"
+description: "Para que o banco de dados seja considerado homologável, a estrutura física, lógica e de segurança deve dar
+suporte direto às regras e requisitos listados abaixo."
 ---
-
-<section class="section-box">
-  <p>Para que o banco de dados seja considerado homologável, a estrutura física, lógica e de segurança deve dar suporte direto às regras e requisitos listados abaixo.</p>
-</section>
 
 <section class="section-box">
   <h2>A. Requisitos de Negócio (RN)</h2>
   <p>As regras macro que definem as premissas de conformidade e o valor estratégico do software.</p>
   <ul>
-    <li><strong>RN01 - Controle Preventivo de Endividamento:</strong> O saldo acumulado da conta do assinante nunca poderá ficar negativo. O sistema de banco de dados deve ser planejado para impedir registros que invalidem a integridade financeira do fluxo de caixa.</li>
-    <li><strong>RN02 - Classificação Rígida de Fluxo:</strong> Não são permitidos registros flutuantes ou genéricos de reprodução de mídia. Toda e qualquer ação de consumo deve estar estritamente vinculada a uma categoria rastreável para fins de auditoria e BI.</li>
-    <li><strong>RN03 - Histórico Inalterável (Imutabilidade):</strong> Por motivos de auditoria fiscal de direitos autorais, os logs e históricos de reprodução gravados são definitivos. É terminantemente proibido o uso de comandos que apaguem ou editem o rastro histórico de visualizações de um perfil, mesmo que o vídeo em questão seja removido do catálogo ativo.</li>
+    <li><strong>RN01 - Controle Preventivo de Endividamento:</strong> O saldo acumulado da conta do assinante nunca
+      poderá ficar negativo. O sistema de banco de dados deve ser planejado para impedir registros que invalidem a
+      integridade financeira do fluxo de caixa.</li>
+    <li><strong>RN02 - Classificação Rígida de Fluxo:</strong> Não são permitidos registros flutuantes ou genéricos de
+      reprodução de mídia. Toda e qualquer ação de consumo deve estar estritamente vinculada a uma categoria rastreável
+      para fins de auditoria e BI.</li>
+    <li><strong>RN03 - Histórico Inalterável (Imutabilidade):</strong> Por motivos de auditoria fiscal de direitos
+      autorais, os logs e históricos de reprodução gravados são definitivos. É terminantemente proibido o uso de
+      comandos que apaguem ou editem o rastro histórico de visualizações de um perfil, mesmo que o vídeo em questão seja
+      removido do catálogo ativo.</li>
   </ul>
 </section>
 
@@ -25,11 +27,19 @@ tags:
   <h2>B. Requisitos Funcionais (RF)</h2>
   <p>O que o sistema deve ser capaz de fazer (funcionalidades analíticas e operacionais).</p>
   <ul>
-    <li><strong>RF01 - Gestão Multiperfil (Contas Compartilhadas):</strong> O sistema deve permitir o isolamento de dados de preferência e histórico para até 5 perfis sob o cadastro de uma única conta de assinante titular.</li>
-    <li><strong>RF02 - Rastreamento de Eventos (Logs de Reprodução):</strong> O sistema deve registrar de forma automática os metadados técnicos do momento em que o usuário inicia um conteúdo (endereço IP, tipo de dispositivo e carimbo de tempo).</li>
-    <li><strong>RF03 - Painel Analítico "Continuar Assistindo":</strong> O sistema deve recuperar as sessões de reprodução pausadas de um perfil específico, priorizando os acessos mais recentes.</li>
-    <li><strong>RF04 - Consolidação de Minutos por Produtora (Faturamento):</strong> O sistema deve calcular o tempo total consumido (em minutos ou horas) de todos os vídeos pertencentes a uma determinada produtora de conteúdo dentro de um período escolhido.</li>
-    <li><strong>RF05 - Auditoria de Infraestrutura Regional:</strong> O sistema deve consolidar o volume de acessos segmentando os dados simultaneamente por localização geográfica (UF) do assinante e tipo de dispositivo de conexão.</li>
+    <li><strong>RF01 - Gestão Multiperfil (Contas Compartilhadas):</strong> O sistema deve permitir o isolamento de
+      dados de preferência e histórico para até 5 perfis sob o cadastro de uma única conta de assinante titular.</li>
+    <li><strong>RF02 - Rastreamento de Eventos (Logs de Reprodução):</strong> O sistema deve registrar de forma
+      automática os metadados técnicos do momento em que o usuário inicia um conteúdo (endereço IP, tipo de dispositivo
+      e carimbo de tempo).</li>
+    <li><strong>RF03 - Painel Analítico "Continuar Assistindo":</strong> O sistema deve recuperar as sessões de
+      reprodução pausadas de um perfil específico, priorizando os acessos mais recentes.</li>
+    <li><strong>RF04 - Consolidação de Minutos por Produtora (Faturamento):</strong> O sistema deve calcular o tempo
+      total consumido (em minutos ou horas) de todos os vídeos pertencentes a uma determinada produtora de conteúdo
+      dentro de um período escolhido.</li>
+    <li><strong>RF05 - Auditoria de Infraestrutura Regional:</strong> O sistema deve consolidar o volume de acessos
+      segmentando os dados simultaneamente por localização geográfica (UF) do assinante e tipo de dispositivo de
+      conexão.</li>
   </ul>
 </section>
 
@@ -37,10 +47,21 @@ tags:
   <h2>C. Requisitos Não Funcionais (RNF)</h2>
   <p>Como o sistema deve se comportar (restrições técnicas, segurança, performance e arquitetura).</p>
   <ul>
-    <li><strong>RNF01 - Padronização de Nomenclatura Relacional:</strong> Todas as tabelas físicas criadas no SGBD devem utilizar nomenclatura obrigatória no plural. Todas as chaves primárias devem adotar estritamente o identificador universal id.</li>
-    <li><strong>RNF02 - Precisão Geométrica Numérica:</strong> Campos que envolvem valores financeiros (assinaturas) ou agregações matemáticas complexas de tempo não podem utilizar tipos de dados de precisão aproximada (ponto flutuante) devido ao risco de perda de centavos por arredondamento computacional.</li>
-    <li><strong>RNF03 - Controle de Acesso Baseado em Papéis (RBAC):</strong> O banco de dados deve implementar privilégios de segurança distintos. A aplicação que interage com o usuário final não pode possuir privilégios de alteração de tabelas (DDL) ou acesso total aos logs históricos de auditoria.</li>
-    <li><strong>RNF04 - Mascaramento de Dados Sensíveis (Conformidade LGPD):</strong> A infraestrutura deve garantir que analistas de marketing corporativo consigam extrair relatórios demográficos e estatísticos sem que tenham acesso visual direto a dados sensíveis dos usuários (como CPF, e-mail e nome real).</li>
-    <li><strong>RNF05 - Otimização de Resposta (Tuning):</strong> Consultas de alta demanda na plataforma (como a montagem da tela inicial do usuário) não podem realizar varreduras completas em tabelas (Full Table Scan). O tempo de resposta para recuperação de índices de engajamento em bases de dados massivas deve ser medido em milissegundos.</li>
+    <li><strong>RNF01 - Padronização de Nomenclatura Relacional:</strong> Todas as tabelas físicas criadas no SGBD devem
+      utilizar nomenclatura obrigatória no plural. Todas as chaves primárias devem adotar estritamente o identificador
+      universal id.</li>
+    <li><strong>RNF02 - Precisão Geométrica Numérica:</strong> Campos que envolvem valores financeiros (assinaturas) ou
+      agregações matemáticas complexas de tempo não podem utilizar tipos de dados de precisão aproximada (ponto
+      flutuante) devido ao risco de perda de centavos por arredondamento computacional.</li>
+    <li><strong>RNF03 - Controle de Acesso Baseado em Papéis (RBAC):</strong> O banco de dados deve implementar
+      privilégios de segurança distintos. A aplicação que interage com o usuário final não pode possuir privilégios de
+      alteração de tabelas (DDL) ou acesso total aos logs históricos de auditoria.</li>
+    <li><strong>RNF04 - Mascaramento de Dados Sensíveis (Conformidade LGPD):</strong> A infraestrutura deve garantir que
+      analistas de marketing corporativo consigam extrair relatórios demográficos e estatísticos sem que tenham acesso
+      visual direto a dados sensíveis dos usuários (como CPF, e-mail e nome real).</li>
+    <li><strong>RNF05 - Otimização de Resposta (Tuning):</strong> Consultas de alta demanda na plataforma (como a
+      montagem da tela inicial do usuário) não podem realizar varreduras completas em tabelas (Full Table Scan). O tempo
+      de resposta para recuperação de índices de engajamento em bases de dados massivas deve ser medido em
+      milissegundos.</li>
   </ul>
 </section>

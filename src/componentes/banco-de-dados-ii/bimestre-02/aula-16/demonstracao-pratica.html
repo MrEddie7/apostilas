@@ -1,0 +1,200 @@
+---
+layout: exercicio
+title: "Laboratório Prático: Otimização de Performance com Índices (INDEX)"
+exercicio_numero: "01"
+aula_numero: "16"
+description: "Demonstração prática de otimização de performance com índices."
+---
+
+<section class="section-box">
+    <h2>Enunciado</h2>
+    <p>Por padrão, quando uma busca é realizada utilizando a cláusula <code>WHERE</code>, o SGBD precisa escanear o
+        arquivo de dados inteiro no disco rígido, linha por linha, para encontrar as correspondências. Esse
+        comportamento é conhecido como <strong>Full Table Scan</strong>. À medida que o banco de dados cresce, essa
+        operação se torna lenta e consome muita memória do servidor. Para solucionar esse gargalo, criamos
+        <strong>Índices</strong>, que funcionam como o índice remissivo de um livro técnico, apontando diretamente para
+        o endereço físico do registro no disco através de uma estrutura de árvore equilibrada (B+Tree).
+    </p>
+
+    <hr>
+
+    <h3>1. Estrutura das Tabelas (Banco TechForge)</h3>
+    <p>Criação das tabelas para o experimento, englobando o cadastro de clientes e o histórico de movimentações de
+        estoque de hardware:</p>
+
+    <div class="code-container">
+        <pre><code class="language-sql">-- Limpeza preventiva do ambiente de teste
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS movimentacoes_estoque;
+DROP TABLE IF EXISTS clientes_teste;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- Tabela de Clientes
+CREATE TABLE clientes_teste (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    nivel_cadastro VARCHAR(20) NOT NULL
+);
+
+-- Tabela de Movimentação de Estoque (Alvo dos testes de carga)
+CREATE TABLE movimentacoes_estoque (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT,
+    componente VARCHAR(100) NOT NULL,
+    tipo_movimentacao VARCHAR(20) NOT NULL,
+    quantidade INT NOT NULL,
+    data_registro DATE NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES clientes_teste(id)
+);</code></pre>
+    </div>
+
+    <hr>
+
+    <h3>2. Carga de Dados Massiva (Crescimento Exponencial)</h3>
+    <p>Para gerar um volume de dados suficiente que force o SGBD a gastar tempo de processamento físico em disco,
+        utilizaremos uma técnica de auto-inserção geométrica. Cada comando executado duplica o tamanho atual da tabela:
+    </p>
+
+    <div class="code-container">
+        <pre><code class="language-sql">-- 1. Carga inicial base (5 registros)
+INSERT INTO clientes_teste (id, nome, nivel_cadastro) VALUES 
+(1, 'Carlos Silva', 'Premium'),
+(2, 'Mariana Costa', 'Regular'),
+(3, 'Fernanda Lima', 'Premium');
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro) VALUES
+(1, 'Placa de Vídeo RTX 4070', 'VENDA', 1, '2026-01-05'),
+(2, 'Processador Ryzen 7', 'VENDA', 2, '2026-01-06'),
+(3, 'Memória RAM DDR5', 'ENTRADA', 50, '2026-01-07'),
+(1, 'Fonte Modular 850W', 'VENDA', 1, '2026-01-08'),
+(2, 'SSD NVMe 2TB', 'ENTRADA', 20, '2026-01-09');
+
+-- 2. Loop Geométrico: Execute cada linha abaixo em sequência para duplicar a tabela exponencialmente
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 10 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 20 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 40 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 80 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 160 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 320 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 640 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 1.280 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 2.560 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 5.120 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 10.240 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 20.480 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 40.960 linhas
+
+INSERT INTO movimentacoes_estoque (id_cliente, componente, tipo_movimentacao, quantidade, data_registro)
+SELECT id_cliente, componente, tipo_movimentacao, quantidade, data_registro FROM movimentacoes_estoque; -- 81.920 linhas
+
+-- 3. Validação do volume total injetado
+SELECT COUNT(*) FROM movimentacoes_estoque;</code></pre>
+    </div>
+
+    <hr>
+
+    <h3>3. O Cenário Sem Índice: Analisando o Full Table Scan</h3>
+    <p>Antes de aplicar qualquer otimização, uma busca por uma string exata permite auditar o comportamento do motor do
+        banco de dados:</p>
+
+    <div class="code-container">
+        <pre><code class="language-sql">-- Execução da consulta com o comando EXPLAIN
+EXPLAIN SELECT * FROM movimentacoes_estoque 
+WHERE tipo_movimentacao = 'ENTRADA';</code></pre>
+    </div>
+
+    <p>É preciso observar as colunas geradas pelo comando <code>EXPLAIN</code>. A coluna <code>type</code> exibirá o
+        valor <strong>ALL</strong> (indicando que 100% das linhas físicas foram lidas no HD) e a coluna <code>key</code>
+        retornará <strong>NULL</strong>, comprovando a ausência de chaves de aceleração.</p>
+
+    <hr>
+
+    <h3>4. Aplicação Prática: Exemplos Diferentes de Índices</h3>
+    <p>Abaixo estão mapeadas as principais estratégias de indexação com base nos padrões de acesso do sistema de
+        e-commerce:</p>
+
+    <h4>Exemplo A: Índice Simples (Filtros de Categoria/Status)</h4>
+    <p>Criado sobre uma única coluna que recebe buscas constantes na cláusula WHERE:</p>
+    <div class="code-container">
+        <pre><code class="language-sql">CREATE INDEX idx_mov_tipo ON movimentacoes_estoque(tipo_movimentacao);</code></pre>
+    </div>
+
+    <h4>Exemplo B: Índice Composto (Relatórios de Auditoria Cruzada)</h4>
+    <p>Indicado quando a aplicação realiza buscas casadas utilizando duas ou mais colunas simultaneamente. A ordem das
+        colunas determina o portão de entrada da árvore de busca:</p>
+    <div class="code-container">
+        <pre><code class="language-sql">CREATE INDEX idx_mov_componente_data ON movimentacoes_estoque(componente, data_registro);</code></pre>
+    </div>
+
+    <hr>
+
+    <h3>5. O Cenário Com Índice: Validando a Otimização</h3>
+    <p>Após a criação dos índices, a execução da consulta de diagnóstico com os mesmos critérios anteriores permite
+        validar a mudança:</p>
+
+    <div class="code-container">
+        <pre><code class="language-sql">-- Auditoria da consulta após a indexação
+EXPLAIN SELECT * FROM movimentacoes_estoque 
+WHERE tipo_movimentacao = 'ENTRADA';</code></pre>
+    </div>
+
+    <p>Ao rodar este comando, a coluna <code>type</code> mudará de ALL para <strong>ref</strong>. A coluna
+        <code>key</code> mostrará o nome do índice utilizado (<code>idx_mov_tipo</code>) e a coluna <code>rows</code>
+        indicará que o banco de dados leu apenas a fração exata de registros necessários, ignorando o restante das
+        linhas da tabela.
+    </p>
+
+    <hr>
+
+    <h3>6. Testando o Índice Composto e a Regra de Escopo</h3>
+    <p>Para fixar o entendimento sobre índices compostos, o plano de execução de duas consultas analíticas distintas
+        deve ser comparado:</p>
+
+    <div class="code-container">
+        <pre><code class="language-sql">-- Consulta 1: Utiliza o índice composto (passa pelas duas colunas indexadas)
+EXPLAIN SELECT * FROM movimentacoes_estoque 
+WHERE componente = 'Processador Ryzen 7' AND data_registro = '2026-01-06';
+
+-- Consulta 2: NÃO utiliza o índice composto (Regra da Esquerda para a Direita)
+EXPLAIN SELECT * FROM movimentacoes_estoque 
+WHERE data_registro = '2026-01-06';</code></pre>
+    </div>
+
+</section>
+<section class="tip-box">
+    <h4>Dicas & Lembretes</h4>
+    <ul>
+        <li>O comando <code>EXPLAIN</code> é a ferramenta oficial do engenheiro de dados para validar se o plano de
+            execução elaborado pelo otimizador do SGBD está correto antes de enviar o código para o ambiente de
+            produção.</li>
+        <li>A coluna <code>possible_keys</code> indica quais índices criados eram elegíveis para aquela consulta e
+            qual deles foi o escolhido final para a execução.</li>
+        <li>Sempre verifique a sintaxe específica do seu SGBD, pois alguns motores tratam índices implícitos de
+            chaves estrangeiras de forma automatizada no momento da criação das tabelas.</li>
+    </ul>
+</section>

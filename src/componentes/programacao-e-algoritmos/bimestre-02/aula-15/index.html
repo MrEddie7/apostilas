@@ -3,55 +3,396 @@ title: "Estruturas de Repetição II: For"
 aula_numero: "15"
 description: "Laços de repetição controlados por contadores."
 tags:
-  - aula
-  - "bimestre-02"
+- aula
+- "bimestre-02"
 ---
 
 <section class="section-box">
-  <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo da aula 15 em desenvolvimento...</p>
+  <h2>Teoria & Conceitos: A Estrutura de Repetição For</h2>
+  <p>A estrutura de repetição <code>for</code> (conhecida como "faça-para" em pseudocódigo) é um mecanismo fundamental
+    que permite ao computador executar um conjunto de instruções um número específico de vezes. Diferente do laço
+    <code>while</code>, que é focado em uma condição que pode mudar de forma imprevisível, o <code>for</code> é ideal
+    para situações onde se conhece de antemão quantas iterações são necessárias, utilizando uma variável auxiliar
+    chamada contador.
+  </p>
+
+  <h3>1. Anatomia do Laço for em Java</h3>
+  <p>O comando <code>for</code> organiza em uma única linha os três elementos essenciais para o controle de uma
+    repetição, o que torna o código mais legível e fácil de manter.</p>
+  <p><strong>Sintaxe:</strong></p>
+  <div class="code-container">
+    <pre><code class="language-java">for (inicialização; condição; atualização) {
+    // Bloco de comandos (corpo do laço)
+}</code></pre>
+  </div>
+  <ul>
+    <li><strong>Inicialização:</strong> Executada apenas uma vez, antes do início do laço. Geralmente é usada para
+      declarar e atribuir um valor inicial à variável de controle (ex: <code>int i = 0</code>).</li>
+    <li><strong>Condição (Teste):</strong> Uma expressão booleana avaliada antes de cada iteração. Se for
+      <code>true</code>, o corpo do laço é executado; se for <code>false</code>, o laço termina.
+    </li>
+    <li><strong>Atualização:</strong> Executada ao final de cada repetição do corpo do laço, logo antes de testar a
+      condição novamente. É usada para incrementar ou decrementar o contador (ex: <code>i++</code>).</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. Exemplos de Contagem Sequencial</h3>
+  <p><strong>A. Contagem Crescente (Padrão)</strong><br>
+    Este é o uso mais comum, percorrendo um intervalo de valores de forma ascendente.</p>
+  <div class="code-container">
+    <pre><code class="language-java">// Imprime os números de 1 a 10
+for (int i = 1; i &lt;= 10; i++) {
+    System.out.println("Número: " + i);
+}</code></pre>
+  </div>
+  <ul>
+    <li><strong>Nota:</strong> Programadores Java frequentemente preferem iniciar a contagem em 0 e usar o operador
+      <code>&lt;</code> na condição (ex: <code>i &lt; 10</code>), o que é especialmente útil ao lidar com arrays
+      posteriormente.
+    </li>
+  </ul>
+
+  <p><strong>B. Contagem Decrescente</strong><br>
+    Para contar de trás para frente, inicializamos o contador com um valor alto, usamos uma condição de "maior ou igual"
+    e aplicamos o decremento.</p>
+  <div class="code-container">
+    <pre><code class="language-java">// Contagem regressiva para um lançamento
+for (int i = 10; i &gt;= 1; i--) {
+    System.out.print(i + "... ");
+}
+System.out.println("Fogo!");</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Controle com Incrementos Customizados ("Passo")</h3>
+  <p>Você não precisa aumentar o contador apenas de um em um. O "passo" (incremento) pode ser qualquer valor inteiro, o
+    que melhora o desempenho ao saltar iterações desnecessárias.</p>
+  <p><strong>Exemplo: Números Pares entre 2 e 20</strong></p>
+  <div class="code-container">
+    <pre><code class="language-java">for (int n = 2; n &lt;= 20; n = n + 2) {
+    System.out.println(n); // Imprime 2, 4, 6... 20
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>4. Comparação: while vs for</h3>
+  <p>Qualquer laço <code>for</code> pode ser escrito como um <code>while</code>, mas o <code>for</code> mantém os
+    componentes de controle agrupados no cabeçalho.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Estrutura <code>for</code></th>
+        <th>Equivalente em <code>while</code></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <pre><code class="language-java">for (int i = 0; i &lt; 5; i++) {
+    // ...
+}</code></pre>
+        </td>
+        <td>
+          <pre><code class="language-java">int i = 0;
+while (i &lt; 5) {
+    // ...
+    i++;
+}</code></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Se a condição de continuação for deixada vazia em um <code>for</code>, ela é tratada como sempre verdadeira,
+    criando um laço infinito, como em <code>for (;;)</code>.</p>
+
+  <hr>
+
+  <h3>5. Aninhamento de Laços for</h3>
+  <p>É comum colocar um laço dentro de outro, especialmente para processar dados em formato de grade ou matriz (linhas e
+    colunas). Um exemplo clássico é a criação de uma tabela de multiplicação.</p>
+  <p><strong>Exemplo: Tabuada do 1 ao 12</strong></p>
+  <div class="code-container">
+    <pre><code class="language-java">for (int linha = 1; linha &lt;= 12; linha++) {
+    for (int col = 1; col &lt;= 12; col++) {
+        System.out.printf("%4d", linha * col); // Formatação para colunas alinhadas
+    }
+    System.out.println(); // Nova linha após cada linha da tabuada
+}</code></pre>
+  </div>
+  <ul>
+    <li><strong>Funcionamento:</strong> Neste cenário, para cada iteração do laço externo (linha), o laço interno (col)
+      executa todas as suas 12 repetições.</li>
+  </ul>
+
+  <hr>
+
+  <h3>6. Uso de Múltiplas Variáveis</h3>
+  <p>A sintaxe do Java permite inicializar e atualizar mais de uma variável no mesmo cabeçalho do <code>for</code>,
+    separando-as por vírgulas.</p>
+  <div class="code-container">
+    <pre><code class="language-java">// Conta para cima e para baixo ao mesmo tempo
+for (int i = 1, j = 10; i &lt;= 10; i++, j--) {
+    System.out.println("i: " + i + " | j: " + j);
+}</code></pre>
+  </div>
 </section>
 
 <section class="section-box">
-  <h2>Exemplo de Código</h2>
+  <h2>Exemplos de Código</h2>
+
+  <h3>1. Nível Básico: Contagem Crescente e Decrescente (Sintaxe Limpa)</h3>
+  <p><strong>Objetivo:</strong> Compreender a anatomia do <code>for</code> e como o fluxo altera ao inverter o operador
+    de incremento (<code>++</code>) para decremento (<code>--</code>).</p>
   <div class="code-container">
-    <pre><code class="language-java">// Em breve...</code></pre>
+    <pre><code class="language-java">public class ContagemSimples {
+    public static void main(String[] args) {
+        System.out.println("--- CONTAGEM CRESCENTE (1 A 5) ---");
+        // Inicialização: i começa em 1
+        // Condição: repete enquanto i for menor ou igual a 5
+        // Passo: aumenta de 1 em 1
+        for (int i = 1; i &lt;= 5; i++) {
+            System.out.println("Contador atual: " + i);
+        }
+
+        System.out.println("\n--- CONTAGEM REGRESSIVA (5 A 1) ---");
+        // Inicialização: i começa em 5
+        // Condição: repete enquanto i for maior ou igual a 1
+        // Passo: diminui de 1 em 1
+        for (int i = 5; i &gt;= 1; i--) {
+            System.out.println("Faltam: " + i);
+        }
+    }
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>2. Nível Intermediário: Filtros e Saltos (Exibindo Números Pares)</h3>
+  <p><strong>Objetivo:</strong> Mostrar que a etapa de atualização do <code>for</code> pode avançar de 2 em 2 (ou
+    qualquer outro valor) e como embutir condições (<code>if</code>) dentro do fluxo repetitivo.</p>
+  <div class="code-container">
+    <pre><code class="language-java">public class FiltroNumeros {
+    public static void main(String[] args) {
+        System.out.println("--- ABORDAGEM 1: AVANÇANDO DE 2 EM 2 ---");
+        // i += 2 faz o laço saltar os números ímpares diretamente
+        for (int i = 0; i &lt;= 10; i += 2) {
+            System.out.println("Par: " + i);
+        }
+
+        System.out.println("\n--- ABORDAGEM 2: USANDO CONDICIONAL (IF) ---");
+        // O laço passa por todos os números, mas o IF filtra os pares usando o resto da divisão (%)
+        for (int i = 0; i &lt;= 10; i++) {
+            if (i % 2 == 0) {
+                System.out.println("Par detectado: " + i);
+            }
+        }
+    }
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>3. Nível Avançado: Acumuladores e Médias no Console</h3>
+  <p><strong>Objetivo:</strong> Aplicar o conceito de acumulador (variável que soma valores a cada volta do laço). O
+    programa coleta o tamanho da turma, roda o <code>for</code> aquela quantidade exata de vezes capturando as notas, e
+    calcula a média final da sala.</p>
+  <div class="code-container">
+    <pre><code class="language-java">import java.util.Scanner;
+
+public class MediaTurma {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Quantos alunos existem na turma? ");
+        int totalAlunos = scanner.nextInt();
+        
+        double somaNotas = 0; // Variável acumuladora
+
+        // O laço repete exatamente o número de vezes definido pelo usuário
+        for (int i = 1; i &lt;= totalAlunos; i++) {
+            System.out.print("Digite a nota do aluno " + i + ": ");
+            double nota = scanner.nextDouble();
+            
+            somaNotas += nota; // Acumula a nota informada: somaNotas = somaNotas + nota
+        }
+
+        // Cálculo da média fora do laço (após coletar todos os dados)
+        double mediaGeral = somaNotas / totalAlunos;
+        
+        System.out.println("\n--- RELATÓRIO DA TURMA ---");
+        System.out.println("Soma total das notas: " + somaNotas);
+        System.out.println("Média geral da sala: " + mediaGeral);
+        
+        scanner.close();
+    }
+}</code></pre>
+  </div>
+
+  <hr>
+
+  <h3>4. Nível "Mestre dos Algoritmos": Laços Aninhados (A Tabuada Completa)</h3>
+  <p><strong>Objetivo:</strong> Demonstrar o funcionamento de um laço dentro de outro laço (laços aninhados). Para cada
+    "volta" do primeiro <code>for</code> (multiplicando), o segundo <code>for</code> (multiplicador) executa o seu ciclo
+    completo de 1 a 10.</p>
+  <div class="code-container">
+    <pre><code class="language-java">public class TabuadaCompleta {
+    public static void main(String[] args) {
+        System.out.println("=== TABUADAS DO 1 AO 3 ===");
+
+        // Laço externo: controla qual tabuada está sendo calculada
+        for (int multiplicando = 1; multiplicando &lt;= 3; multiplicando++) {
+            System.out.println("\nTabuada do " + multiplicando + ":");
+            System.out.println("----------------");
+
+            // Laço interno: roda de 1 a 10 para cada ciclo do laço externo
+            for (int multiplicador = 1; multiplicador &lt;= 10; multiplicador++) {
+                int resultado = multiplicando * multiplicador;
+                System.out.println(multiplicando + " x " + multiplicador + " = " + resultado);
+            }
+            
+            System.out.println("----------------");
+        }
+    }
+}</code></pre>
   </div>
 </section>
 
 <section class="section-box">
   <h2>Representação Gráfica</h2>
+
+  <h3>1. Anatomia do Comando for (A Ordem de Execução)</h3>
+  <p>Este diagrama mapeia a linha de código padrão da estrutura e numera a ordem exata em que o Java processa cada uma
+    das quatro partes fundamentais da assinatura.</p>
   <div class="mermaid">
     graph TD
-    A[Início] --> B[Processamento]
-    B --> C[Fim]
+    subgraph Corpo do Laço
+    D[" 3. Bloco de Comandos ; }"]
+    end
+
+    subgraph Assinatura do Comando: for
+    A["for ( 1. Inicialização ;"] --- B[" 2. Condição ;"]
+    B --- C[" 4. Incremento ) {"]
+    end
+
+
+
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style B fill:#fff3e0,stroke:#ff6f00,stroke-width:2px
+    style C fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style D fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+  </div>
+  <ul>
+    <li><strong>Inicialização:</strong> Executada apenas uma vez, assim que o programa chega ao laço.</li>
+    <li><strong>Condição:</strong> Uma expressão lógica (teste). Se for verdadeira, entra no bloco. Se for falsa, sai do
+      laço.</li>
+    <li><strong>Bloco de Comandos:</strong> Todo o código contido entre as chaves <code>{ }</code> é processado.</li>
+    <li><strong>Incremento/Passo:</strong> A variável de controle é atualizada somente após o término do bloco de
+      comandos, e o fluxo retorna imediatamente para o teste da Condição (passo 2).</li>
+  </ul>
+
+  <hr>
+
+  <h3>2. Fluxograma Tradicional do for</h3>
+  <p>Esta é a representação clássica em algoritmos (Lógica Visual), demonstrando os caminhos que o fluxo do programa faz
+    dependendo do resultado do losango de decisão.</p>
+  <div class="mermaid">
+    graph TD
+    Start([Início da Estrutura]) --> Init[1. Inicialização<br>Ex: int i = 1]
+
+    Init --> Test{2. Condição<br>Ex: i &lt;= 5}
+
+    Test -->|Verdadeiro| Code[3. Bloco de Comandos<br>Ex: Código interno]
+    Test -->|Falso| End([Fim do Laço<br>Próxima Linha])
+
+    Code --> Inc[4. Passo / Incremento<br>Ex: i++]
+    Inc --> Test
+
+    style Test fill:#fff3e0,stroke:#ff6f00
+    style Code fill:#e8f5e9,stroke:#2e7d32
+    style Init fill:#e1f5fe,stroke:#01579b
+  </div>
+
+  <hr>
+
+  <h3>3. Rastreamento de Execução (Linha do Tempo de Variável)</h3>
+  <p>Este diagrama de sequência ajuda o aluno a visualizar o "vaivém" do laço simulando uma contagem de 1 a 2
+    (<code>for(int i=1; i&lt;=2; i++)</code>), evidenciando em qual momento a condição falha e encerra a estrutura.</p>
+  <div class="mermaid">
+    sequenceDiagram
+    autonumber
+    actor Fluxo as Fluxo do Programa
+    participant Cond as Teste Condicional (i &lt;= 2)
+    participant Bloco as Bloco de Comandos (Console)
+    participant Inc as Incrementador (i++)
+
+    Note over Fluxo: Entra no laço:<br />Inicializa i = 1
+
+    Fluxo->>Cond: Verifica se 1 &lt;= 2?
+    Cond-->>Fluxo: Resposta: Verdadeiro
+    Fluxo->>Bloco: Executa o código interno com i=1
+    Bloco->>Inc: Finaliza as chaves e vai para o passo
+    Note over Inc: i é atualizado para 2
+
+    Inc->>Cond: Verifica se 2 &lt;= 2?
+    Cond-->>Fluxo: Resposta: Verdadeiro
+    Fluxo->>Bloco: Executa o código interno com i=2
+    Bloco->>Inc: Finaliza as chaves e vai para o passo
+    Note over Inc: i é atualizado para 3
+
+    Inc->>Cond: Verifica se 3 &lt;= 2?
+    Cond-->>Fluxo: Resposta: FALSO
+    Fluxo->>Fluxo: Sai do laço e vai para a linha de baixo
   </div>
 </section>
 
 <div class="tip-box">
   <h4>Dicas & Lembretes</h4>
   <ul>
-    <li>Pratique os conceitos logo após a leitura.</li>
+    <li><strong>Use para contagens conhecidas:</strong> Escolha o <code>for</code> sempre que souber exatamente onde o
+      laço começa e onde ele termina (ex: repetir 10 vezes, passar por todos os meses do ano).</li>
+    <li><strong>Cuidado com o escopo:</strong> Se criar a variável dentro da assinatura do laço
+      (<code>for (int i = 0; ...)</code>), ela só existe lá dentro. Tentar usá-la depois do fechamento das chaves dará
+      erro de compilação.</li>
+    <li><strong>Mude o passo se necessário:</strong> O terceiro termo não precisa ser apenas <code>i++</code>. Pode usar
+      <code>i += 2</code> para saltar de dois em dois, ou <code>i--</code> para fazer contagens regressivas.
+    </li>
+    <li><strong>Aproveite a legibilidade:</strong> O <code>for</code> é muito querido porque centraliza a inicialização,
+      a condição e o passo em uma única linha, tornando o código mais limpo do que um <code>while</code>.</li>
+    <li><strong>Não coloque ponto e vírgula após o parêntese:</strong> Escrever
+      <code>for (int i = 0; i &lt; 10; i++);</code> com um <code>;</code> no final vai "cortar" o laço. O bloco de
+      chaves abaixo dele será executado apenas uma vez, isolado do loop.
+    </li>
+    <li><strong>O loop infinito também acontece no for:</strong> Se a condição nunca se tornar falsa (ex:
+      <code>for (int i = 1; i &gt;= 1; i++)</code> ou esquecer de colocar o incremento), o terminal vai travar em loop
+      infinito.
+    </li>
+    <li><strong>Atenção ao valor final da variável:</strong> Se um laço tem a condição <code>i &lt; 5</code> e
+      incrementa de um em um, o loop para quando <code>i</code> chega a 5. Se a variável estivesse visível fora do laço,
+      o valor guardado nela seria 5 (o primeiro valor a dar falso) e não 4.</li>
+    <li><strong>Cuidado ao aninhar laços:</strong> Se colocar um <code>for</code> dentro de outro, lembre-se de usar
+      variáveis diferentes (como <code>i</code> no laço de fora e <code>j</code> no laço de dentro) para que um loop não
+      altere ou quebre a contagem do outro.</li>
   </ul>
 </div>
 
 <section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <p>Aplicação real em desenvolvimento...</p>
-</section>
-
-<section class="section-box">
   <h2>Referências</h2>
   <ul>
-    <li>Material de apoio em breve.</li>
+    <li><a href="https://www.w3schools.com/java/java_for_loop.asp" target="_blank">W3School: Java For Loop</a></li>
+    <li><a href="https://www.geeksforgeeks.org/java/java-for-loop-with-examples/" target="_blank">Geeks For Geeks: Java
+        For Loop</a></li>
+    <li><a href="https://pet-comp-ufsc.github.io/tutorials/langs/java/for-while/for.html" target="_blank">UFSC:
+        Estrutura for</a></li>
   </ul>
 </section>
 
 <section class="section-box">
   <h2>Para Praticar</h2>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
+    <li><a href="./exercicio-01">Exercício 01: Atividade Prática</a></li>
+    <li><a href="./exercicio-02">Exercício 01: Atividade Prática</a></li>
   </ul>
 </section>
-

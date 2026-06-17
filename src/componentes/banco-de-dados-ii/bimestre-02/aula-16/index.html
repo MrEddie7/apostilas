@@ -2,6 +2,7 @@
 title: "Índices"
 aula_numero: "16"
 description: "Clustered e Non-Clustered."
+componente: Banco de Dados II
 tags:
 - aula
 - bimestre-02
@@ -9,46 +10,441 @@ tags:
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo em desenvolvimento...</p>
+
+  <h3>1. O que é um Índice?</h3>
+  <p>
+    Um índice é uma estrutura de dados associada a uma tabela que permite ao SGBD localizar linhas específicas de forma
+    muito mais rápida do que se tivesse que ler a tabela inteira (operação conhecida como <em>Table Scan</em> ou
+    <em>Sequential Scan</em>).
+  </p>
+  <p>
+    <strong>Analogia do Livro:</strong> As fontes utilizam a analogia de um livro técnico:
+  </p>
+  <ul>
+    <li><strong>Índice Agrupado (Clustered):</strong> Representa os divisores tabulados (orelhas) que organizam o livro
+      fisicamente em capítulos.</li>
+    <li><strong>Índice Não Agrupado (Non-Clustered):</strong> Representa o índice remissivo ao final do livro, que
+      indica em qual página (ponteiro) um termo específico se encontra.</li>
+  </ul>
+
+  <h3>2. Índice Agrupado (Clustered Index)</h3>
+  <p>
+    O índice agrupado define a ordem física em que os dados são armazenados no disco.
+  </p>
+  <ul>
+    <li><strong>Unicidade:</strong> Como os dados só podem ser organizados fisicamente de uma única forma, cada tabela
+      pode ter apenas um índice agrupado.</li>
+    <li><strong>Relação com a Chave Primária:</strong> Na maioria dos SGBDs modernos, a definição de uma Chave Primária
+      (PK) cria automaticamente um índice agrupado para aquela coluna.</li>
+  </ul>
+
+  <p><strong>Exemplo Prático (Criação de Tabela com PK/Clustered):</strong></p>
+  <p><em>No MySQL (Engine InnoDB):</em> No InnoDB, a tabela é organizada fisicamente pela chave primária (chamada de
+    <em>Clustered Key</em>).
+  </p>
+  <div class="code-container">
+    <pre><code class="language-sql">CREATE TABLE produto (
+    id_produto INT NOT NULL,
+    descricao VARCHAR(100),
+    PRIMARY KEY (id_produto) -- O MySQL cria o índice clustered aqui
+);</code></pre>
+  </div>
+
+  <p><em>No PostgreSQL:</em> O PostgreSQL armazena os dados em uma estrutura de "heap" e não impõe uma ordem física
+    estritamente vinculada à PK por padrão, mas você pode usar o comando <code class="one-line-code">CLUSTER</code> para
+    reordenar a tabela com base em um índice.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">CREATE TABLE produto (
+    id_produto INT PRIMARY KEY, -- Cria um índice B-tree único
+    descricao VARCHAR(100)
+);
+
+-- Para forçar a ordenação física (operação manual no Postgres):
+CLUSTER produto USING produto_pkey;</code></pre>
+  </div>
+
+  <h3>3. Índice Não Agrupado (Non-Clustered Index)</h3>
+  <p>
+    Este índice possui uma estrutura separada dos dados da tabela. Ele contém os valores da coluna indexada e ponteiros
+    que levam à localização real da linha na tabela física.
+  </p>
+  <ul>
+    <li><strong>Flexibilidade:</strong> Uma tabela pode ter múltiplos índices não agrupados para diferentes colunas (ex:
+      nome, CPF, data de cadastro).</li>
+    <li><strong>Uso:</strong> É ideal para colunas frequentemente utilizadas em cláusulas <code
+        class="one-line-code">WHERE</code> e operações de <code class="one-line-code">JOIN</code>.</li>
+  </ul>
+
+  <p><strong>Exemplo Prático (Busca por Descrição):</strong></p>
+  <p><em>No MySQL e PostgreSQL:</em></p>
+  <div class="code-container">
+    <pre><code class="language-sql">CREATE INDEX idx_desc_prod ON produto (descricao);</code></pre>
+  </div>
+  <p><strong>Nota:</strong> A sintaxe básica para índices não agrupados é idêntica em ambos, seguindo o padrão ANSI.</p>
+
+  <h4>Diferenças entre os Tipos</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Característica</th>
+        <th>Clustered (Agrupado)</th>
+        <th>Non-Clustered (Não Agrupado)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Quantidade</strong></td>
+        <td>Apenas 1 por tabela.</td>
+        <td>Vários por tabela.</td>
+      </tr>
+      <tr>
+        <td><strong>Ordem Física</strong></td>
+        <td>Os dados são a própria estrutura do índice.</td>
+        <td>Estrutura separada da tabela física.</td>
+      </tr>
+      <tr>
+        <td><strong>Performance</strong></td>
+        <td>Extremamente rápido para buscas de intervalo.</td>
+        <td>Ótimo para buscas de valores específicos.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>4. Tipos Avançados e Diferenças Técnicas</h3>
+
+  <h4>A. Índices Funcionais (Functional Indexes)</h4>
+  <p>
+    Permitem indexar o resultado de uma função, útil para buscas que ignoram maiúsculas/minúsculas.
+  </p>
+  <ul>
+    <li><strong>PostgreSQL:</strong> Suporta nativamente.</li>
+    <li><strong>MySQL:</strong> Tradicionalmente exige o uso de colunas geradas ou gatilhos (<em>triggers</em>) para
+      simular o comportamento.</li>
+  </ul>
+
+  <p><em>PostgreSQL:</em></p>
+  <div class="code-container">
+    <pre><code class="language-sql">CREATE INDEX idx_nome_upper ON cliente (UPPER(nome_cliente));</code></pre>
+  </div>
+
+  <p><em>MySQL (Versões 5.7+):</em></p>
+  <div class="code-container">
+    <pre><code class="language-sql">ALTER TABLE cliente ADD COLUMN nome_upper VARCHAR(100) 
+AS (UPPER(nome)) VIRTUAL;
+CREATE INDEX idx_nome_upper ON cliente (nome_upper);</code></pre>
+  </div>
+
+  <h4>B. Índices Parciais (Partial Indexes)</h4>
+  <p>
+    Indexam apenas uma parte da tabela que atende a um critério, economizando espaço.
+  </p>
+  <ul>
+    <li><strong>PostgreSQL:</strong> Possui suporte nativo usando a cláusula <code class="one-line-code">WHERE</code>.
+    </li>
+    <li><strong>MySQL:</strong> Não possui suporte nativo para índices parciais diretos (indexa a coluna toda ou nada).
+    </li>
+  </ul>
+
+  <p><em>PostgreSQL:</em></p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Indexa apenas clientes ativos para buscas rápidas
+CREATE INDEX idx_clientes_ativos ON cliente (id_cliente) 
+WHERE status = 'ATIVO';</code></pre>
+  </div>
+
+  <h3>5. Checklist para Criação de Índices</h3>
+  <p>
+    Ao decidir onde aplicar índices, considere as seguintes diretrizes das fontes:
+  </p>
+  <ul>
+    <li><strong>Alta Seletividade:</strong> Indexe colunas com muitos valores diferentes. Se a coluna tiver poucos
+      valores (ex: 'Masculino'/'Feminino'), o índice raramente será usado e apenas ocupará espaço.</li>
+    <li><strong>Chaves Estrangeiras (FK):</strong> Sempre indexe FKs para tornar os <code
+        class="one-line-code">JOIN</code>s mais eficientes.</li>
+    <li><strong>Frequência de Busca:</strong> Colunas usadas constantemente em <code class="one-line-code">WHERE</code>,
+      <code class="one-line-code">ORDER BY</code> e <code class="one-line-code">GROUP BY</code> são candidatas ideais.
+    </li>
+    <li><strong>Custo de Manutenção:</strong> Lembre-se que cada índice atrasa as operações de <code
+        class="one-line-code">INSERT</code>, <code class="one-line-code">UPDATE</code> e <code
+        class="one-line-code">DELETE</code>, pois o SGBD precisa atualizar todas as estruturas de índice sempre que um
+      dado muda.</li>
+    <li><strong>Evite em Tabelas Pequenas:</strong> Se a tabela tem poucas linhas, o SGBD levará menos tempo lendo a
+      tabela toda do que consultando o índice.</li>
+  </ul>
+
+  <h3>6. Verificação (MySQL vs. PostgreSQL)</h3>
+  <p>
+    Para garantir que seu índice está sendo utilizado, utilize o comando de diagnóstico do motor do banco de dados.
+  </p>
+  <ul>
+    <li><strong>MySQL:</strong>
+      <div class="code-container">
+        <pre><code class="language-sql">EXPLAIN SELECT * FROM produto WHERE descricao = 'Papel';</code></pre>
+      </div>
+    </li>
+    <li><strong>PostgreSQL:</strong>
+      <div class="code-container">
+        <pre><code class="language-sql">EXPLAIN ANALYZE SELECT * FROM produto WHERE descricao = 'Papel';</code></pre>
+      </div>
+    </li>
+  </ul>
+  <p>
+    Se o resultado indicar <em>"Full Table Scan"</em> ou <em>"Sequential Scan"</em>, o índice foi ignorado. Se indicar
+    <em>"Index Scan"</em>, a otimização foi bem-sucedida.
+  </p>
+
+  <h3>7. Quando (e quando NÃO) criar índices</h3>
+  <p>
+    Embora melhorem a leitura, índices possuem um <strong>custo de manutenção</strong>. Toda vez que uma linha é
+    inserida (<code class="one-line-code">INSERT</code>), alterada (<code class="one-line-code">UPDATE</code>) ou
+    removida (<code class="one-line-code">DELETE</code>), todos os índices associados precisam ser atualizados pelo
+    SGBD, o que pode tornar a escrita mais lenta.
+  </p>
+  <h4>Checklist para Criação:</h4>
+  <ul>
+    <li>Colunas frequentemente utilizadas em cláusulas <code class="one-line-code">WHERE</code>.</li>
+    <li><strong>Chaves Estrangeiras (FK)</strong>, para tornar as operações de <code class="one-line-code">JOIN</code>
+      mais eficientes e performáticas.</li>
+    <li>Colunas pesquisadas por intervalos de valores (Ex: Datas ou Salários).</li>
+  </ul>
+  <h4>Quando Evitar:</h4>
+  <ul>
+    <li><strong>Baixa Seletividade:</strong> Colunas com poucos valores diferentes (ex: Sexo 'M'/'F'). O índice não será
+      utilizado pelo otimizador pois retornaria quase a tabela toda.</li>
+    <li><strong>Tabelas Pequenas:</strong> O tempo gasto para ler o índice pode ser maior do que ler a tabela
+      diretamente.</li>
+    <li><strong>Alta Volatilidade:</strong> Tabelas que sofrem milhares de inserções por segundo e poucas consultas.
+    </li>
+  </ul>
 </section>
 
 <section class="section-box">
   <h2>Exemplo de Código</h2>
-  <p>Abaixo, apresentamos exemplos práticos comparando as sintaxes entre os dois ambientes.</p>
-  <div class="code-container">
-    <pre><code class="language-sql">-- [ MySQL ]
--- Código em desenvolvimento...
+  <p>Abaixo, apresentamos exemplos práticos e cenários de aplicação de diferentes tipos de índices no banco de dados.
+  </p>
 
--- [ PostgreSQL ]
--- Código em desenvolvimento...</code></pre>
+  <h3>1. Índice Simples (Single-Column Index)</h3>
+  <p>
+    É o tipo mais comum. É criado sobre uma única coluna que é frequentemente utilizada em filtros da cláusula <code
+      class="one-line-code">WHERE</code>.
+  </p>
+  <p><strong>Cenário:</strong> O cliente entra no e-commerce e filtra as peças digitando uma categoria específica (ex:
+    buscar apenas por 'GPU').</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando o índice na coluna 'categoria' da tabela de produtos
+CREATE INDEX idx_produtos_categoria ON produtos_hardware(categoria);
+
+-- Consulta que se beneficia deste índice:
+SELECT nome_produto, preco_venda 
+FROM produtos_hardware 
+WHERE categoria = 'GPU';</code></pre>
+  </div>
+  <p>
+    <strong>Por que ajuda?</strong> Em vez de escanear todas as placas-mãe, processadores e fontes do banco de dados, o
+    MySQL vai direto ao bloco do índice de 'GPU' e traz apenas as linhas correspondentes.
+  </p>
+
+  <h3>2. Índice Composto (Composite Index)</h3>
+  <p>
+    Criado a partir de duas ou mais colunas combinadas. É extremamente útil quando a sua aplicação faz buscas frequentes
+    filtrando por múltiplos critérios simultaneamente.
+  </p>
+  <p><strong>Cenário:</strong> O painel de administração da TechForge gera relatórios de vendas filtrando por um produto
+    específico dentro de um mês/data determinada.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando um índice composto unindo o ID do produto e a data da venda
+CREATE INDEX idx_itens_produto_data ON itens_pedido(id_produto, data_venda);
+
+-- Consulta que se beneficia deste índice:
+SELECT SUM(quantidade) AS total_vendido
+FROM itens_pedido
+WHERE id_produto = 1 AND data_venda = '2026-06-01';</code></pre>
+  </div>
+  <p>
+    <strong>Regra de Ouro (Ordem das Colunas):</strong> O MySQL lê o índice da esquerda para a direita. Portanto,
+    coloque primeiro a coluna que tem maior poder de filtragem (mais seletiva) ou a que aparece sempre primeiro no <code
+      class="one-line-code">WHERE</code>.
+  </p>
+
+  <h3>3. Índice Único (UNIQUE INDEX)</h3>
+  <p>
+    Além de acelerar as consultas, este índice adiciona uma restrição de integridade ao banco de dados: ele impede a
+    inserção de valores duplicados na tabela.
+  </p>
+  <p><strong>Cenário:</strong> Cada produto de hardware na TechForge possui um código de barras internacional (EAN/GTIN)
+    que não pode ser repetido em hipótese alguma.</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Adicionando uma coluna de código de barras e criando o índice único
+ALTER TABLE produtos_hardware ADD COLUMN codigo_gtin VARCHAR(13);
+
+CREATE UNIQUE INDEX idx_produtos_gtin ON produtos_hardware(codigo_gtin);</code></pre>
+  </div>
+  <p>
+    <strong>Nota:</strong> Se tentar inserir dois produtos com o mesmo <code class="one-line-code">codigo_gtin</code>, o
+    MySQL travará a operação.
+  </p>
+
+  <h3>4. Índice de Cobertura (Covering Index)</h3>
+  <p>
+    Isto não é um tipo novo de índice na sintaxe, mas sim uma técnica avançada de design. Acontece quando o índice
+    criado contém todas as colunas solicitadas pelo <code class="one-line-code">SELECT</code>. Dessa forma, o MySQL nem
+    sequer perde tempo a abrir a tabela física no disco; ele responde à consulta lendo apenas a estrutura do próprio
+    índice na memória RAM.
+  </p>
+  <p><strong>Cenário:</strong> Uma rota da API precisa listar rapidamente quais clientes (IDs) compraram em quais datas.
+  </p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando o índice cobrindo as duas colunas
+CREATE INDEX idx_itens_cliente_data ON itens_pedido(id_cliente, data_venda);
+
+-- Consulta de Cobertura:
+SELECT id_cliente, data_venda 
+FROM itens_pedido 
+WHERE id_cliente = 10;</code></pre>
+  </div>
+  <p>
+    <strong>Por que é ultra rápido?</strong> O <code class="one-line-code">SELECT</code> pede apenas <code
+      class="one-line-code">id_cliente</code> e <code class="one-line-code">data_venda</code>. Como essas duas
+    informações já estão gravadas lado a lado dentro da árvore do índice <code
+      class="one-line-code">idx_itens_cliente_data</code>, o banco entrega o resultado na hora sem fazer nenhuma leitura
+    no arquivo físico da tabela.
+  </p>
+
+  <h3>5. Índice de Prefixo (Prefix Index / Partial Index)</h3>
+  <p>
+    Quando temos colunas de texto muito longas (<code class="one-line-code">VARCHAR(255)</code> ou <code
+      class="one-line-code">TEXT</code>), criar um índice com o texto inteiro consome muita memória RAM e espaço em
+    disco. O índice de prefixo resolve isso indexando apenas os primeiros caracteres da coluna.
+  </p>
+  <p><strong>Cenário:</strong> O cliente faz uma busca na barra de pesquisa do site digitando o início do nome do
+    produto (ex: "Placa...").</p>
+  <div class="code-container">
+    <pre><code class="language-sql">-- Criando um índice que lê apenas os primeiros 15 caracteres do nome do produto
+CREATE INDEX idx_produtos_nome_curto ON produtos_hardware(nome_produto(15));
+
+-- Consulta que se beneficia:
+SELECT * FROM produtos_hardware 
+WHERE nome_produto LIKE 'Placa de Vídeo%';</code></pre>
   </div>
 </section>
 
 <section class="section-box">
   <h2>Diagramação</h2>
   <p>Representação visual dos conceitos abordados:</p>
+
+  <h3>1. Varredura Linear (Full Table Scan) vs. Busca Indexada</h3>
+  <p>
+    Este diagrama compara visualmente o comportamento do banco de dados quando ele procura um produto (ex: uma GPU) sem
+    índice (lendo o disco inteiro) versus com índice (indo direto ao alvo).
+  </p>
   <div class="mermaid">
     graph TD
-    A[Início] --> B{Processo}
-    B --> C[Fim]
+    subgraph Sem_Indice ["SEM ÍNDICE: Full Table Scan"]
+    A["Início da Busca: Categoria = GPU"] --> B["Lê Linha 1: CPU - Errado"]
+    B --> C["Lê Linha 2: RAM - Errado"]
+    C --> D["Lê Linha 3: GPU - ACHOU!"]
+    D --> E["Lê Linha 4: Fonte - Errado"]
+    E --> F["..."]
+    F --> G["Fim: Percorreu o HD Inteiro"]
+    end
+
+    style Sem_Indice fill:#ffe6e6,stroke:#ff0000,stroke-width:1px
+  </div>
+
+  <div class="mermaid">
+    graph TD
+    subgraph Com_Indice ["COM ÍNDICE: Busca Direta"]
+    H["Início da Busca: Categoria = GPU"] --> I("Consulta a Árvore do Índice")
+    I --> J["Ponteiro Físico: Linha 3"]
+    J --> K["Busca Direta no HD: Linha 3 - ACHOU!"]
+    K --> L["Fim: Resposta Instantânea"]
+    end
+
+    style Com_Indice fill:#e6ffe6,stroke:#009900,stroke-width:1px
+  </div>
+
+  <h3>2. Estrutura Interna de um Índice B+Tree (Simplificada)</h3>
+  <p>
+    Ideal para explicar como o MySQL organiza os índices logicamente. O SGBD não busca em uma lista zoneada, ele navega
+    por nós (Páginas de Índice) até chegar aos nós folha que contêm os ponteiros das tabelas.
+  </p>
+  <div class="mermaid">
+    graph TD
+    NodeRoot["Nó Raiz: IDs de Produtos"] --> NodeInt1["Nós Internos: IDs 1 a 50"]
+    NodeRoot --> NodeInt2["Nós Internos: IDs 51 a 100"]
+
+    NodeInt1 --> Leaf1["Nó Folha 1: ID 1 ao 25"]
+    NodeInt1 --> Leaf2["Nó Folha 2: ID 26 ao 50"]
+
+    Leaf1 --> P1["Ponteiro Físico: Placa de Vídeo"]
+    Leaf1 --> P2["Ponteiro Físico: Memória RAM"]
+
+    style NodeRoot fill:#d1e7dd,stroke:#0f5132,stroke-width:2px
+    style Leaf1 fill:#fff3cd,stroke:#664d03,stroke-width:1px
+    style Leaf2 fill:#fff3cd,stroke:#664d03,stroke-width:1px
+  </div>
+
+  <h3>3. A Mecânica do Índice Composto (Left-to-Right Rule)</h3>
+  <p>
+    Este diagrama explica a regra da esquerda para a direita (<em>Left-to-Right Rule</em>). Mostra como o MySQL filtra
+    primeiro pela primeira coluna indexada e depois refina a busca pela segunda coluna.
+  </p>
+  <div class="mermaid">
+    graph TD
+    subgraph Indice_Composto ["idx_produto_data: id_produto + data_venda"]
+    A["Filtro WHERE: id_produto = 1 AND data_venda = 2026-06-01"] --> B{"1º Nível: Filtra ID Produto"}
+    B -->|ID = 1| C["Balde Isolado: Apenas Vendas do Produto 1"]
+    B -->|ID = 2| D["Descartado Precocemente"]
+
+    C --> E{"2º Nível: Filtra Data"}
+    E -->|Data: 2026-06-01| F["Resultado Exato: Registro 1001"]
+    E -->|Outras Datas| G["Descartado"]
+    end
+
+    style C fill:#e8f0fe,stroke:#1a73e8,stroke-width:1px
+    style F fill:#d4edda,stroke:#28a745,stroke-width:2px
   </div>
 </section>
 
-<div class="tip-box">
+<section class="tip-box">
   <h4>Dicas & Lembretes</h4>
-  <ul>
-    <li>Dica importante sobre Índices aparecerá aqui.</li>
-    <li>Sempre verifique a sintaxe específica do seu SGBD.</li>
-  </ul>
-</div>
+  <p>Para evitar sobrecarga no servidor de banco de dados da TechForge e garantir a integridade estrutural dos dados,
+    revise estes conceitos essenciais antes de iniciar as atividades práticas de laboratório:</p>
 
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
   <ul>
-    <li>Passo 1: Analise os requisitos.</li>
-    <li>Passo 2: Desenvolva o script SQL.</li>
-    <li>Passo 3: Valide os resultados.</li>
+    <li>
+      <strong>O Mito do Armazenamento de Views:</strong> Uma <code>VIEW</code> não ocupa espaço em disco replicando
+      dados. Ela atua estritamente como uma tabela virtual que armazena a instrução <code>SELECT</code> de origem na
+      memória do SGBD. Caso as tabelas físicas associadas sofram modificações, a View refletirá os novos dados na
+      próxima consulta.
+    </li>
+    <li>
+      <strong>O Custo Oculto dos Índices (INDEX):</strong> Embora a criação de índices acelere drasticamente a
+      velocidade de leitura (substituindo uma busca linear por uma busca estruturada em árvore B+Tree), ela adiciona uma
+      carga extra de processamento nas operações de escrita. Comandos como <code>INSERT</code>, <code>UPDATE</code> e
+      <code>DELETE</code> tornam-se mais lentos, pois o motor do MySQL precisa pausar a transação para reordenar as
+      páginas do índice no disco.
+    </li>
+    <li>
+      <strong>A Regra da Esquerda para a Direita (Left-to-Right Rule):</strong> Em um índice composto que une duas ou
+      mais colunas (como <code>id_produto</code> e <code>data_venda</code>), a ordem de declaração dos campos determina
+      sua utilidade. O otimizador do MySQL só conseguirá aplicar os filtros da segunda coluna se a primeira também for
+      fornecida como critério de busca dentro da cláusula <code>WHERE</code>.
+    </li>
+    <li>
+      <strong>Auditoria com EXPLAIN:</strong> Para validar a eficiência de uma consulta estruturada, utilize a
+      palavra-chave <code>EXPLAIN</code> antes do comando <code>SELECT</code> no console. Caso o campo <code>key</code>
+      apresente o nome do índice criado, a otimização foi bem-sucedida; caso retorne <code>NULL</code>, o SGBD estará
+      realizando uma varredura completa na tabela física.
+    </li>
+
+    <li>Antes de executar scripts de criação de Views ou Índices em um novo laboratório, execute os comandos de
+      limpeza preventiva (<code>SET FOREIGN_KEY_CHECKS = 0; DROP TABLE IF EXISTS...</code>) para evitar conflitos de
+      integridade referencial com tabelas órfãs.</li>
+    <li>Sempre verifique a sintaxe específica do seu SGBD ao configurar índices de prefixo ou parciais para colunas de
+      texto longo.</li>
   </ul>
+  </div>
 </section>
 
 <section class="section-box">
@@ -58,6 +454,11 @@ tags:
     </li>
     <li>TAKAI, Osvaldo Kotaro; ITALIANO, Isabel Cristina; FERREIRA, João Eduardo. Introdução a Banco de Dados. São
       Paulo: DCC-IME-USP, 2005.</li>
+    <li><a href="https://www.youtube.com/watch?v=NI9wYuVIYcA" target="_blank">Youtube: B-Tree Indexes</a>
+    <li><a href="https://www.youtube.com/watch?v=K1a2Bk8NrYQ" target="_blank">Youtube: Understanding B-Trees: The Data
+        Structure Behind Modern Databases</a>
+    <li><a href="https://www.youtube.com/watch?v=kd86BeQW0B4" target="_blank">Youtube: B-Tree - Banco de dados </a>
+    </li>
   </ul>
 </section>
 
@@ -67,4 +468,7 @@ tags:
     <li><a href="./exercicio-01/">Exercício 01: Praticando Conteúdo</a></li>
     <li><a href="./exercicio-02/">Exercício 02: Desafio de Fixação</a></li>
   </ul>
+
+  <hr>
+  <a class="btn" href="./demonstracao-pratica" target="_blank">Para Demonstração</a>
 </section>

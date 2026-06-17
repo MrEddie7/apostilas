@@ -3,48 +3,275 @@ title: "Especificação Textual de Casos de Uso"
 aula_numero: "14"
 description: "Conteúdo da aula 14 : Especificação Textual de Casos de Uso"
 tags:
-  - aula
-  - bimestre-02
+- aula
+- bimestre-02
 ---
 
 <section class="section-box">
   <h2>Teoria & Conceitos</h2>
-  <p>Conteúdo teórico da aula 14 em desenvolvimento...</p>
-</section>
 
-<section class="section-box">
-  <h2>Exemplo Prático</h2>
-  <p>Exemplos e demonstrações da aula 14 em desenvolvimento...</p>
-</section>
+  <h3>1. Introdução aos Casos de Uso</h3>
+  <p>
+    Na Engenharia de Software contemporânea, fundamentada pela perspectiva pragmática de Martin Fowler, um Caso de Uso é
+    definido como um conjunto de cenários amarrados por um objetivo comum de um usuário. A maior falha de um analista
+    iniciante é focar excessivamente na representação gráfica (o diagrama). É
+    imperativo notar que o valor real da técnica reside no texto descritivo. O diagrama serve apenas como um sumário; a
+    inteligência do requisito está na narrativa detalhada da interação.
+  </p>
 
-<section class="section-box">
-  <h2>Representação Gráfica</h2>
-  <p>Diagramas e esquemas visuais em construção...</p>
-</section>
-
-<div class="tip-box">
-  <h4>Dicas & Lembretes</h4>
+  <h3>2. Entidades Fundamentais: Atores e Cenários</h3>
+  <p>
+    Para uma especificação tecnicamente precisa, devemos distinguir claramente estas duas entidades:
+  </p>
   <ul>
-    <li>Conteúdo em breve.</li>
+    <li><strong>Ator:</strong> Representa um papel desempenhado por um usuário em relação ao sistema, e não uma pessoa
+      específica. Atores podem ser seres humanos ou sistemas externos para os quais o software fornece um serviço.</li>
+    <li><strong>Cenário:</strong> É uma sequência de passos de interação. Um caso de uso agrupa vários cenários: um
+      caminho ideal de sucesso e diversos caminhos de exceção ou variação.</li>
   </ul>
-</div>
 
-<section class="section-box">
-  <h2>Como aplicar na Prática</h2>
-  <p>Cenários de aplicação profissional em breve...</p>
-</section>
+  <h3>3. Níveis de Detalhamento e Objetivos</h3>
+  <p>
+    Fowler categoriza os casos de uso em diferentes níveis de abstração. O foco do analista deve estar majoritariamente
+    no "Nível do Mar", que representa a entrega de valor real.
+  </p>
 
-<section class="section-box">
-  <h2>Referências</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nível</th>
+        <th>Objetivo</th>
+        <th>Valor para o Ator</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Pássaro (Bird-level)</strong></td>
+        <td>Visão de alto nível e processos de negócio amplos.</td>
+        <td>Contextualiza o valor organizacional.</td>
+      </tr>
+      <tr>
+        <td><strong>Mar (Sea-level)</strong></td>
+        <td>Nível Primário. Interação direta Ator-Sistema.</td>
+        <td>Entrega um objetivo discreto (5 a 30 min).</td>
+      </tr>
+      <tr>
+        <td><strong>Peixe (Fish-level)</strong></td>
+        <td>Subfunções ou passos incluídos.</td>
+        <td>Não possui valor isolado; suporta o nível do mar.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    Diferenciamos ainda o <em>Caso de Uso de Negócio</em> (como a organização responde a um evento externo) do <em>Caso
+      de Uso de Sistema</em> (como o software responde especificamente).
+  </p>
+
+  <h3>4. Estrutura de um Caso de Uso "Fully Dressed" (Completo)</h3>
+  <p>
+    Uma especificação madura exige uma estrutura formal para evitar ambiguidades e falhas de implementação.
+  </p>
   <ul>
-    <li>Documentação oficial e bibliografia recomendada.</li>
+    <li><strong>Identificação:</strong> Nome do objetivo (ex: Compra de um Produto) e indicação do Nível (ex: Nível do
+      Mar).</li>
+    <li><strong>Atores:</strong>
+      <ul>
+        <li><em>Ator Principal:</em> Aquele cujo objetivo o caso de uso tenta satisfazer (o iniciador).</li>
+        <li><em>Ator Secundário:</em> Sistemas externos que o software precisa consultar (ex: Serviço de Crédito).</li>
+      </ul>
+    </li>
+    <li><strong>Gatilho (Trigger):</strong> O evento exato que dispara a execução da lógica.</li>
+    <li><strong>Pré-condições:</strong> O que deve ser verdade antes do início. Como engenheiros, usamos pré-condições
+      para permitir que o programador evite verificações redundantes no código, assumindo que o estado anterior já foi
+      validado.</li>
+    <li><strong>Pós-condições/Garantias:</strong>
+      <ul>
+        <li><em>Garantias de Sucesso:</em> O estado do sistema após o objetivo ser atingido.</li>
+        <li><em>Garantias Mínimas:</em> O que o sistema assegura em qualquer cenário, mesmo na falha (ex: auditoria de
+          log ou rollback). Isso protege os interesses dos stakeholders independentemente do sucesso do ator.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>5. Dinâmica dos Fluxos: O Cenário Principal e Extensões</h3>
+  <p>
+    A narrativa textual deve seguir a regra de ouro: cada passo deve ser uma declaração simples de interação com um ator
+    visível e uma intenção clara.
+  </p>
+  <ul>
+    <li><strong>Cenário Principal de Sucesso (CPS):</strong> É o "caminho feliz". Uma lista numerada de passos onde tudo
+      ocorre perfeitamente.</li>
+    <li><strong>Extensões:</strong> Tratam as variações e falhas. Nomeamos a condição detectada em um passo do CPS (ex:
+      "6a. Autorização negada") e detalhamos o fluxo alternativo.</li>
+  </ul>
+
+  <h3>6. Relacionamentos Aplicados ao Texto (Include e Extend)</h3>
+  <p>
+    Ao redigir, o analista deve otimizar o texto sem torná-lo uma "teia" ilegível de diagramas. Dicas de escrita:
+  </p>
+  <ul>
+    <li><strong>Representação do &lt;&lt;include&gt;&gt;:</strong> Utilize o sublinhado para indicar que um passo é, na
+      verdade, um chamado a outro caso de uso (ex: <u>Validar Usuário</u>). Isso evita repetição de lógica complexa.
+    </li>
+    <li><strong>A Crítica ao &lt;&lt;extend&gt;&gt;:</strong> Martin Fowler é contundente ao sugerir que você ignore o
+      &lt;&lt;extend&gt;&gt;. Na prática, ele frequentemente leva à "decomposição funcional", complicando o
+      entendimento. Prefira descrever as variações na seção de Extensões do texto.</li>
+  </ul>
+
+  <h3>7. Exemplo Prático: Compra de um Produto</h3>
+  <p>
+    <strong>Caso de Uso:</strong> Compra de um Produto <br>
+    <strong>Nível:</strong> Nível do Mar
+  </p>
+
+  <h4>Cenário Principal de Sucesso:</h4>
+  <ol>
+    <li>O cliente navega pelo catálogo e seleciona itens para comprar (inclui <u>Adicionar à Cesta</u>).</li>
+    <li>O cliente vai para o caixa.</li>
+    <li>O cliente preenche o formulário de remessa (endereço e opção de entrega imediata ou em 3 dias).</li>
+    <li>O sistema apresenta a informação completa do faturamento, incluindo a remessa.</li>
+    <li>O cliente preenche a informação do cartão de crédito.</li>
+    <li>O sistema autoriza a compra.</li>
+    <li>O sistema confirma imediatamente a venda.</li>
+    <li>O sistema envia uma confirmação para o cliente por e-mail.</li>
+  </ol>
+
+  <h4>Extensões:</h4>
+  <ul>
+    <li>
+      <strong>3a. Cliente regular:</strong>
+      <ol>
+        <li>O sistema mostra a informação atual de remessa, preço e cobrança.</li>
+        <li>O cliente pode aceitar ou sobrescrever os padrões, retornando ao passo 6.</li>
+      </ol>
+    </li>
+    <li>
+      <strong>6a. O sistema falha na autorização da compra:</strong>
+      <ol>
+        <li>O cliente pode inserir novamente a informação do cartão ou cancelar a operação.</li>
+      </ol>
+    </li>
   </ul>
 </section>
 
 <section class="section-box">
-  <h2>Para Praticar</h2>
+  <h2>Aprofundando a Prática</h2>
+  <p>Abaixo, veremos três exemplos práticos e progressivos baseados no contexto de um sistema
+    acadêmico.</p>
+
+  <div>
+    <h3>Exemplo 1: Nível Básico (Foco em fluxo linear)</h3>
+    <p><strong>CSU01: Fazer Login</strong></p>
+    <ul>
+      <li><strong>Ator Principal:</strong> Usuário (Professor ou Aluno)</li>
+      <li><strong>Breve Descrição:</strong> O usuário acessa o sistema informando suas credenciais para visualizar seu
+        painel de controle (Dashboard).</li>
+      <li><strong>Pré-condições:</strong> O usuário deve estar previamente cadastrado no sistema.</li>
+    </ul>
+
+    <h4>Fluxo Principal:</h4>
+    <ol>
+      <li>O usuário acessa a página de autenticação.</li>
+      <li>O sistema exibe os campos de usuário e senha.</li>
+      <li>O usuário insere suas credenciais e clica em "Entrar".</li>
+      <li>O sistema valida as credenciais no banco de dados.</li>
+      <li>O sistema redireciona o usuário para o Dashboard.</li>
+    </ol>
+
+    <h4 style="color: #c0392b;">Fluxo de Exceção (4a) - Credenciais Inválidas:</h4>
+    <ol>
+      <li>O sistema identifica que o usuário ou a senha estão incorretos.</li>
+      <li>O sistema exibe a mensagem "Acesso Negado".</li>
+      <li>O caso de uso retorna ao passo 2 do Fluxo Principal.</li>
+    </ol>
+
+    <p><strong>Pós-condições:</strong> O usuário está autenticado e com a sessão ativa.</p>
+  </div>
+  <hr>
+  <div>
+    <h3>Exemplo 2: Nível Intermediário (Com inclusão de outro caso de uso)</h3>
+    <p><strong>CSU02: Postar Material de Aula</strong></p>
+    <ul>
+      <li><strong>Ator Principal:</strong> Professor</li>
+      <li><strong>Breve Descrição:</strong> Permite que o professor publique arquivos, links ou textos de apoio para uma
+        disciplina específica.</li>
+      <li><strong>Pré-condições:</strong> O professor deve estar autenticado (<em>Inclui CSU01</em>) e vinculado à
+        disciplina.</li>
+    </ul>
+
+    <h4>Fluxo Principal:</h4>
+    <ol>
+      <li>O professor seleciona a disciplina desejada no painel.</li>
+      <li>O sistema exibe a tela da disciplina e a opção de "Postar Material".</li>
+      <li>O professor preenche o título, a descrição e faz o upload do arquivo.</li>
+      <li>O professor clica em "Publicar".</li>
+      <li>O sistema salva o material, vincula-o à disciplina e envia uma notificação aos alunos matriculados.</li>
+    </ol>
+
+    <h4 style="color: #d35400;">Fluxo Alternativo (3a) - Material sem arquivo fixado:</h4>
+    <ol>
+      <li>O professor opta por postar apenas um aviso em texto, sem anexar arquivos.</li>
+      <li>O caso de uso prossegue a partir do passo 4 do Fluxo Principal.</li>
+    </ol>
+
+    <p><strong>Pós-condições:</strong> O material está disponível para os alunos daquela disciplina.</p>
+  </div>
+  <hr>
+  <div>
+    <h3>Exemplo 3: Nível Avançado (Com fluxos alternativos múltiplos)</h3>
+    <p><strong>CSU03: Entregar Tarefa</strong></p>
+    <ul>
+      <li><strong>Ator Principal:</strong> Aluno</li>
+      <li><strong>Breve Descrição:</strong> O aluno realiza o envio do arquivo correspondente a uma tarefa solicitada em
+        uma disciplina.</li>
+      <li><strong>Pré-condições:</strong> O aluno deve estar autenticado e matriculado na disciplina.</li>
+    </ul>
+
+    <h4>Fluxo Principal:</h4>
+    <ol>
+      <li>O aluno acessa a área da disciplina e clica na tarefa pendente.</li>
+      <li>O sistema exibe as instruções da tarefa e o prazo de entrega.</li>
+      <li>O aluno faz o upload do arquivo da sua resolução.</li>
+      <li>O aluno clica em "Enviar Tarefa".</li>
+      <li>O sistema registra a data/hora do envio e exibe um recibo de sucesso.</li>
+    </ol>
+
+    <h4 style="color: #d35400;">Fluxo Alternativo (2a) - Tarefa Atrasada (Se o sistema permitir):</h4>
+    <ol>
+      <li>O sistema identifica que a data atual é posterior ao prazo limite.</li>
+      <li>O sistema exibe um aviso informando que a entrega será marcada como "Atrasada".</li>
+      <li>O caso de uso prossegue para o passo 3, mas salva o status de atraso.</li>
+    </ol>
+
+    <h4 style="color: #c0392b;">Fluxo de Exceção (3b) - Arquivo muito grande ou formato inválido:</h4>
+    <ol>
+      <li>O sistema valida o arquivo e detecta que ele excede o limite (ex: 20MB) ou possui formato proibido (ex: .exe).
+      </li>
+      <li>O sistema exibe uma mensagem de erro ("Formato ou tamanho inválido").</li>
+      <li>O caso de uso retorna ao passo 2.</li>
+    </ol>
+
+    <p><strong>Pós-condições:</strong> O arquivo da tarefa foi armazenado no sistema com as respectivas marcações de
+      data e status.</p>
+  </div>
+</section>
+
+<section class="tip-box">
+  <h3>Dicas de Validação e Boas Práticas</h3>
+  <p>
+    Utilize este checklist para revisar suas especificações antes da entrega técnica:
+  </p>
   <ul>
-    <li><a href="./exercicio-01/">Exercício 01: Atividade Prática</a></li>
-    <li><a href="./exercicio-02/">Exercício 02: Questionário</a></li>
+    <li><strong>Independência de Interface (UI):</strong> O texto foca na intenção ("o cliente confirma") e não no
+      mecanismo ("o cliente clica no botão azul").</li>
+    <li><strong>Brevidade:</strong> O documento é curto o suficiente para ser lido em uma pausa para o café?
+      Documentação exaustiva é documentação ignorada.</li>
+    <li><strong>Projeto por Contrato:</strong> As asserções (Pré e Pós-condições) estão claras? Elas são a ponte
+      entre o requisito e o desenvolvimento robusto (assertions no código).</li>
+    <li><strong>Comunicação Verbal:</strong> O caso de uso serviu como base para uma conversa com o cliente ou foi
+      apenas um "depósito de papel"?</li>
+    <li><strong>Foco no Nível do Mar:</strong> A maioria dos casos de uso descreve tarefas de 5 a 30 minutos com
+      valor direto para o ator?</li>
   </ul>
 </section>

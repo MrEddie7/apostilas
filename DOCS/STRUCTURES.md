@@ -22,9 +22,10 @@ Toda aula (`index.html`) deve conter obrigatoriamente:
 
 ```yaml
 ---
-title: "Nome da Aula"           # NÃO incluir "Aula XX: " no título
-aula_numero: "XX"               # Sempre dois dígitos, entre aspas
-description: "Descrição"        # Obrigatório para o card do dashboard
+title: "Nome da Aula"             # NÃO incluir "Aula XX: " no título
+componente: "Nome do Componente"  # Para ser utilizado no <title>
+aula_numero: "XX"                 # Sempre dois dígitos, entre aspas
+description: "Descrição"          # Obrigatório para o card do dashboard
 tags:
   - aula
   - bimestre-XX
@@ -158,14 +159,14 @@ O arquivo `.json` deve definir o `subject` e os títulos dos bimestres para que 
 
 ## 6. Estrutura do Exercício Prático
 
-Os arquivos de exercícios (`exercicio-XX.html`) devem seguir uma estrutura modular para facilitar a leitura e execução das tarefas:
+Os arquivos de exercícios (`exercicio-01.html`) devem seguir uma estrutura modular para facilitar a leitura e execução das tarefas:
 
 ### Metadados (Front-matter)
 ```yaml
 ---
 layout: exercicio
 title: "Título do Exercício"
-exercicio_numero: "XX"
+exercicio_numero: "01"
 aula_numero: "XX"
 description: "Breve resumo da atividade"
 ---
@@ -216,4 +217,31 @@ description: "Breve resumo da atividade"
     <li>Lembrete importante...</li>
   </ul>
 </div>
+```
+
+## 6. Estrutura do Exercício Questionário
+
+Os arquivos de exercícios (`exercicio-02.html`) devem seguir uma estrutura modular para facilitar a leitura e execução das tarefas:
+
+### Metadados (Front-matter)
+```yaml
+---
+layout: questionario
+title: "Título Relacionado a Aula"
+exercicio_numero: "02"
+aula_numero: "XX"
+description: "Breve resumo da atividade."
+perguntas:
+  - texto: "Enunciado"
+    resposta_correta: "x"
+    alternativas:
+      - letra: "a"
+        texto: "Alternativa 1"
+      - letra: "b"
+        texto: "Alternativa 2"
+      - letra: "c"
+        texto: "Alternativa 3"
+      - letra: "d"
+        texto: "Alternativa 4"
+---
 ```

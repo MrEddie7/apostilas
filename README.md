@@ -109,6 +109,7 @@ As aulas são gerenciadas através de arquivos HTML ou Markdown dentro da pasta 
 ```markdown
 ---
 title: "Título da Aula"
+componente: "Nome do Componente"
 aula_numero: "XX"
 description: "Breve descrição do conteúdo"
 tags:

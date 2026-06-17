@@ -1,34 +1,39 @@
 ---
 layout: exercicio
-title: "Exercício 01: Construtores e a Referência this"
+title: "Construtores e a Referência this"
 exercicio_numero: "01"
 aula_numero: "14"
-description: "Uso de construtores para inicializar objetos com dados obrigatórios e a palavra-chave this para diferenciar atributos de parâmetros locais."
+description: "Uso de construtores para inicializar objetos com dados obrigatórios e a palavra-chave this para
+diferenciar atributos de parâmetros locais."
 ---
 
 <section class="section-box">
   <h2>Enunciado</h2>
-  <p>Quando criamos um objeto no mundo real, muitas vezes ele não pode existir sem certas informações fundamentais. Por exemplo, não faz sentido emitir uma passagem aérea sem o nome do passageiro e o número do voo. Se permitirmos que o objeto seja criado "vazio" para ser preenchido depois, corremos o risco de gerar dados inconsistentes no sistema.</p>
-  <p>Os Construtores servem justamente para garantir que um objeto nasça com os dados obrigatórios já validados. Além disso, quando os parâmetros do construtor têm o mesmo nome dos atributos da classe, utilizamos a palavra-chave <code class="one-line-code">this</code> para guiar o Java sobre quem é a variável local e quem é o atributo da instância.</p>
-  <p>Nesta atividade, você vai corrigir um sistema de bilhete aérea que está permitindo a criação de passagens fantasmas (sem dados) e aplicar construtores em cadeia com uma interface Swing.</p>
+  <p>Quando criamos um objeto no mundo real, muitas vezes ele não pode existir sem certas informações fundamentais. Por
+    exemplo, não faz sentido emitir uma passagem aérea sem o nome do passageiro e o número do voo. Se permitirmos que o
+    objeto seja criado "vazio" para ser preenchido depois, corremos o risco de gerar dados inconsistentes no sistema.
+  </p>
+  <p>Os Construtores servem justamente para garantir que um objeto nasça com os dados obrigatórios já validados. Além
+    disso, quando os parâmetros do construtor têm o mesmo nome dos atributos da classe, utilizamos a palavra-chave this
+    para guiar o Java sobre quem é a variável local (parâmetro) e quem é o atributo da instância.</p>
+  <p>Nesta atividade, você vai corrigir um sistema de terminal que está permitindo a criação de passagens fantasmas (sem
+    dados) e aplicar o encadeamento de construtores para facilitar a emissão de passagens promocionais fixas.</p>
 </section>
 
 <section class="section-box">
-  <h2>⚙️ Preparação</h2>
+  <h2>Preparação</h2>
   <ol>
-    <li>Abra a sua IDE (Eclipse, IntelliJ ou VS Code).</li>
-    <li>Crie um novo projeto Java.</li>
-    <li>Crie um arquivo chamado <code class="one-line-code">EmissorPassagem.java</code>.</li>
-    <li>Cole o Código Base abaixo dentro do arquivo.</li>
+    <li>Abra a sua IDE ou editor de código (Eclipse, IntelliJ ou VS Code).</li>
+    <li>Crie um novo projeto ou arquivo Java.</li>
+    <li>Crie um arquivo chamado <code class="one-line-code">EmissorPassagemConsole.java</code>.</li>
+    <li>Cole o Código Base fornecido abaixo dentro do arquivo.</li>
   </ol>
 </section>
 
 <section class="section-box">
-  <h2>💻 Código Base</h2>
-  <p>(Entregue este código para os alunos. Ele possui a interface pronta, mas a classe Bilhete está vulnerável pois usa o construtor padrão vazio do Java, permitindo objetos inválidos).</p>
+  <h2>Código Base</h2>
   <div class="code-container">
-    <pre><code class="language-java">import javax.swing.*;
-import java.awt.FlowLayout;
+    <pre><code class="language-java">import java.util.Scanner;
 
 // ==========================================
 // CLASSE BILHETE (ALUNO DEVERÁ MODIFICAR)
@@ -39,97 +44,126 @@ class Bilhete {
     public double precoAssento;
 
     // Atualmente não há construtores definidos. 
-    // O Java usa o construtor padrão vazio: Bilhete()
+    // O Java usa o construtor padrão vazio automático: Bilhete()
 }
 
 // ==========================================
-// INTERFACE GRÁFICA (PRONTA)
+// SISTEMA PRINCIPAL EM CONSOLE (PRONTO)
 // ==========================================
-public class EmissorPassagem extends JFrame {
-    public EmissorPassagem() {
-        super("Decolar - Emissor de Bilhetes");
-        setLayout(new FlowLayout());
-
-        JTextField txtNome = new JTextField(12);
-        JTextField txtVoo = new JTextField(6);
-        JButton btnEmitirPadrao = new JButton("Voo Promocional (Assento 1A)");
-        JButton btnEmitirCustomizado = new JButton("Emitir Completo");
-
-        btnEmitirCustomizado.addActionListener(e -> {
-            // MODO VULNERÁVEL ATUAL: Criando objeto vazio e preenchendo depois
-            Bilhete b = new Bilhete();
-            b.nomePassageiro = txtNome.getText();
-            b.numeroVoo = txtVoo.getText();
-            b.precoAssento = 450.00;
-
-            JOptionPane.showMessageDialog(this, "Bilhete Criado:\n" + 
-                "Passageiro: " + b.nomePassageiro + "\nVoo: " + b.numeroVoo);
-        });
-
-        btnEmitirPadrao.addActionListener(e -> {
-            // MODO ATUAL: Exige preenchimento manual repetitivo
-            Bilhete bPromo = new Bilhete();
-            bPromo.nomePassageiro = "PASSARELA PROMO";
-            bPromo.numeroVoo = "AB123";
-            bPromo.precoAssento = 150.00;
-
-            JOptionPane.showMessageDialog(this, "Bilhete Promocional Emitido!");
-        });
-
-        add(new JLabel("Passageiro:")); add(txtNome);
-        add(new JLabel("Voo:")); add(txtVoo);
-        add(btnEmitirCustomizado); add(btnEmitirPadrao);
-
-        setSize(350, 180);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-    }
-
+public class EmissorPassagemConsole {
     public static void main(String[] args) {
-        new EmissorPassagem().setVisible(true);
+        Scanner leitor = new Scanner(System.in);
+        
+        System.out.println("=== SISTEMA DE EMISSÃO DE PASSAGENS ===");
+        System.out.println("1 - Emitir Bilhete Completo");
+        System.out.println("2 - Emitir Bilhete Promocional Padrão");
+        System.out.print("Escolha uma opção: ");
+        int opcao = leitor.nextInt();
+        leitor.nextLine(); // Limpa o buffer do teclado
+
+        if (opcao == 1) {
+            System.out.print("Digite o nome do passageiro: ");
+            String nome = leitor.nextLine();
+            System.out.print("Digite o número do voo: ");
+            String voo = leitor.nextLine();
+            System.out.print("Digite o preço da passagem: R$ ");
+            double preco = leitor.nextDouble();
+
+            // MODO VULNERÁVEL ATUAL: Criando objeto vazio e preenchendo depois
+            Bilhete b1 = new Bilhete();
+            b1.nomePassageiro = nome;
+            b1.numeroVoo = voo;
+            b1.precoAssento = preco;
+
+            System.out.println("\n[SUCESSO] Bilhete Customizado Emitido!");
+            System.out.println("Passageiro: " + b1.nomePassageiro + " | Voo: " + b1.numeroVoo + " | Preço: R$ " + b1.precoAssento);
+
+        } else if (opcao == 2) {
+            System.out.print("Digite o nome do passageiro para o voo PROMO: ");
+            String nomePromo = leitor.nextLine();
+
+            // MODO ATUAL: Exige preenchimento manual e repetitivo de dados fixos
+            Bilhete bPromo = new Bilhete();
+            bPromo.nomePassageiro = nomePromo;
+            bPromo.numeroVoo = "PROMO99";
+            bPromo.precoAssento = 99.90;
+
+            System.out.println("\n[SUCESSO] Bilhete Promocional Emitido!");
+            System.out.println("Passageiro: " + bPromo.nomePassageiro + " | Voo: " + bPromo.numeroVoo + " | Preço: R$ " + bPromo.precoAssento);
+        } else {
+            System.out.println("Opção inválida!");
+        }
+
+        leitor.close();
     }
 }</code></pre>
   </div>
 </section>
 
 <section class="section-box">
-  <h2>🚀 O Desafio (Atividade em questão)</h2>
-  <p>Sua missão é blindar a classe <code class="one-line-code">Bilhete</code> usando construtores e a referência <code class="one-line-code">this</code>. Siga os passos:</p>
+  <h2>O Desafio</h2>
+  <p>Sua missão é blindar a classe <code class="one-line-code">Bilhete</code> usando construtores e a referência <code
+      class="one-line-code">this</code> para impedir a existência de objetos sem dados no terminal. Siga os passos:</p>
   <ul>
-    <li><strong>Modificadores de Acesso:</strong> Altere a visibilidade dos atributos <code class="one-line-code">nomePassageiro</code>, <code class="one-line-code">numeroVoo</code> e <code class="one-line-code">precoAssento</code> de <code class="one-line-code">public</code> para <code class="one-line-code">private</code>. Crie apenas os métodos Getters para eles.</li>
+    <li><strong>Modificadores de Acesso e Getters:</strong> Altere a visibilidade dos três atributos da classe <code
+        class="one-line-code">Bilhete</code> (<code class="one-line-code">nomePassageiro</code>, <code
+        class="one-line-code">numeroVoo</code> e <code class="one-line-code">precoAssento</code>) de <code
+        class="one-line-code">public</code> para <code class="one-line-code">private</code>. Crie apenas os métodos
+      <strong>Getters</strong> públicos para permitir a leitura controlada desses dados. Não crie métodos Setters.</li>
     <li><strong>Construtor Principal (Tratando Ambiguidade com this):</strong>
       <ul>
-        <li>Crie um construtor que obrigue o recebimento dos três parâmetros: <code class="one-line-code">public Bilhete(String nomePassageiro, String numeroVoo, double precoAssento)</code>.</li>
-        <li>Repare que os parâmetros têm o mesmo nome dos atributos. Use a palavra-chave <code class="one-line-code">this</code> obrigatoriamente para assinalar os atributos da classe (ex: <code class="one-line-code">this.nomePassageiro = nomePassageiro;</code>).</li>
+        <li>Crie um construtor que obrigue o recebimento de todos os três parâmetros: <code
+            class="one-line-code">public Bilhete(String nomePassageiro, String numeroVoo, double precoAssento)</code>.
+        </li>
+        <li>Como os parâmetros locais têm exatamente o mesmo nome dos atributos da classe, utilize a palavra-chave <code
+            class="one-line-code">this</code> obrigatoriamente para assinalar e atualizar os atributos da instância (ex:
+          <code class="one-line-code">this.nomePassageiro = nomePassageiro;</code>).</li>
       </ul>
     </li>
     <li><strong>Construtor em Cadeia (this()):</strong>
       <ul>
-        <li>Imagine que a empresa aérea lançou um voo promocional padrão (Voo: "PROMO99", Preço: 99.90).</li>
-        <li>Crie um segundo construtor que receba apenas o nome do passageiro: <code class="one-line-code">public Bilhete(String nomePassageiro)</code>.</li>
-        <li>Dentro deste construtor, use a palavra-chave <code class="one-line-code">this(...)</code> na primeira linha para chamar o construtor principal, passando o nome recebido, o voo fixo "PROMO99" e o preço fixo 99.90.</li>
+        <li>Crie um segundo construtor que receba apenas o nome do passageiro: <code
+            class="one-line-code">public Bilhete(String nomePassageiro)</code>.</li>
+        <li>Dentro do corpo deste construtor, use a palavra-chave <code class="one-line-code">this(...)</code>
+          obrigatoriamente na <strong>primeira linha</strong> para chamar o seu construtor principal. Repasse o nome
+          recebido e configure os dados padrões fixos da promoção: Voo <code class="one-line-code">"PROMO99"</code> e
+          preço <code class="one-line-code">99.90</code>.</li>
       </ul>
     </li>
-    <li><strong>Refatoração do Swing:</strong>
+    <li><strong>Refatoração da Classe Principal:</strong>
       <ul>
-        <li>No botão <code class="one-line-code">btnEmitirCustomizado</code>, altere o código para instanciar o objeto passando os dados coletados da tela diretamente dentro dos parênteses do <code class="one-line-code">new Bilhete(...)</code>.</li>
-        <li>No botão <code class="one-line-code">btnEmitirPadrao</code>, altere o código para usar o seu segundo construtor, passando apenas o nome digitado na tela.</li>
+        <li>No bloco da <code class="one-line-code">opcao == 1</code>, altere o código para instanciar o objeto passando
+          as três variáveis coletadas diretamente dentro dos parênteses do <code
+            class="one-line-code">new Bilhete(nome, voo, preco)</code>.</li>
+        <li>No bloco da <code class="one-line-code">opcao == 2</code>, altere o código para usar o seu segundo
+          construtor, passando apenas a variável <code class="one-line-code">nomePromo</code> dentro do <code
+            class="one-line-code">new Bilhete(nomePromo)</code>.</li>
+        <li>Ajuste as linhas de exibição final de dados (<code class="one-line-code">System.out.println</code>) para
+          acessarem os novos métodos <strong>Getters</strong> públicos que você criou, já que o acesso direto às
+          variáveis agora está bloqueado.</li>
       </ul>
     </li>
   </ul>
 </section>
 
 <section class="section-box">
-  <h2>🏁 Orientações Finais</h2>
+  <h2>Orientações Finais</h2>
   <ul>
     <li><strong>O que será avaliado:</strong>
       <ul>
-        <li>Uso correto de <code class="one-line-code">this.atributo = parametro</code> para resolver o conflito de escopo.</li>
-        <li>Implementação do construtor em cadeia utilizando <code class="one-line-code">this(...)</code> corretamente na primeira linha do construtor secundário.</li>
-        <li>Eliminação de atribuições diretas (ex: <code class="one-line-code">b.nome = ...</code>) na classe que gerencia a tela.</li>
+        <li>Uso correto de <code class="one-line-code">this.atributo = parametro</code> para resolver o conflito de
+          escopo (Shadowing).</li>
+        <li>Implementação do construtor em cadeia utilizando <code class="one-line-code">this(...)</code> corretamente
+          como a primeira instrução do bloco secundário.</li>
+        <li>Eliminação completa de atribuições diretas de variáveis (ex: <code
+            class="one-line-code">b.nomePassageiro = ...</code>) e substituição pelo uso dos Getters.</li>
       </ul>
     </li>
-    <li><strong>Dica Importante:</strong> Assim que você criar o primeiro construtor na classe <code class="one-line-code">Bilhete</code>, o Java desativará automaticamente o construtor padrão vazio. Isso fará com que as linhas <code class="one-line-code">new Bilhete()</code> no Swing fiquem vermelhas (erro de compilação). É exatamente esse o objetivo: forçar o programa a só criar o objeto se fornecer os dados!</li>
-    <li><strong>Entrega:</strong> Envie o arquivo <code class="one-line-code">EmissorPassagem.java</code> modificado e sem erros de compilação.</li>
+    <li><strong>Dica Importante:</strong> Assim que você criar o primeiro construtor na classe <code
+        class="one-line-code">Bilhete</code>, o Java desativará automaticamente o construtor padrão invisível vazio.
+      Isso fará com que as linhas antigas <code class="one-line-code">new Bilhete()</code> fiquem vermelhas acusando
+      erro de compilação. Esse é o comportamento esperado para provar que seu objeto foi blindado com sucesso!</li>
+    <li><strong>Entrega:</strong> Envie o arquivo <code class="one-line-code">EmissorPassagemConsole.java</code>
+      modificado, identado e sem erros de compilação.</li>
   </ul>
 </section>

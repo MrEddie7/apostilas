@@ -1,18 +1,307 @@
 ---
-layout: exercicio
-title: "Exercício 02 - Visões (Views)"
-exercicio_numero: "02"
+layout: questionario
+title: "Exercício 03 - Visões (Views) e Segurança de Dados"
+exercicio_numero: "03"
 aula_numero: "17"
-description: "Segunda atividade prática para consolidar os conhecimentos da aula 17."
+description: "Questionário técnico avançado sobre o comportamento, restrições DML, segurança e persistência de visões lógicas em SGBDs relacionais."
+perguntas:
+  - texto: "Qual é a principal característica arquitetural de uma visão (View) convencional em um SGBD relacional?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "A duplicação física dos dados da tabela base em um arquivo temporário de alta velocidade."
+      - letra: "b"
+        texto: "O armazenamento permanente do resultado da consulta estruturada no disco rígido do servidor."
+      - letra: "c"
+        texto: "A persistência estritamente lógica da consulta estruturada na memória ou dicionário de dados do SGBD."
+      - letra: "d"
+        texto: "O isolamento estático dos dados que impede a visualização de alterações feitas nas tabelas subjacentes."
+
+  - texto: "O que caracteriza o comportamento de volatilidade de uma View quando dados novos são inseridos nas tabelas base?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A necessidade de executar um comando de sincronização manual para atualizar o conteúdo da visão."
+      - letra: "b"
+        texto: "A recomputação automática da query de origem no exato momento em que a visão recebe um comando SELECT."
+      - letra: "c"
+        texto: "A invalidação da estrutura lógica da visão, exigindo sua recriação por parte do administrador."
+      - letra: "d"
+        texto: "O travamento temporário das tabelas base para a reconstrução dos índices da tabela virtual."
+
+  - texto: "Sob a óptica da segurança da informação, qual o principal benefício de implementar o uso de Views no acesso a dados sensíveis?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "A capacidade de ocultar linhas ou colunas restritas e conceder privilégios de acesso apenas à camada virtual."
+      - letra: "b"
+        texto: "A criptografia nativa e irreversível de todos os registros textuais que passam pela tabela virtual."
+      - letra: "c"
+        texto: "O bloqueio completo de qualquer comando do tipo SELECT que tente filtrar dados por chaves primárias."
+      - letra: "d"
+        texto: "A criação automática de logs de auditoria criptografados em arquivos externos ao ecossistema do SGBD."
+
+  - texto: "Ao tentar executar uma operação de manipulação de dados (DML) através de uma View, qual condição é geralmente mandatória para que o SGBD aceite a operação?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "A visão deve conter pelo menos duas junções do tipo LEFT JOIN em sua estrutura."
+      - letra: "b"
+        texto: "O comando executado deve obrigatoriamente omitir o uso da cláusula WHERE."
+      - letra: "c"
+        texto: "A tabela base subjacente não pode possuir nenhuma restrição do tipo FOREIGN KEY."
+      - letra: "d"
+        texto: "A query de origem da visão deve mapear diretamente e de forma simples uma única tabela base."
+
+  - texto: "Por qual razão colunas calculadas a partir de funções de agregação, como SUM ou AVG, não podem ser alvos de comandos UPDATE em uma View?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Porque funções de agregação convertem valores numéricos em strings de texto imutáveis."
+      - letra: "b"
+        texto: "Porque o SGBD não consegue realizar engenharia reversa no cálculo para determinar qual linha física gerou o consolidado."
+      - letra: "c"
+        texto: "Porque o padrão ANSI SQL proíbe a alteração de dados numéricos por usuários que não sejam administradores."
+      - letra: "d"
+        texto: "Porque os índices B+Tree das tabelas base são desativados quando funções matemáticas são declaradas."
+
+  - texto: "Qual a diferença técnica marcante entre o MySQL e o PostgreSQL no gerenciamento de operações DML em Views complexas?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O PostgreSQL exige o uso de Rules ou INSTEAD OF Triggers para visões complexas, enquanto o MySQL adota regras nativas restritas."
+      - letra: "b"
+        texto: "O MySQL rejeita qualquer comando INSERT em visões, enquanto o PostgreSQL aceita inserções em tabelas mistas sem travas."
+      - letra: "c"
+        texto: "O PostgreSQL realiza atualizações automáticas em queries com agrupamentos, enquanto o MySQL limita-se a consultas simples."
+      - letra: "d"
+        texto: "Ambos os sistemas operam exatamente com a mesma árvore de decisão automática para junções triplas."
+
+  - texto: "Qual o impacto prático de omitir a chave primária da tabela base na lista de colunas projetadas por uma View na qual se deseja efetuar INSERTs?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "A visão continuará aceitando inserções normalmente, mas corromperá a integridade referencial do banco."
+      - letra: "b"
+        texto: "O SGBD criará chaves primárias temporárias e voláteis que sumirão após o encerramento da sessão do usuário."
+      - letra: "c"
+        texto: "A operação de inserção será rejeitada pelo SGBD por falta de informações para preencher o índice físico mandatório."
+      - letra: "d"
+        texto: "A tabela base converterá automaticamente a coluna oculta em um campo do tipo nulo permissivo."
+
+  - texto: "Qual comando SQL implementa o princípio do menor privilégio, permitindo que um usuário leia dados de uma View sem acessar as tabelas base?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "GRANT VIEW TO usuario_limitado ON nome_da_view;"
+      - letra: "b"
+        texto: "ALLOW SELECT ON nome_da_view FOR usuario_limitado;"
+      - letra: "c"
+        texto: "GRANT ALL PRIVILEGES ON tabelas_base TO usuario_limitado;"
+      - letra: "d"
+        texto: "GRANT SELECT ON nome_da_view TO usuario_limitado;"
+
+  - texto: "Para revogar o privilégio de exclusão de dados por meio de uma visão lógica específica de um grupo de usuários, qual comando deve ser aplicado?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "DENY DELETE ON nome_da_view FROM grupo_usuarios;"
+      - letra: "b"
+        texto: "REMOVE EXECUTIONS ON nome_da_view TO grupo_usuarios;"
+      - letra: "c"
+        texto: "REVOKE DELETE ON nome_da_view FROM grupo_usuarios;"
+      - letra: "d"
+        texto: "DROP PRIVILEGE DELETE ON nome_da_view FOR grupo_usuarios;"
+
+  - texto: "O que diferencia fundamentalmente uma View convencional de uma View Materializada (Materialized View)?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A visão convencional armazena dados em tabelas temporárias ocultas na raiz do sistema operacional."
+      - letra: "b"
+        texto: "A visão materializada persiste o resultado físico da consulta no disco rígido, otimizando leituras pesadas."
+      - letra: "c"
+        texto: "A visão materializada não aceita indexação secundária e proíbe filtros baseados na cláusula WHERE."
+      - letra: "d"
+        texto: "A visão convencional exige o uso de gatilhos complexos de sincronização a cada inserção no banco."
+
+  - texto: "Qual SGBD relacional oferece suporte nativo ao comando CREATE MATERIALIZED VIEW em sua estrutura padrão?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "PostgreSQL."
+      - letra: "b"
+        texto: "MySQL."
+      - letra: "c"
+        texto: "MariaDB."
+      - letra: "d"
+        texto: "SQLite."
+
+  - texto: "Qual o comportamento esperado da cláusula WITH CHECK OPTION ao ser declarada na criação de uma View atualizável?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Garantir que os índices de texto longo sejam validados antes do salvamento da estrutura lógica."
+      - letra: "b"
+        texto: "Bloquear a execução de comandos SELECT que não façam uso de índices na cláusula WHERE."
+      - letra: "c"
+        texto: "Forçar a verificação de permissões de administrador para cada usuário que acessar o objeto."
+      - letra: "d"
+        texto: "Impedir que modificações ou inserções criem linhas que não atendam aos critérios de filtragem da própria visão."
+
+  - texto: "Ao executar o comando DROP VIEW nome_da_view, qual o impacto real sobre os dados armazenados nas tabelas base?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "Os dados associados à query são movidos para uma tabela de lixeira histórica."
+      - letra: "b"
+        texto: "Todas as linhas filtradas pela query da visão são apagadas permanentemente do disco."
+      - letra: "c"
+        texto: "Nenhum dado é perdido, pois apenas a definição da estrutura lógica da visão é removida do dicionário."
+      - letra: "d"
+        texto: "As tabelas base perdem temporariamente suas chaves primárias e restrições de verificação."
+
+  - texto: "Por que a prática de utilizar SELECT * dentro da definição de uma View é considerada prejudicial à performance e manutenção do banco de dados?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "Porque o caractere curinga bloqueia a execução de junções do tipo INNER JOIN."
+      - letra: "b"
+        texto: "Porque expõe colunas desnecessárias e pode quebrar a visão se a estrutura da tabela base for modificada."
+      - letra: "c"
+        texto: "Porque força o SGBD a converter todas as colunas em tipos textuais de tamanho variável."
+      - letra: "d"
+        texto: "Porque impede o uso do princípio do menor privilégio em comandos de concessão de acesso."
+
+  - texto: "Como o conceito de abstração lógica por meio de Views protege as aplicações cliente durante um processo de refatoração das tabelas base?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "A View serve como uma camada estável (API lógica), mantendo os mesmos nomes de colunas mesmo que as tabelas físicas mudem."
+      - letra: "b"
+        texto: "A View impede fisicamente que os administradores alterem o nome ou tipo de dado das tabelas físicas."
+      - texto: "A View duplica o código-fonte da aplicação front-end diretamente na memória volátil do SGBD."
+        letra: "c"
+      - letra: "d"
+        texto: "A View intercepta erros de conexão de rede, retornando dados mocados para manter o sistema online."
+
+  - texto: "Se uma tabela física possui uma coluna restrita por NOT NULL sem valor padrão (DEFAULT) e esta coluna é omitida em uma View, qual o resultado de um INSERT feito através desta View?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "O MySQL insere o registro preenchendo a coluna omitida com uma string em branco automaticamente."
+      - letra: "b"
+        texto: "O SGBD suspende a restrição de integridade da tabela base para acomodar o novo registro."
+      - letra: "c"
+        texto: "A operação falha, pois a tabela base rejeita o valor nulo implícito gerado pela omissão do campo."
+      - letra: "d"
+        texto: "O banco de dados gera uma chave sequencial aleatória para preencher o espaço baleado."
+
+  - texto: "O que define o conceito de 'resolução em tempo de execução' aplicável às visões lógicas padrão?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "A compilação do código SQL da visão em linguagem de máquina a cada inicialização do servidor de arquivos."
+      - letra: "b"
+        texto: "O armazenamento prévio dos resultados em cache estático por um intervalo fixo de vinte e quatro horas."
+      - letra: "c"
+        texto: "A execução paralela da consulta em múltiplos servidores espelhados de contingência."
+      - letra: "d"
+        texto: "A fusão da query da visão com a query do usuário, gerando um novo plano de execução no instante da chamada."
+
+  - texto: "Qual cláusula de criação de visões garante a substituição segura de uma estrutura existente sem interromper as permissões de acesso previamente concedidas aos usuários?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "REPLACE ALL VIEW nome AS..."
+      - letra: "b"
+        texto: "CREATE OR REPLACE VIEW nome AS..."
+      - letra: "c"
+        texto: "ALTER FORCE VIEW nome TO..."
+      - letra: "d"
+        texto: "DROP AND CREATE VIEW nome WITH..."
+
+  - texto: "Em qual cenário técnico o uso de uma View se torna ineficiente para a otimização de performance de consultas de leitura?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "Quando a query interna possui múltiplos estágios de agrupamentos pesados sobre tabelas gigantes sem persistência materializada."
+      - letra: "b"
+        texto: "Quando a visão mascara chaves estrangeiras que ligam tabelas de fatos e dimensões."
+      - letra: "c"
+        texto: "Quando o desenvolvedor limita o retorno da visão aplicando a cláusula LIMIT na consulta externa."
+      - letra: "d"
+        texto: "Quando os usuários possuem privilégios exclusivos de leitura concedidos pelo comando GRANT SELECT."
+
+  - texto: "Quando uma View é criada contendo a cláusula DISTINCT na sua instrução SELECT base, qual restrição operacional automática é aplicada a ela?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A visão passa a rejeitar qualquer comando de leitura estruturado com filtros WHERE."
+      - letra: "b"
+        texto: "A visão torna-se estritamente não atualizável para operações DML como INSERT ou UPDATE."
+      - letra: "c"
+        texto: "O banco de dados exige a indexação primária de todas as colunas textuais projetadas."
+      - letra: "d"
+        texto: "Os privilégios de segurança de nível de linha são revogados de forma irreversível."
+
+  - texto: "Qual a consequência de tentar criar uma View utilizando ordenação com a cláusula ORDER BY na query interna em alguns padrões estritos da álgebra relacional?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "A visão corrompe a ordenação lógica dos índices primários das tabelas subjacentes."
+      - letra: "b"
+        texto: "O SGBD ignora o comando e reordena os dados com base na ordem física de inserção no disco."
+      - letra: "c"
+        texto: "A ordenação pode ser desconsiderada pelo otimizador se uma ordenação conflitante for informada na query externa."
+      - letra: "d"
+        texto: "O compilador SQL aborta a operação emitindo uma falha grave de violação de integridade linear."
+
+  - texto: "Em termos de nomenclatura e dicionário de dados, qual o principal objetivo de adotar prefixos padronizados como 'vw_' ou 'v_' na criação de visões?"
+    resposta_correta: "d"
+    alternativas:
+      - letra: "a"
+        texto: "Forçar o motor do SGBD a alocar o objeto em zonas de cache de alta performance."
+      - letra: "b"
+        texto: "Ativar mecanismos ocultos de compressão de strings de texto dentro do dicionário de dados."
+      - letra: "c"
+        texto: "Garantir a compatibilidade de portabilidade física entre bases relacionais e não-relacionais."
+      - letra: "d"
+        texto: "Permitir a identificação visual imediata de que o objeto consultado é uma tabela virtual e não física."
+
+  - texto: "Como o princípio do menor privilégio é afetado caso um DBA conceda acesso direto a tabelas base em vez de encapsular o tráfego por meio de Views?"
+    resposta_correta: "a"
+    alternativas:
+      - letra: "a"
+        texto: "O princípio é violado, pois os usuários ganham visibilidade sobre colunas ou registros sensíveis que deveriam estar ocultos."
+      - letra: "b"
+        texto: "A performance de escrita melhora substancialmente, anulando os riscos de segurança de vazamento de dados."
+      - letra: "c"
+        texto: "O banco de dados passa a exigir autenticação de duplo fator para cada linha modificada no terminal."
+      - letra: "d"
+        texto: "O privilégio é restrito automaticamente pelo motor do SGBD através de travas temporárias de arquivos."
+
+  - texto: "No MySQL, o que determina se uma visão baseada em uma única tabela contendo filtros na cláusula WHERE permite atualizações de registros?"
+    resposta_correta: "b"
+    alternativas:
+      - letra: "a"
+        texto: "A coluna do filtro deve obrigatoriamente fazer parte de uma restrição do tipo CHECK."
+      - letra: "b"
+        texto: "Deve existir uma correspondência direta de um para um entre as linhas da visão e as linhas da tabela física."
+      - letra: "c"
+        texto: "A tabela base não pode conter registros inseridos em datas anteriores à criação da visão."
+      - letra: "d"
+        texto: "O comando UPDATE deve ser executado exclusivamente por conexões com privilégios de superusuário."
+
+  - texto: "Qual operação do ciclo de vida de uma aplicação pode quebrar silenciosamente uma View ativa, gerando erros lógicos nas consultas cliente futuras?"
+    resposta_correta: "c"
+    alternativas:
+      - letra: "a"
+        texto: "A criação de um novo índice secundário em colunas numéricas da tabela base."
+      - letra: "b"
+        texto: "A alteração de metadados de controle de privilégios usando o comando GRANT SELECT."
+      - letra: "c"
+        texto: "A remoção ou alteração do nome de uma coluna da tabela base que é explicitamente projetada pela visão."
+      - letra: "d"
+        texto: "A execução periódica de rotinas de otimização física de arquivos de tabelas no disco."
 ---
-
-<p>Enunciado do exercício 02 em desenvolvimento para a disciplina...</p>
-
-<div class="tip-box">
-  <h4>Orientações</h4>
-  <ul>
-    <li>Aplique os conceitos de lógica e sintaxe aprendidos.</li>
-    <li>Verifique se o resultado atende aos requisitos propostos.</li>
-    <li>Documente seu código para facilitar o entendimento.</li>
-  </ul>
-</div>
